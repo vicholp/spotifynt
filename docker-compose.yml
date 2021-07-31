@@ -1,0 +1,43 @@
+version: '3.9'
+services:
+    httpd:
+        build: ./provision/php
+        ports:
+            - '80:80'
+        volumes:
+            - .:/var/www/html
+
+    db:
+        image: percona:5.7-centos
+        ports:
+            - '3306:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: admin
+            MYSQL_DATABASE: database
+            MYSQL_USER: username
+            MYSQL_PASSWORD: password
+        volumes:
+            - db:/var/lib/mysql
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        environment:
+            PMA_ARBITRARY: 1
+        ports:
+            - 8080:80
+    beets:
+        build: https://github.com/vicholp/docker-beets.git#nightly
+        container_name: beets
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=Europe/London
+        volumes:
+            - ./beets:/config
+            - ~/music:/music
+            - ~/music_temp:/downloads
+        ports:
+            - 8337:8337
+        restart: unless-stopped
+volumes:
+  db:

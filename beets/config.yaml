@@ -1,0 +1,23 @@
+directory: /music
+library: /music/musiclibrary.md
+
+import:
+  from_scratch: yes
+  group_albums: yes
+  bell: yes
+
+paths:
+  default: $albumartist/$album%aunique{}/$track - $title
+  singleton: $artist/$title
+  comp: Compilations/$album%aunique{}/$track $title
+
+plugins: fetchart embedart chroma acousticbrainz web missing info play
+
+fetchart:
+  sources: coverart itunes amazon albumart filesystem
+
+web:
+  host: 0.0.0.0
+  port: 8337
+  cors: '*'
+  include_paths: yes

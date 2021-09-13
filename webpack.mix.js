@@ -1,5 +1,5 @@
 const mix = require('laravel-mix');
-const dotenv = require('dotenv-webpack');
+const Dotenv = require('dotenv-webpack');
 
 /*
  |--------------------------------------------------------------------------
@@ -12,13 +12,13 @@ const dotenv = require('dotenv-webpack');
  |
  */
 
-mix.js('resources/js/spotifynt.js', 'public/js').sourceMaps();
+mix.js('resources/js/app.js', 'public/js').sourceMaps();
 
-mix.postCss("resources/css/main.css", "public/css");
+mix.postCss('resources/css/app.css', 'public/css');
 
 mix.webpackConfig({
   plugins: [
-    new dotenv(),
+    new Dotenv(),
   ],
 });
 

@@ -12,8 +12,8 @@
 
   <!-- Imports -->
 
-    <link rel="stylesheet" href="css/main.css">
-    <script src="/js/app.js"></script>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
     <script src="https://code.iconify.design/2/2.0.3/iconify.min.js"></script>
 
     @yield('importHead')
@@ -45,6 +45,10 @@
   <!-- Imports -->
 
     @yield('importFoot')
+
+    <script src="{{ asset('js/manifest.js') }}"></script>
+    <script src="{{ asset('js/vendor.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
 
 </body>
 </html>

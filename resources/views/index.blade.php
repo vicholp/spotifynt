@@ -224,8 +224,3 @@
   </div>
   --}}
 @endsection
-
-
-@section('importFoot')
-  <script src="js/spotifynt.js"></script>
-@endsection

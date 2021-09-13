@@ -25,19 +25,5 @@ services:
             PMA_ARBITRARY: 1
         ports:
             - 8080:80
-    beets:
-        build: https://github.com/vicholp/docker-beets.git#nightly
-        container_name: beets
-        environment:
-            - PUID=1000
-            - PGID=1000
-            - TZ=Europe/London
-        volumes:
-            - ./beets:/config
-            - ~/music:/music
-            - ~/music_temp:/downloads
-        ports:
-            - 8337:8337
-        restart: unless-stopped
 volumes:
   db:

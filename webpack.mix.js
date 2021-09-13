@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const dotenv = require('dotenv-webpack');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,8 +12,17 @@ const mix = require('laravel-mix');
  |
  */
 
- mix.js('resources/js/spotifynt.js', 'public/js').sourceMaps();
+mix.js('resources/js/spotifynt.js', 'public/js').sourceMaps();
 
- mix.postCss("resources/css/main.css", "public/css", [
-    require("tailwindcss"),
-   ]);
+mix.postCss("resources/css/main.css", "public/css");
+
+mix.webpackConfig({
+  plugins: [
+    new dotenv(),
+  ],
+});
+
+if (mix.inProduction()) {
+  mix.extract();
+}
+

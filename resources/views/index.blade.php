@@ -9,10 +9,10 @@
     <div class="grid grid-cols-12
                 shadow-lg rounded bg-white
                 dark:bg-white dark:bg-opacity-10 dark:text-white  dark:-white dark:-opacity-20">
-      <div class="col-span-12 md:col-span-3">
+      <div class="col-span-12 sm:col-span-3">
         <img id="img-songArt" src="" class="h-64 rounded-l bg-white bg-opacity-10" >
       </div>
-      <div class="col-span-12 md:col-span-9 flex flex-col items-center justify-center py-6 px-3">
+      <div class="col-span-12 sm:col-span-9 flex flex-col items-center justify-center py-6 px-3">
         <div class="flex items-center flex-col">
           <h3 id="text-songTitle" class="text-3xl text-center"></h5>
           <h4 id="text-songArtist" class="text-white text-opacity-40 mt-1"></h6>
@@ -28,6 +28,16 @@
             </div>
           </button>
           <button id="btn-nextSong" class="text-4xl"><span class="iconify" data-icon="ic:round-navigate-next"></span></button>
+        </div>
+        <div class="flex mt-4 text-sm divide-x divide-white divide-opacity-10 cursor-default">
+          <button class="p-2 rounded-none rounded-l bg-white bg-opacity-10 flex items-center gap-1.5">
+            <span class="iconify" data-icon="mdi:broadcast"></span>
+            <div id="text-songBitrate"></div>
+          </button>
+          <button class="p-2 rounded-none rounded-r bg-white bg-opacity-10 flex items-center gap-1.5">
+            <span class="iconify" data-icon="mdi:file"></span>
+            <div id="text-songFormat"></div>
+          </button>
         </div>
       </div>
       <audio id="audio-player" src="" preload="auto"></audio>
@@ -82,8 +92,11 @@
         <button id="btn-resumePlaylist" class="bg-white bg-opacity-10 rounded ml-4 p-2" onclick="Spotifynt.displayAlbumResults(false); Spotifynt.displaySongResults(false);">
           <span class="iconify" data-icon="ic:twotone-clear"></span>
         </button>
-        <button class="bg-white bg-opacity-10 rounded ml-4 p-2" onclick="Spotifynt.displayAlbumResults(false); Spotifynt.displaySongResults(false);">
+        <button class="bg-white bg-opacity-10 rounded ml-4 p-2" onclick="">
           <span class="iconify" data-icon="ic:round-playlist-play"></span>
+        </button>
+        <button class="bg-white bg-opacity-10 rounded ml-4 p-2" onclick="Lists.shuffle('playlist-actual');">
+          <span class="iconify-inline" data-icon="ic:round-shuffle"></span>
         </button>
       </div>
 
@@ -116,7 +129,7 @@
       </div>
     </div>
     <template id="template-albumResult">
-      <div class="relative bg-black bg-opacity-70 rounded shadow flex flex-row items-center justify-center ">
+      <div class="relative bg-black bg-opacity-70 rounded shadow flex flex-row items-center justify-center hover:bg-opacity-100 transition duration-300">
         <img loading="lazy" src="" class="opacity-50 w-full h-full object-cover rounded" alt="..." data-album="art">
         <div class="flex items-center flex-col absolute top-0 h-full w-full text-white justify-around px-5">
           <p class="text-center font-bold text-opacity-90" data-album="title"></p>
@@ -162,7 +175,7 @@
       </div>
     </div>
     <template id="template-songResult">
-      <div class="items-center grid grid-cols-12 p-3">
+      <div class="items-center grid grid-cols-12 p-3 bg-white bg-opacity-0 hover:bg-opacity-10 transition duration-300">
         <div class="col-span-5" data-song="title">
         </div>
         <div class="col-span-5" data-song="artist">
@@ -182,7 +195,7 @@
         </div>
       </div>
     </template>
-    <div class="grid grid-flow-row" id="div-songResults">
+    <div class="grid grid-flow-row divide-y divide-white divide-opacity-10 mt-4 rounded" id="div-songResults">
     </div>
   </div>
 </div>

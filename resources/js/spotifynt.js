@@ -64,8 +64,7 @@ window.Lists = new (function () {
   });
 
 window.Spotifynt = new (function () {
-  let port = "8337";
-  let url = "http://localhost";
+  let url = process.env.BEETS_URL;
 
   this.player = new (function () {
     this.show = function(song){
@@ -74,6 +73,8 @@ window.Spotifynt = new (function () {
       document.querySelector("#text-songArtist").textContent = song.artist
       document.querySelector("#img-songArt").src =  Spotifynt.command.artUrl(song.album_id)
       document.querySelector("#row-player").hidden = false;
+      document.querySelector("#text-songBitrate").textContent = Math.round(song.bitrate / 1000) + " kpbs";
+      document.querySelector("#text-songFormat").textContent = song.format;
 
       Spotifynt.metadata.set(song, Spotifynt.command.artUrl(song.album_id))
 
@@ -111,7 +112,7 @@ window.Spotifynt = new (function () {
         Lists.shuffle(songs);
       }
       Lists.appendOrStore(playlist, get(songs));
-      Lists.removeDuplicates(playlist)
+      Lists.removeDuplicates(playlist);
       return this;
     }
 
@@ -181,16 +182,16 @@ window.Spotifynt = new (function () {
 
     this.artUrl = function (id){
 
-      return `${url}:${port}/album/${id}/art`
+      return `${url}/album/${id}/art`
     }
 
     this.fileUrl = function (id){
 
-      return `${url}:${port}/item/${id}/file`
+      return `${url}/item/${id}/file`
     }
 
     function command(arg){
-      return fetch(`${url}:${port}/${arg}`, {method: 'GET'})
+      return fetch(`${url}/${arg}`, {method: 'GET'})
         .then(response => response.json())
     }
   });
@@ -357,7 +358,10 @@ document.querySelector("#btn-appendPlaylist").addEventListener('click', () => {
   Spotifynt.playlist.load("search")
 })
 
-window.addEventListener('beforeunload', e => {
-  e.preventDefault();
-  e.returnValue = '';
-});
+if (process.env.APP_ENV == 'production'){
+  window.addEventListener('beforeunload', e => {
+    e.preventDefault();
+    e.returnValue = '';
+  });
+}
+

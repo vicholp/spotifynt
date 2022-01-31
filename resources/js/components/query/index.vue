@@ -21,7 +21,7 @@
             v-for="album in queryResults.albums"
             :key="album.id"
             class=" rounded aspect-square w-full bg-black bg-opacity-70 hover:bg-opacity-100 transition duration-300 relative col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2"
-            @click="appendAlbum(album.id)"
+            @click="addAlbum(album.id)"
           >
             <div
               :style="{'background-image':`url(http://192.168.1.5:9000/album/${album.beetsId}/art)`}"
@@ -74,11 +74,8 @@
 import MainApi from '../../api/main.js';
 
 import {
-  PLAYER_PLAYLIST_ADD_TRACK,
-} from '../../store/mutation-types.js';
-
-import {
   PLAYER_PLAYLIST_ADD_ALBUM,
+  PLAYER_PLAYLIST_ADD_TRACK_ACTION,
 } from '../../store/action-types.js';
 
 export default {
@@ -95,15 +92,16 @@ export default {
 
         return;
       }
+
       this.queryResults = (await MainApi.query({ 'arg': this.query })).data;
     },
-    addTrack(id) {
-      this.$store.commit({
-        type: PLAYER_PLAYLIST_ADD_TRACK,
+    async addTrack(id) {
+      this.$store.dispatch({
+        type: PLAYER_PLAYLIST_ADD_TRACK_ACTION,
         track: this.queryResults.tracks[id],
       });
     },
-    async appendAlbum(id) {
+    async addAlbum(id) {
       const album = (await MainApi.getAlbum(id)).data.data;
       this.$store.dispatch({
         type: PLAYER_PLAYLIST_ADD_ALBUM,

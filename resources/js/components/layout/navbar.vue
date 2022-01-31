@@ -7,13 +7,12 @@
     }"
   >
     <div class="flex">
-      <a class="" href="/">Home</a>
-      <button class="" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class=""></span>
-      </button>
-      <div class="flex flex-row justify-around">
-        <a class="ml-4" href="/spotifynt">Spotifynt</a>
-      </div>
+      <a
+        class=""
+        href="/"
+      >
+        Spotifynt
+      </a>
     </div>
   </nav>
 </template>

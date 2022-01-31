@@ -1,6 +1,7 @@
 const mix = require('laravel-mix');
 
 const Dotenv = require('dotenv-webpack');
+const path = require('path');
 
 /*
  |--------------------------------------------------------------------------
@@ -12,6 +13,10 @@ const Dotenv = require('dotenv-webpack');
  | file for the application as well as bundling up all the JS files.
  |
  */
+
+mix.alias({
+  ziggyVue: path.resolve('vendor/tightenco/ziggy/dist/vue'),
+});
 
 mix.js('resources/js/app.js', 'public/js').vue();
 

@@ -21,6 +21,7 @@ class TrackSimpleResource extends JsonResource
             'album' => [
                 'id' => $this->album->id,
                 'name' => $this->album->name,
+                'beets_id' => $this->album->beets_id,
             ],
             'artist' => [
                 'id' => $this->artist()->id,

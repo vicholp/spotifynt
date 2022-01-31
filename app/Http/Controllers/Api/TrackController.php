@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TrackResource;
 use App\Models\Track;
 use Illuminate\Http\Request;
 
@@ -37,7 +38,7 @@ class TrackController extends Controller
      */
     public function show(Track $track)
     {
-        //
+        return new TrackResource($track);
     }
 
     /**

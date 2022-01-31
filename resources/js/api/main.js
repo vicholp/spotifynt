@@ -13,6 +13,12 @@ export default {
       url: `/api/albums/${id}`,
     });
   },
+  getTrack(id) {
+    return api({
+      method: 'get',
+      url: `/api/tracks/${id}`,
+    });
+  },
   query(params) {
     return api({
       method: 'get',

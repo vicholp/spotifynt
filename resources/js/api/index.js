@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { camelizeKeys, decamelizeKeys } from 'humps';
 
-const api = axios.create();
+const api = axios.create({
+  baseURL: process.env.APP_URL || null,
+});
 
 api.interceptors.response.use(
   response => {

@@ -18,3 +18,4 @@ _ide_helper.php
 /storage/*.index
 /public/.htaccess
 error_log
+resources/js/ziggy.js

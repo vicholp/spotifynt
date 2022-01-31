@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    'default' => env('FILESYSTEM_DRIVER', 'assets'),
 
     /*
     |--------------------------------------------------------------------------
@@ -35,6 +35,13 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'assets' => [
+            'driver' => 'local',
+            'root' => storage_path('app/assets'),
+            'url' => env('APP_URL').'/assets',
+            'visibility' => 'public',
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
@@ -53,6 +60,11 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
 
+        'database_data' => [
+            'driver' => 'local',
+            'root' => 'database/data',
+        ],
+
     ],
 
     /*
@@ -67,7 +79,7 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        public_path('assets') => storage_path('app/assets'),
     ],
 
 ];

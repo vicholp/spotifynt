@@ -1,6 +1,7 @@
 /node_modules
 /public/hot
-/public/storage
+/public/sitemap.xml
+/public/mix-manifest.json
 /storage/*.key
 /vendor
 .env
@@ -11,9 +12,9 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-
 /.idea
 /.vscode
-
-beets/*
-!beets/config.yaml
+_ide_helper.php
+/storage/*.index
+/public/.htaccess
+error_log

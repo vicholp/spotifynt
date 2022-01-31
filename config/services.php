@@ -30,4 +30,12 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'beets' => [
+        'url' => env('BEETS_URL'),
+    ],
+
+    'listenbrainz' => [
+        'key' => env('LISTENBRAINZ_KEY'),
+    ],
+
 ];

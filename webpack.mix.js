@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+
 const Dotenv = require('dotenv-webpack');
 
 /*
@@ -12,7 +13,7 @@ const Dotenv = require('dotenv-webpack');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js').sourceMaps();
+mix.js('resources/js/app.js', 'public/js').vue();
 
 mix.postCss('resources/css/app.css', 'public/css');
 
@@ -22,7 +23,18 @@ mix.webpackConfig({
   ],
 });
 
-if (mix.inProduction()) {
-  mix.extract();
-}
+mix.extract();
 
+if (mix.inProduction()) {
+  mix.version();
+} else {
+  mix.sourceMaps();
+  mix.browserSync({
+    proxy: {
+      target: 'localhost:80',
+      ws: true,
+    },
+    open: false,
+    tunnel: false,
+  });
+}

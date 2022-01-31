@@ -1,0 +1,8 @@
+/* eslint-disable import/prefer-default-export */
+
+export const PLAYER_PLAYLIST_ADD_ALBUM = 'PLAYER_PLAYLIST_ADD_ALBUM';
+export const PLAYER_NEXT = 'PLAYER_NEXT';
+export const PLAYER_PREVIOUS = 'PLAYER_PREVIOUS';
+export const PLAYER_SET_INDEX = 'PLAYER_SET_INDEX';
+export const PLAYER_LOAD_TRACK = 'PLAYER_LOAD_TRACK';
+export const PLAYER_PLAYLIST_ADD_TRACK_ACTION = 'PLAYER_PLAYLIST_ADD_TRACK_ACTION';

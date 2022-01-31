@@ -1,0 +1,8 @@
+#! /bin/bash
+
+set -e
+
+sudo false
+
+sudo chmod o+w -R ./bootstrap/
+sudo chmod o+w -R ./storage/

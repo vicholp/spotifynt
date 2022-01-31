@@ -1,0 +1,126 @@
+<template>
+  <div class="col-span-12 grid grid-cols-12 gap-3">
+    <div class="col-span-12 bg-white rounded shadow p-3 bg-opacity-20">
+      <input
+        type="text"
+        class="rounded w-full"
+        v-model="query"
+        @input="sendQuery"
+      >
+    </div>
+    <div
+      v-if="query.length !== 0"
+      class="col-span-12 grid grid-cols-12 gap-3"
+    >
+      <div class="col-span-12 bg-white bg-opacity-20 rounded shadow ">
+        <transition-group
+          name="fade"
+          class="grid grid-cols-12 gap-3 p-3"
+        >
+          <div
+            v-for="album in queryResults.albums"
+            :key="album.id"
+            class=" rounded aspect-square w-full bg-black bg-opacity-70 hover:bg-opacity-100 transition duration-300 relative col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2"
+            @click="appendAlbum(album.id)"
+          >
+            <div
+              :style="{'background-image':`url(http://192.168.1.5:9000/album/${album.beetsId}/art)`}"
+              class="opacity-50 h-full w-full bg-cover rounded shadow"
+            />
+            <div class="flex items-center absolute top-0 flex-col h-full w-full text-white justify-around px-5">
+              <span class="text-center font-bold text-opacity-90">{{ album.name }}</span>
+              <span class="text-sm text-opacity-70">{{ album.artist.name }}</span>
+            </div>
+          </div>
+        </transition-group>
+      </div>
+      <div class="col-span-12 bg-white bg-opacity-20 rounded shadow flex flex-col divide-y p-3">
+        <div
+          v-for="(track, i) in queryResults.tracks"
+          :key="track.id"
+          class="w-full items-center grid grid-cols-12 p-4 bg-white bg-opacity-0 hover:bg-opacity-10 transition duration-300 gap-5"
+          @click="addTrack(i)"
+        >
+          <span class="col-span-5">{{ track.name | truncate(25) }}</span>
+          <span class="col-span-5">{{ track.album.name }}</span>
+          <div class="col-span-2 flex ml-auto">
+            <div class="flex bg-white bg-opacity-10 rounded">
+              <button
+                type="button"
+                class="p-2"
+              >
+                <span
+                  class="iconify text-xl"
+                  data-icon="ic:outline-play-arrow"
+                />
+              </button>
+              <button
+                type="button"
+                class="p-2"
+              >
+                <span
+                  class="iconify text-xl text-gray-500"
+                  data-icon="ic:round-more-vert"
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import MainApi from '../../api/main.js';
+
+import {
+  PLAYER_PLAYLIST_ADD_TRACK,
+} from '../../store/mutation-types.js';
+
+import {
+  PLAYER_PLAYLIST_ADD_ALBUM,
+} from '../../store/action-types.js';
+
+export default {
+  data() {
+    return {
+      query: 'e',
+      queryResults: [],
+    };
+  },
+  methods: {
+    async sendQuery() {
+      if (this.query.length === 0) {
+        this.queryResults = [];
+
+        return;
+      }
+      this.queryResults = (await MainApi.query({ 'arg': this.query })).data;
+    },
+    addTrack(id) {
+      this.$store.commit({
+        type: PLAYER_PLAYLIST_ADD_TRACK,
+        track: this.queryResults.tracks[id],
+      });
+    },
+    async appendAlbum(id) {
+      const album = (await MainApi.getAlbum(id)).data.data;
+      this.$store.dispatch({
+        type: PLAYER_PLAYLIST_ADD_ALBUM,
+        album,
+      });
+    },
+  },
+};
+</script>
+<style>
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.3s ease;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
+</style>

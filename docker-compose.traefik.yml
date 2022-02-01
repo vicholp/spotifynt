@@ -9,15 +9,16 @@ services:
     labels:
       - "traefik.http.routers.${APP_NAME}.rule=PathPrefix(`/${APP_NAME}`)"
       - "traefik.http.middlewares.path-${APP_NAME}.replacepathregex.regex=^/${APP_NAME}(.*)"
-      - "traefik.http.middlewares.path-${APP_NAME}.replacepathregex.replacement=/$$1"
+      - "traefik.http.middlewares.path-${APP_NAME}.replacepathregex.replacement=$$1"
       - "traefik.http.routers.${APP_NAME}.middlewares=path-${APP_NAME}"
     networks:
       - traefik_default
+      - default
 
   db:
     image: percona:5.7-centos
     ports:
-      - 127.0.0.1::3306
+      - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: database
@@ -26,7 +27,7 @@ services:
     volumes:
       - db:/var/lib/mysql
     networks:
-      - traefik_default
+      - default
 
 volumes:
   db:

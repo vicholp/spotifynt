@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $country
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Album[] $albums
  * @property-read int|null $albums_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Track[] $tracks
+ * @property-read int|null $tracks_count
  * @method static \Database\Factories\ArtistFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Artist newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Artist newQuery()
@@ -46,5 +48,10 @@ class Artist extends Model
     public function albums()
     {
         return $this->hasMany(Album::class);
+    }
+
+    public function tracks()
+    {
+        return $this->hasManyThrough(Track::class, Album::class);
     }
 }

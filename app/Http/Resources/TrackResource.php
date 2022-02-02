@@ -22,7 +22,7 @@ class TrackResource extends JsonResource
             'updated_at' => $this->updated_at,
             'played' => $this->playedTrackStats()->count(),
             'album' => $this->album,
-            'artist' => $this->artist()->first(),
+            'artist' => $this->artist(),
         ];
     }
 }

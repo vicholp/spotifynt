@@ -23,7 +23,7 @@ class AlbumResource extends JsonResource
             'tracks' => $this->tracks(),
             'beets_tags' => $this->beets_tags,
             'played' => $this->playedTrackStats()->count(),
-            'artist' => $this->artist()->first(),
+            'artist' => $this->artist(),
             'tracks' => TrackResource::collection($this->tracks),
         ];
     }

@@ -7,11 +7,12 @@ Vue.use(Vuex);
 
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
+  key: 'vuex-spotifynt',
 });
 
 export default new Vuex.Store({
   modules: {
     player,
   },
-  // plugins: [vuexLocal.plugin],
+  plugins: [vuexLocal.plugin],
 });

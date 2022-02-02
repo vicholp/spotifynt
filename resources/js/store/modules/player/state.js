@@ -1,5 +1,5 @@
 export default {
-  actualTrack: null,
+  actualTrack: {},
   color: false,
   playlist: {
     tracks: [],

@@ -17,7 +17,7 @@
 
     @stack('import_head')
   </head>
-  <body class="min-h-screen">
+  <body class="min-h-screen bg-gray-100">
     @include('main.template.tag-manager-noscript')
 
     <div id="app" class="h-full">

@@ -1,15 +1,15 @@
 <template>
   <div class="col-span-12 grid grid-cols-12 gap-3">
-    <div class="col-span-12 bg-white rounded shadow p-3 bg-opacity-20">
+    <div class="col-span-12 bg-white rounded shadow p-3 bg-opacity-20 ">
       <input
         type="text"
-        class="rounded w-full"
+        class="rounded w-full border border-black border-opacity-30"
         v-model="query"
         @input="sendQuery"
       >
     </div>
     <div
-      v-if="query.length !== 0"
+      v-if="this.queryResults !== false"
       class="col-span-12 grid grid-cols-12 gap-3"
     >
       <div class="col-span-12 bg-white bg-opacity-20 rounded shadow ">
@@ -78,22 +78,34 @@ import {
   PLAYER_PLAYLIST_ADD_TRACK_ACTION,
 } from '../../store/action-types.js';
 
+const WAITING_TIME_QUERY = 100; // [ms]
+
 export default {
   data() {
     return {
-      query: 'e',
-      queryResults: [],
+      query: '',
+      queryResults: false,
+      waiting: false,
     };
   },
   methods: {
+    // Espera WAITING_TIME_QUERY para hacer la query, y comprueba que la query no ha cambiado para hacerla.
     async sendQuery() {
       if (this.query.length === 0) {
-        this.queryResults = [];
+        this.queryResults = false;
 
         return;
       }
 
-      this.queryResults = (await MainApi.query({ 'arg': this.query })).data;
+      const initialQuery = this.query;
+      setTimeout(async () => {
+        const actualQuery = this.query;
+        if (actualQuery !== initialQuery) return;
+        const results = (await MainApi.query({ 'arg': this.query })).data;
+        const finalQuery = this.query;
+        if (finalQuery !== initialQuery) return;
+        this.queryResults = results;
+      }, WAITING_TIME_QUERY);
     },
     async addTrack(id) {
       this.$store.dispatch({

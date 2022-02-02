@@ -8,7 +8,7 @@ import { Integrations } from '@sentry/tracing';
 import { camelizeKeys } from 'humps';
 
 import Index from './components/index.vue';
-import Player from './components/layout/player.vue';
+import Player from './components/layout/player/main.vue';
 import VNavbar from './components/layout/navbar.vue';
 import QueryIndex from './components/query/index.vue';
 

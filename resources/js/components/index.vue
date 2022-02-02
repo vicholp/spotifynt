@@ -1,21 +1,19 @@
 <template>
   <div
-    :style="{'background-color': `${backgroundColor}22`}"
-    class="bg-opacity-50"
+    class="min-h-screen"
+    :style="{'background-color': `${backgroundColor ? backgroundColor + '22' : 'white'}`}"
   >
-    <div>
-      <v-navbar />
-      <div class="container mx-auto grid grid-cols-12 p-3 gap-3">
-        <query-index />
-      </div>
-      <player />
+    <v-navbar />
+    <div class="container mx-auto grid grid-cols-12 p-3 gap-3">
+      <query-index />
     </div>
+    <player />
   </div>
 </template>
 <script>
 import { mapState } from 'vuex';
 
-import Player from './layout/player.vue';
+import Player from './layout/player/main.vue';
 
 export default {
   components: {

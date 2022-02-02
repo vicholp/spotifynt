@@ -3,6 +3,8 @@ import {
   PLAYER_PLAYLIST_SET_INDEX,
   PLAYER_SET_BACKGROUND_COLOR,
   PLAYER_SET_ACTUAL_TRACK,
+  PLAYER_PLAYLIST_CLEAR,
+  PLAYER_PLAYLIST_SET_TRACKS,
 } from '../../mutation-types';
 
 export default {
@@ -10,6 +12,25 @@ export default {
     state.playlist.tracks.push(track);
     state.playlist.count += 1;
     state.playlist.loaded = true;
+  },
+  [PLAYER_PLAYLIST_SET_TRACKS](state, { tracks, count }) {
+    state.playlist.tracks = tracks;
+    state.playlist.count = count;
+  },
+  [PLAYER_PLAYLIST_CLEAR](state) {
+    state.actualTrack = {};
+    state.color = false;
+    state.playlist = {
+      tracks: [],
+      count: 0,
+      time: 0,
+      index: 0,
+      loaded: false,
+    };
+    state.status = {
+      playing: false,
+      time: 0,
+    };
   },
   [PLAYER_PLAYLIST_SET_INDEX](state, { index, relative = false }) {
     if (relative) {

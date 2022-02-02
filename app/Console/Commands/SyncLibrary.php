@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Services\BeetsService;
 use Illuminate\Console\Command;
 
 class SyncLibrary extends Command
@@ -11,7 +12,7 @@ class SyncLibrary extends Command
      *
      * @var string
      */
-    protected $signature = 'sync_library';
+    protected $signature = 'library:sync';
 
     /**
      * The console command description.
@@ -37,7 +38,7 @@ class SyncLibrary extends Command
      */
     public function handle()
     {
-        \App\Services\BeetsService::syncLibrary();
+        BeetsService::syncLibrary();
 
         return 0;
     }

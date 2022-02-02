@@ -13,36 +13,18 @@ use Illuminate\Support\Facades\Http;
  */
 class BeetsService
 {
-    static public function test()
-    {
-        echo Http::get('http://192.168.1.5:9000/item/query/amiga');
-    }
-
-    static public function syncAlbums()
-    {
-        $albums = self::queryAlbums()->albums;
-        foreach($albums as $album) {
-            $album = Album::updateOrCreate([
-                'mb_id' => $album->mb_albumid,
-            ],[
-                'name' => $album->album,
-                'year' => $album->year,
-                'beets_tags' => $album,
-            ]);
-        }
-    }
     static public function syncLibrary()
     {
         $albums = self::queryAlbums()->albums;
         foreach($albums as $album) {
             $artist = Artist::updateOrCreate([
+                'name' => $album->albumartist,
                 'mb_id' => $album->mb_albumartistid,
             ],[
-                'name' => $album->albumartist,
             ]);
 
             $album_model = Album::updateOrCreate([
-                'mb_id' => $album->mb_albumid,
+                'mb_id' => $album->mb_releasegroupid,
             ],[
                 'name' => $album->album,
                 'beets_id' => $album->id,
@@ -50,12 +32,10 @@ class BeetsService
                 'artist_id' => $artist->id,
                 'beets_tags' => $album,
             ]);
-
             $tracks = self::queryTracks("album_id:{$album->id}")->results;
             foreach($tracks as $track) {
                 $artist->country = $track->artist_country ?? null;
                 $artist->save();
-                dump($track->mb_trackid);
                 $track_model = Track::updateOrCreate([
                     'mb_id' => $track->mb_trackid,
                 ], [

@@ -5,6 +5,7 @@
         type="text"
         class="rounded w-full border border-black border-opacity-30"
         v-model="query"
+        placeholder="search"
         @input="sendQuery"
       >
     </div>
@@ -12,10 +13,10 @@
       v-if="this.queryResults !== false"
       class="col-span-12 grid grid-cols-12 gap-3"
     >
-      <div class="col-span-12 bg-white bg-opacity-20 rounded shadow ">
+      <div class="col-span-12 ">
         <transition-group
           name="fade"
-          class="grid grid-cols-12 gap-3 p-3"
+          class="grid grid-cols-12 gap-3"
         >
           <div
             v-for="album in queryResults.albums"
@@ -68,10 +69,41 @@
         </div>
       </div>
     </div>
+    <div
+      v-else
+      class="col-span-12"
+    >
+      <h2
+        class="text-2xl my-4 text-black text-opacity-90"
+      >
+        Random albums
+      </h2>
+      <transition-group
+        name="fade"
+        class="grid grid-cols-12 gap-3"
+      >
+        <div
+          v-for="album in recommendations.albums"
+          :key="album.id"
+          class=" rounded aspect-square w-full bg-black bg-opacity-70 hover:bg-opacity-100 transition duration-300 relative col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2"
+          @click="addAlbum(album.id)"
+        >
+          <div
+            :style="{'background-image':`url(http://192.168.1.5:9000/album/${album.beetsId}/art)`}"
+            class="opacity-50 h-full w-full bg-cover rounded shadow"
+          />
+          <div class="flex items-center absolute top-0 flex-col h-full w-full text-white justify-around px-5">
+            <span class="text-center font-bold text-opacity-90">{{ album.name }}</span>
+            <span class="text-sm text-opacity-70">{{ album.artist.name }}</span>
+          </div>
+        </div>
+      </transition-group>
+    </div>
   </div>
 </template>
 <script>
 import MainApi from '../../api/main.js';
+import RecommendationsApi from '../../api/recommendations.js';
 
 import {
   PLAYER_PLAYLIST_ADD_ALBUM,
@@ -86,6 +118,9 @@ export default {
       query: '',
       queryResults: false,
       waiting: false,
+      recommendations: {
+        albums: [],
+      },
     };
   },
   methods: {
@@ -120,6 +155,9 @@ export default {
         album,
       });
     },
+  },
+  async mounted() {
+    this.recommendations.albums = (await RecommendationsApi.getAlbums()).data.random;
   },
 };
 </script>

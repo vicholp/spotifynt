@@ -20,4 +20,4 @@ npm install
 
 php artisan key:generate
 
-./bin/exec php artisan migrate:fresh --seed
+./bin/dev-exec php artisan migrate:fresh --seed

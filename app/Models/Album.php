@@ -50,12 +50,13 @@ class Album extends Model
      * @var string[]
      */
     protected $fillable = [
-        'name',
-        'year',
-        'beets_tags',
-        'artist_id',
-        'beets_id',
         'mb_id',
+        'beets_id',
+        'name',
+        'artist_id',
+        'year',
+
+        'beets_tags',
     ];
 
     protected $casts = [
@@ -71,8 +72,8 @@ class Album extends Model
     {
         return [
             'id' => $this->id,
+
             'name' => $this->name,
-            'year' => $this->year,
             'artist_name' => $this->artist->name,
             'artist_country' => $this->artist->country,
         ];

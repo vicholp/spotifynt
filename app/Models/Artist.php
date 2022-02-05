@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 /**
  * App\Models\Artist
@@ -32,7 +33,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Artist extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -40,10 +41,25 @@ class Artist extends Model
      * @var string[]
      */
     protected $fillable = [
+        'mb_id',
         'name',
         'country',
-        'mb_id',
     ];
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+
+            'name' => $this->name,
+            'contry' => $this->country,
+        ];
+    }
 
     public function albums()
     {

@@ -19,7 +19,7 @@ class CreateArtistsTable extends Migration
 
             $table->string('mb_id', 50);
             $table->string('name', 500);
-            $table->string('country', 1000)->nullable();
+            $table->string('country', 100)->nullable();
 
             $table->unique(['name', 'mb_id']);
         });

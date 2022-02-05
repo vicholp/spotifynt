@@ -78,12 +78,6 @@
         </div>
         <div
           v-if="loaded"
-          class="grid grid-cols-12 gap-3 bg-white shadow rounded bg-opacity-40 p-3 mt-5"
-        >
-          INfooo
-        </div>
-        <div
-          v-if="loaded"
           class="flex flex-col gap-3 bg-white shadow rounded bg-opacity-40 p-3 text-black text-opacity-90"
         >
           <div class="flex divide-x divide-white divide-opacity-30 pt-3 pl-3 ">
@@ -111,7 +105,7 @@
             </button>
             <button
               type="button"
-              class="px-3 flex items-center gap-3"
+              class="px-3 flex items-center gap-3 opacity-50"
             >
               <span
                 class="iconify"

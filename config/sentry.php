@@ -4,6 +4,8 @@ return [
 
     'dsn' => env('SENTRY_LARAVEL_DSN', env('SENTRY_DSN')),
 
+    'sample_rate' => (float)(env('SENTRY_SAMPLE_RATE', 0.0)),
+
     // capture release as git sha
     // 'release' => trim(exec('git --git-dir ' . base_path('.git') . ' log --pretty="%h" -n1 HEAD')),
 
@@ -29,7 +31,7 @@ return [
 
     'tracing' => [
         // Trace queue jobs as their own transactions
-        'queue_job_transactions' => env('SENTRY_TRACE_QUEUE_ENABLED', false),
+        'queue_job_transactions' => true,
 
         // Capture queue jobs as spans when executed on the sync driver
         'queue_jobs' => true,

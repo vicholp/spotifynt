@@ -12,6 +12,7 @@
     <meta name="description" content="@yield('meta_desc')">
     <meta name="robots" content="@yield('meta_robots')">
     <link rel="canonical" href="{{ Request::url() }}">
+    {!! \Sentry\Laravel\Integration::sentryTracingMeta() !!}
 
     <link rel="stylesheet" href="{{ mix('css/app.css')}}">
 

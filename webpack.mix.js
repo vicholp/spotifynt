@@ -24,7 +24,9 @@ mix.postCss('resources/css/app.css', 'public/css');
 
 mix.webpackConfig({
   plugins: [
-    new Dotenv(),
+    new Dotenv({
+      expand: true,
+    }),
   ],
 });
 

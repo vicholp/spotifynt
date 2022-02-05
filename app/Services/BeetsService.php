@@ -32,10 +32,13 @@ class BeetsService
                 'artist_id' => $artist->id,
                 'beets_tags' => $album,
             ]);
+
             $tracks = self::queryTracks("album_id:{$album->id}")->results;
+
             foreach($tracks as $track) {
                 $artist->country = $track->artist_country ?? null;
                 $artist->save();
+
                 $track_model = Track::updateOrCreate([
                     'mb_id' => $track->mb_trackid,
                 ], [
@@ -43,6 +46,29 @@ class BeetsService
                     'beets_id' => $track->id,
                     'album_id' => $album_model->id,
                     'path' => $track->path,
+                    'track_position' => $track->track,
+
+                    'length' => $track->length,
+                    'format' => $track->format,
+                    'bitrate' => $track->bitrate,
+                    'bit_depht' => $track->bitdepth,
+                    'sample_rate' => $track->samplerate,
+
+                    'average_loudness' => $track->average_loudness ?? null,
+                    'bpm' => $track->bpm  ?? null,
+                    'danceable' => $track->danceable  ?? null,
+                    'genre_rosamerica' => $track->genre_rosamerica  ?? null,
+                    'language' => $track->language  ?? null,
+                    'mood_acoustic' => $track->mood_acoustic  ?? null,
+                    'mood_aggressive' => $track->mood_aggressive  ?? null,
+                    'mood_electronic' => $track->mood_electronic  ?? null,
+                    'mood_happy' => $track->mood_happy  ?? null,
+                    'mood_party' => $track->mood_party  ?? null,
+                    'mood_relaxed' => $track->mood_relaxed  ?? null,
+                    'mood_sad' => $track->mood_sad  ?? null,
+                    'moods_mirex' => $track->moods_mirex  ?? null,
+                    'voice_instrumental' => $track->voice_instrumental  ?? null,
+
                     'beets_tags' => $track,
                 ]);
             }

@@ -20,10 +20,10 @@ class AlbumResource extends JsonResource
             'beets_id' => $this->beets_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'tracks' => $this->tracks(),
+            'tracks' => $this->tracks,
             'beets_tags' => $this->beets_tags,
             'played' => $this->playedTrackStats()->count(),
-            'artist' => $this->artist(),
+            'artist' => $this->artist,
             'tracks' => TrackResource::collection($this->tracks),
         ];
     }

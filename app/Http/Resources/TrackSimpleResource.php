@@ -24,8 +24,8 @@ class TrackSimpleResource extends JsonResource
                 'beets_id' => $this->album->beets_id,
             ],
             'artist' => [
-                'id' => $this->artist()->id,
-                'name' => $this->artist()->name,
+                'id' => $this->artist->id,
+                'name' => $this->artist->name,
             ],
         ];
     }

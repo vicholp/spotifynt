@@ -39,7 +39,7 @@ use Laravel\Scout\Searchable;
  * @property string|null $voice_instrumental
  * @property array|null $beets_tags
  * @property-read \App\Models\Album $album
- * @property-read \App\Models\Artist|null $artist
+ * @property-read mixed $artist
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PlayedTrackStat[] $playedTrackStats
  * @property-read int|null $played_track_stats_count
  * @method static \Database\Factories\TrackFactory factory(...$parameters)

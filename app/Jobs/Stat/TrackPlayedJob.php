@@ -17,15 +17,17 @@ class TrackPlayedJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private $track_id;
+    private $time;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(int $track_id)
+    public function __construct(int $track_id, $time)
     {
         $this->track_id = $track_id;
+        $this->time = $time;
     }
 
     /**
@@ -39,6 +41,6 @@ class TrackPlayedJob implements ShouldQueue
             'track_id' => $this->track_id,
         ]);
 
-        ListenbrainzService::submitListens(Track::find($this->track_id));
+        ListenbrainzService::submitListens(Track::find($this->track_id), $this->time);
     }
 }

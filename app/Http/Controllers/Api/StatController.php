@@ -30,7 +30,7 @@ class StatController extends Controller
      */
     public function TrackPlayed(Request $request)
     {
-        TrackPlayedJob::dispatch($request->track_id);
+        TrackPlayedJob::dispatch($request->track_id, time());
 
         return "OK";
     }

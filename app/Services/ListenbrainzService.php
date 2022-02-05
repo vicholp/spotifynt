@@ -14,7 +14,7 @@ class ListenbrainzService
 {
     public const BASE_URL = 'https://api.listenbrainz.org';
 
-    static public function submitListens(Track $track)
+    static public function submitListens(Track $track, $time)
     {
         $token = config('services.listenbrainz.key');
 
@@ -22,9 +22,9 @@ class ListenbrainzService
             'listen_type' => 'single',
             'payload' => [
                 [
-                    "listened_at" => time(),
+                    "listened_at" => $time,
                     "track_metadata" => [
-                        "artist_name"=> $track->artist()->name,
+                        "artist_name"=> $track->artist->name,
                         "track_name"=> $track->name,
                     ],
                 ],
@@ -41,7 +41,7 @@ class ListenbrainzService
             'payload' => [
                 [
                     "track_metadata" => [
-                        "artist_name"=> $track->artist()->name,
+                        "artist_name"=> $track->artist->name,
                         "track_name"=> $track->name,
                     ],
                 ],

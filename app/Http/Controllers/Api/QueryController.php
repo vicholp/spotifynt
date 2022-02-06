@@ -15,9 +15,11 @@ class QueryController extends Controller
 {
     public function query(Request $request)
     {
+        $album_constrain = Album::with('artist');
+        $track_constrain = Track::with(['album', 'album.artist']);
         return [
-            'albums' => AlbumSimpleResource::collection(Album::search($request->arg)->get()),
-            'tracks' => TrackSimpleResource::collection(Track::search($request->arg)->get()),
+            'albums' => AlbumSimpleResource::collection(Album::search($request->arg)->constrain($album_constrain)->get()),
+            'tracks' => TrackSimpleResource::collection(Track::search($request->arg)->constrain($track_constrain)->get()),
         ];
     }
 }

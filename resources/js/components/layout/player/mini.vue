@@ -27,7 +27,7 @@
             <div class="">
               <div
                 v-if="loaded"
-                :style="{'background-image':`url(${getArtFromAlbum(this.actual.album.beetsId)})`}"
+                :style="{'background-image':`url(${getArtFromAlbum(currentServerIp, this.actual.album.beetsId)})`}"
                 class="h-14 bg-cover rounded shadow aspect-square"
               />
               <div
@@ -116,6 +116,7 @@ export default {
     ...mapState({
       status: state => state.player.status,
       color: state => state.player.color,
+      currentServerIp: state => state.server.ip,
     }),
   },
   methods: {

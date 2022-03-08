@@ -14,7 +14,7 @@
           <div class="col-span-3">
             <div
               v-if="loaded"
-              :style="{'background-image':`url(${getArtFromAlbum(this.actual.album.beetsId)})`}"
+              :style="{'background-image':`url(${getArtFromAlbum(currentServerIp, this.actual.album.beetsId)})`}"
               @click="$emit('go-mini')"
               class=" bg-cover rounded-l shadow aspect-square"
             />
@@ -177,6 +177,7 @@ export default {
       status: state => state.player.status,
       color: state => state.player.color,
       playlist: state => state.player.playlist,
+      currentServerIp: state => state.server.ip,
     }),
   },
   methods: {

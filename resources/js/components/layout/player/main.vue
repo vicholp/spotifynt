@@ -60,6 +60,7 @@ export default {
       actual: state => state.player.actualTrack,
       status: state => state.player.status,
       color: state => state.player.color,
+      currentServerIp: state => state.server.ip,
     }),
   },
   data() {
@@ -116,7 +117,7 @@ export default {
       }
     },
     loadTrack(track) {
-      this.$refs.player.src = `http://192.168.1.5:9000/item/${track.beetsId}/file`;
+      this.$refs.player.src = `${this.currentServerIp}/item/${track.beetsId}/file`;
       this.listened = false;
       this.playing = false;
 

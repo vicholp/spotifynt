@@ -89,7 +89,7 @@
           @click="addAlbum(album.id)"
         >
           <div
-            :style="{'background-image':`url(http://192.168.1.5:9000/album/${album.beetsId}/art)`}"
+            :style="{'background-image':`url(${currentServerIp}/album/${album.beetsId}/art)`}"
             class="opacity-50 h-full w-full bg-cover rounded shadow"
           />
           <div class="flex items-center absolute top-0 flex-col h-full w-full text-white justify-around px-5">
@@ -102,6 +102,8 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex';
+
 import MainApi from '../../api/main.js';
 import RecommendationsApi from '../../api/recommendations.js';
 
@@ -122,6 +124,11 @@ export default {
         albums: [],
       },
     };
+  },
+  computed: {
+    ...mapState({
+      currentServerIp: state => state.server.ip,
+    }),
   },
   methods: {
     // Espera WAITING_TIME_QUERY para hacer la query, y comprueba que la query no ha cambiado para hacerla.

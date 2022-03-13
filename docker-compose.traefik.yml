@@ -7,13 +7,9 @@ services:
     volumes:
       - .:/var/www/html
     labels:
-      - "traefik.http.routers.${APP_NAME}.rule=PathPrefix(`/${APP_NAME}`)"
-      - "traefik.http.middlewares.path-${APP_NAME}.replacepathregex.regex=^/${APP_NAME}(.*)"
-      - "traefik.http.middlewares.path-${APP_NAME}.replacepathregex.replacement=$$1"
-      - "traefik.http.routers.${APP_NAME}.middlewares=path-${APP_NAME}"
+      - "traefik.http.routers.${APP_NAME}.rule=Host(`/${TRAEFIK_HOST}`)"
     networks:
       - traefik_default
-      - default
 
   db:
     image: percona:5.7-centos
@@ -27,7 +23,7 @@ services:
     volumes:
       - db:/var/lib/mysql
     networks:
-      - default
+      - traefik_default
 
 volumes:
   db:

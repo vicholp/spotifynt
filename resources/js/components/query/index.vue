@@ -73,11 +73,23 @@
       v-else
       class="col-span-12"
     >
-      <h2
-        class="text-2xl my-4 text-black text-opacity-90"
-      >
-        Random albums
-      </h2>
+      <div class="my-4 flex gap-3">
+        <h2
+          class="text-2xl text-black text-opacity-90"
+        >
+          Random albums
+        </h2>
+        <button
+          class="my-auto"
+          type="button"
+          @click="getRecommendations"
+        >
+          <span
+            class="iconify-inline text-xl text-black text-opacity-50"
+            data-icon="mdi:refresh"
+          />
+        </button>
+      </div>
       <transition-group
         name="fade"
         class="grid grid-cols-12 gap-3"
@@ -162,9 +174,12 @@ export default {
         album,
       });
     },
+    async getRecommendations() {
+      this.recommendations.albums = (await RecommendationsApi.getAlbums()).data.random;
+    },
   },
   async mounted() {
-    this.recommendations.albums = (await RecommendationsApi.getAlbums()).data.random;
+    this.getRecommendations();
   },
 };
 </script>

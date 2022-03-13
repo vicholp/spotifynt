@@ -118,6 +118,7 @@ export default {
     },
     loadTrack(track) {
       this.$refs.player.src = `${this.currentServerIp}/item/${track.beetsId}/file`;
+      document.title = `${track.name} - ${track.artist.name}`;
       this.listened = false;
       this.playing = false;
 

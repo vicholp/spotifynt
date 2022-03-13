@@ -14,10 +14,10 @@ class RecommendationsService
     static public function getAlbums()
     {
         return [
-            'newly' => AlbumSimpleResource::collection(Album::orderBy('created_at', 'DESC')->limit(12)->get()),
+            'newly' => AlbumSimpleResource::collection(Album::orderBy('created_at', 'DESC')->with('artist')->limit(12)->get()),
             'mostListened' => [],
             'lessListened' => [],
-            'random' => AlbumSimpleResource::collection(Album::inRandomOrder()->limit(12)->get()),
+            'random' => AlbumSimpleResource::collection(Album::inRandomOrder()->with('artist')->limit(12)->get()),
         ];
     }
 }

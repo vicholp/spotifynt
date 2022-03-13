@@ -25,7 +25,7 @@
             @click="addAlbum(album.id)"
           >
             <div
-              :style="{'background-image':`url(http://192.168.1.5:9000/album/${album.beetsId}/art)`}"
+              :style="{'background-image':`url(${currentServerIp}/album/${album.beetsId}/art)`}"
               class="opacity-50 h-full w-full bg-cover rounded shadow"
             />
             <div class="flex items-center absolute top-0 flex-col h-full w-full text-white justify-around px-5">

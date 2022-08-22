@@ -1,30 +1,26 @@
 version: '3.9'
 services:
   php:
-    build: ./provision/php_hostgator
+    image: serversideup/php:8.1-fpm-apache
     ports:
-      - '80:80'
+      - 80:80
     volumes:
       - .:/var/www/html
+    environment:
+      APACHE_DOCUMENT_ROOT: /var/www/html/public
+      AUTORUN_LARAVEL_STORAGE_LINK: "false"
+    restart: unless-stopped
 
   db:
     image: percona:5.7-centos
     ports:
-      - '3306:3306'
+      - 3306:3306
     environment:
-      MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: database
-      MYSQL_USER: username
-      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root
     volumes:
       - db:/var/lib/mysql
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    environment:
-      PMA_ARBITRARY: 1
-    ports:
-      - 8080:80
+    restart: unless-stopped
 
 volumes:
   db:

@@ -1,0 +1,10 @@
+#! /bin/bash
+
+docker-compose -f docker-compose.prod.yml up -d --build
+
+./bin/dotenv set DB_PORT=$(docker-compose -f docker-compose.prod.yml port db 3306 2> /dev/null | cut -d ":" -f 2)
+
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+

@@ -13,13 +13,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Artist::factory(10)
-            ->has(\App\Models\Album::factory()
-                ->count(rand(1,20))
-                ->has(\App\Models\Track::factory()
-                    ->count(rand(4,25))
-                    )
-                )
-            ->create();
+        // \App\Models\User::factory(10)->create();
+
+        // \App\Models\User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
     }
 }

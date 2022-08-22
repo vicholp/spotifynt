@@ -1,9 +1,0 @@
-#! /bin/bash
-
-# Run this command before develop
-
-set -e
-
-docker-compose up -d --build
-
-npm run watch

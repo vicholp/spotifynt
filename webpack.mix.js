@@ -1,7 +1,6 @@
 const mix = require('laravel-mix');
 
 const Dotenv = require('dotenv-webpack');
-const path = require('path');
 
 /*
  |--------------------------------------------------------------------------
@@ -14,19 +13,13 @@ const path = require('path');
  |
  */
 
-mix.alias({
-  ziggyVue: path.resolve('vendor/tightenco/ziggy/dist/vue'),
-});
-
 mix.js('resources/js/app.js', 'public/js').vue();
 
 mix.postCss('resources/css/app.css', 'public/css');
 
 mix.webpackConfig({
   plugins: [
-    new Dotenv({
-      expand: true,
-    }),
+    new Dotenv(),
   ],
 });
 
@@ -42,6 +35,6 @@ if (mix.inProduction()) {
       ws: true,
     },
     open: false,
-    tunnel: false,
+    tunnel: true,
   });
 }

@@ -1,10 +1,7 @@
 <?php
 
 return [
-
     'dsn' => env('SENTRY_LARAVEL_DSN', env('SENTRY_DSN')),
-
-    'sample_rate' => (float)(env('SENTRY_SAMPLE_RATE', 0.0)),
 
     // capture release as git sha
     // 'release' => trim(exec('git --git-dir ' . base_path('.git') . ' log --pretty="%h" -n1 HEAD')),
@@ -31,7 +28,7 @@ return [
 
     'tracing' => [
         // Trace queue jobs as their own transactions
-        'queue_job_transactions' => true,
+        'queue_job_transactions' => env('SENTRY_TRACE_QUEUE_ENABLED', false),
 
         // Capture queue jobs as spans when executed on the sync driver
         'queue_jobs' => true,
@@ -50,10 +47,9 @@ return [
     ],
 
     // @see: https://docs.sentry.io/platforms/php/configuration/options/#send-default-pii
-    'send_default_pii' => false,
+    'send_default_pii' => true,
 
-    'traces_sample_rate' => (float)(env('SENTRY_TRACES_SAMPLE_RATE', 0.0)),
+    'traces_sample_rate' => (float) env('SENTRY_TRACES_SAMPLE_RATE', 0.0),
 
     'controllers_base_namespace' => env('SENTRY_CONTROLLERS_BASE_NAMESPACE', 'App\\Http\\Controllers'),
-
 ];

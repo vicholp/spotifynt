@@ -1,12 +1,22 @@
-<nav class="bg-gray-800 p-5 text-white">
-  <div class="flex">
-    <a class="" href="/">Home</a>
-    <button class="" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class=""></span>
-    </button>
-    <div class="flex flex-row justify-around">
-      <a class="ml-4" aria-current="page" href="/huei">Huei</a>
-      <a class="ml-4" href="/spotifynt">Spotifynt</a>
+<nav class="h-16 bg-indigo-800 w-full flex text-white px-4 gap-2">
+  <a class="my-auto mr-8" href="{{ route('admin.index') }}">
+    <h2 class="font-medium text-lg  text-white" hf>
+      Home
+    </h2>
+  </a>
+  <div class="flex items-center gap-3">
+    <div>
+      tag 1
+    </div>
+    <div>
+      tag 2
     </div>
   </div>
+  <div class="ml-auto"></div>
+  <div class="my-auto">
+    {{ auth()->user()->name ?? 'guest' }}
+  </div>
+  <a class="my-auto bg-indigo-900 p-2 rounded" href="{{ route('auth.logout') }}">
+    Log out
+  </a>
 </nav>

@@ -3,7 +3,6 @@
 use Illuminate\Support\Str;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Session Driver
@@ -18,7 +17,7 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'file'),
+    'driver' => env('SESSION_DRIVER', 'database'),
 
     /*
     |--------------------------------------------------------------------------
@@ -72,7 +71,7 @@ return [
     |
     */
 
-    'connection' => env('SESSION_CONNECTION', null),
+    'connection' => env('SESSION_CONNECTION'),
 
     /*
     |--------------------------------------------------------------------------
@@ -100,7 +99,7 @@ return [
     |
     */
 
-    'store' => env('SESSION_STORE', null),
+    'store' => env('SESSION_STORE'),
 
     /*
     |--------------------------------------------------------------------------
@@ -155,7 +154,7 @@ return [
     |
     */
 
-    'domain' => env('SESSION_DOMAIN', null),
+    'domain' => env('SESSION_DOMAIN'),
 
     /*
     |--------------------------------------------------------------------------
@@ -197,5 +196,4 @@ return [
     */
 
     'same_site' => 'lax',
-
 ];

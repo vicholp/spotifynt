@@ -1,9 +1,0 @@
-#! /bin/bash
-
-set -e
-
-docker-compose -f "docker-compose.traefik.yml" up -d
-
-./bin/traefik-exec php artisan config:cache
-./bin/traefik-exec php artisan route:cache
-./bin/traefik-exec php artisan view:cache

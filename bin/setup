@@ -1,0 +1,23 @@
+#! /bin/bash
+
+# Run this command just after cloning the repo
+
+set -e
+
+php_env="$(cat .php-version)"
+phpenv install -s $php_env
+
+cp .env.example .env
+cp public/.htaccess.example public/.htaccess
+
+composer install
+npm install
+
+sudo chmod a+w -R ./bootstrap/
+sudo chmod a+w -R ./storage/
+
+php artisan key:generate
+php artisan db:testing
+php artisan migrate:fresh
+php artisan storage:link --relative
+php artisan ide-helper:generate -W

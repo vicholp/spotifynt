@@ -1,4 +1,0 @@
-{
-  "preset": "laravel",
-  "excluded": ["_ide_helper.php"]
-}

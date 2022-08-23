@@ -4,20 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Scout\Searchable;
 
 /**
- * App\Models\Release
+ * App\Models\Release.
  *
- * @property int $id
- * @property string $mb_release_id
- * @property string $title
- * @property string $date
- * @property string $country
- * @property int $release_group_id
- * @property mixed $mb_data
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Database\Factories\ReleaseFactory factory(...$parameters)
+ * @property int                                                          $id
+ * @property string                                                       $title
+ * @property string|null                                                  $date
+ * @property string                                                       $country
+ * @property int                                                          $release_group_id
+ * @property string                                                       $mb_release_id
+ * @property mixed                                                        $mb_data
+ * @property \Illuminate\Support\Carbon|null                              $created_at
+ * @property \Illuminate\Support\Carbon|null                              $updated_at
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Track[] $tracks
+ * @property int|null                                                     $tracks_count
+ *
+ * @method static \Database\Factories\ReleaseFactory            factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Release newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Release newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Release query()
@@ -35,4 +40,40 @@ use Illuminate\Database\Eloquent\Model;
 class Release extends Model
 {
     use HasFactory;
+    use Searchable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
+    protected $fillable = [
+        'release_group_id',
+        'mb_release_id',
+        'title',
+        'year',
+        'country',
+        'mb_data',
+    ];
+
+    /**
+     * @return HasMany<Track>
+     */
+    public function tracks()
+    {
+        return $this->hasMany(Track::class);
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+        ];
+    }
 }

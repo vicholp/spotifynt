@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Release;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,10 @@ class TrackFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'release_id' => Release::factory(),
+            'mb_recording_id' => $this->faker->uuid(),
+            'title' => $this->faker->title(),
+            'mb_data' => '{}',
         ];
     }
 }

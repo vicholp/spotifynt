@@ -17,7 +17,11 @@ class ArtistFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->name(),
+            'type' => $this->faker->randomElement(['band', 'solo']),
+            'country' => $this->faker->countryCode(),
+            'mb_artist_id' => $this->faker->uuid(),
+            'mb_data' => '{}',
         ];
     }
 }

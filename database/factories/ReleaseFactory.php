@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\ReleaseGroup;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,12 @@ class ReleaseFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'release_group_id' => ReleaseGroup::factory(),
+            'mb_release_id' => $this->faker->uuid(),
+            'title' => $this->faker->title(),
+            'date' => $this->faker->date(),
+            'country' => $this->faker->country(),
+            'mb_data' => '{}',
         ];
     }
 }

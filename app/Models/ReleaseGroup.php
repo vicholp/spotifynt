@@ -6,17 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Models\ReleaseGroup
+ * App\Models\ReleaseGroup.
  *
- * @property int $id
- * @property string $mb_releasegroup_id
- * @property string $title
- * @property string $type
- * @property int $artist_id
- * @property mixed $mb_data
+ * @property int                             $id
+ * @property string                          $title
+ * @property string                          $type
+ * @property int                             $artist_id
+ * @property string                          $mb_releasegroup_id
+ * @property mixed                           $mb_data
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Database\Factories\ReleaseGroupFactory factory(...$parameters)
+ *
+ * @method static \Database\Factories\ReleaseGroupFactory            factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseGroup newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseGroup newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseGroup query()
@@ -33,4 +34,17 @@ use Illuminate\Database\Eloquent\Model;
 class ReleaseGroup extends Model
 {
     use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
+    protected $fillable = [
+        'artist_id',
+        'mb_releasegroup_id',
+        'title',
+        'type',
+        'mb_data',
+    ];
 }

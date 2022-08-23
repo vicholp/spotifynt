@@ -15,12 +15,11 @@ return new class() extends Migration {
         Schema::create('tracks', function (Blueprint $table) {
             $table->id();
 
-            $table->string('mb_release_id', 500)->unique()->nullable();
             $table->string('title', 1000);
             $table->foreignId('release_id')->constrained();
             $table->integer('track_position')->nullable();
 
-            $table->integer('length');
+            $table->integer('length')->nullable();
             $table->float('average_loudness')->nullable();
             $table->integer('bpm')->nullable();
             $table->float('danceable')->nullable();
@@ -36,6 +35,7 @@ return new class() extends Migration {
             $table->string('moods_mirex', 100)->nullable();
             $table->string('voice_instrumental', 100)->nullable();
 
+            $table->string('mb_recording_id', 500);
             $table->json('mb_data');
 
             $table->timestamps();

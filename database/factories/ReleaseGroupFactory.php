@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Artist;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,11 @@ class ReleaseGroupFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'artist_id' => Artist::factory(),
+            'mb_releasegroup_id' => $this->faker->uuid(),
+            'title' => $this->faker->title(),
+            'type' => $this->faker->randomElement(['a', 'b']),
+            'mb_data' => '{}',
         ];
     }
 }

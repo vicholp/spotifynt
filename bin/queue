@@ -1,0 +1,7 @@
+#! /bin/bash
+
+# Run this command just after cloning the repo
+
+set -e
+
+php artisan queue:listen

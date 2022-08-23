@@ -17,8 +17,14 @@ return new class() extends Migration {
 
             $table->string('name');
             $table->string('path', 1024);
-            $table->dateTime('last_sync');
-            $table->dateTime('last_full_sync');
+
+            $table->foreignId('owner_id')->constrained('users');
+
+            $table->enum('visibility', ['public', 'private']);
+            $table->enum('access', ['restricted', 'private']);
+
+            $table->dateTime('last_sync')->nullable();
+            $table->dateTime('last_full_sync')->nullable();
 
             $table->timestamps();
         });

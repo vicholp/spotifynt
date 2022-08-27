@@ -76,11 +76,6 @@ parameters:
 			path: app/Http/Controllers/Api/ServerController.php
 
 		-
-			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ServerController\\:\\:show\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: app/Http/Controllers/Api/ServerController.php
-
-		-
 			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ServerController\\:\\:store\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
 			count: 1
 			path: app/Http/Controllers/Api/ServerController.php

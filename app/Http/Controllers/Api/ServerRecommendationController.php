@@ -8,16 +8,21 @@ use App\Http\Resources\ReleaseSimpleCollection;
 use App\Models\Artist;
 use App\Models\Release;
 use App\Models\Server;
+use App\Services\StatsService;
+use Illuminate\Support\Facades\Auth;
 
 class ServerRecommendationController extends Controller
 {
     public function random(Server $server): array
     {
-        $album_constrain = Release::with([]);
+        $albums = Release::limit(20)->inRandomOrder()->get();
+        $artists = Artist::limit(20)->inRandomOrder()->get();
+
+        StatsService::newShowedReleases(Auth::user(), $albums);
 
         return [
-            'artists' => new ArtistSimpleCollection(Artist::limit(4)->inRandomOrder()->get()),
-            'albums' => new ReleaseSimpleCollection(Release::limit(4)->inRandomOrder()->get()),
+            'artists' => new ArtistSimpleCollection($artists),
+            'albums' => new ReleaseSimpleCollection($albums),
         ];
     }
 }

@@ -15,10 +15,10 @@
 
     @stack('import_head')
   </head>
-  <body class="bg-gray-100 dark:bg-gray-900 dark:text-white dark:text-opacity-90" >
-    <div id="app">
-      @yield('content')
-    </div>
+  <body class="bg-[#EFEFEF] dark:text-white dark:bg-[#101010]">
+      <div id="app">
+        @yield('content')
+      </div>
 
     <script defer src="{{ mix('/js/manifest.js') }}"></script>
     <script defer src="{{ mix('/js/vendor.js') }}"></script>

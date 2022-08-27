@@ -1,7 +1,7 @@
 <template>
   <div
 
-    class="bg-white dark:bg-opacity-10 p-3 rounded flex flex-col gap-3"
+    class="flex flex-col gap-3"
   >
     <div class="col-span-12 ">
       <div

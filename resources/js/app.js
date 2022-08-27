@@ -2,6 +2,10 @@ import { createApp } from 'vue';
 // eslint-disable-next-line no-unused-vars
 import Iconify from '@iconify/iconify';
 
+import Toast from "vue-toastification";
+// Import the CSS or use your own!
+import "vue-toastification/dist/index.css";
+
 import { createRouter, createWebHashHistory } from 'vue-router';
 
 import { camelizeKeys } from 'humps';
@@ -12,8 +16,16 @@ import { Integrations } from '@sentry/tracing';
 import i18n from './locales';
 import pinia from './store';
 
+import AudioPlayer from './components/player.vue';
 import Index from './pages/index.vue';
-import Server from './pages/servers.vue';
+import Servers from './pages/servers.vue';
+import Server from './pages/server.vue';
+import Player from './pages/player.vue';
+import Artist from './pages/artist.vue';
+import Album from './pages/album.vue';
+import Track from './pages/track.vue';
+import Playlist from './pages/playlist.vue';
+import Playlists from './pages/playlists.vue';
 
 const app = createApp();
 
@@ -29,8 +41,15 @@ Sentry.init({
 });
 
 const routes = [
-  { path: '/', component: Index },
-  { path: '/servers', component: Server, props: true },
+  { path: '/', component: Index, props: true },
+  { path: '/servers', component: Servers, props: true },
+  { path: '/server/:id', component: Server, props: true },
+  { path: '/player', component: Player, props: true },
+  { path: '/artist/:id', component: Artist, props: true },
+  { path: '/album/:id', component: Album, props: true },
+  { path: '/track/:id', component: Track, props: true },
+  { path: '/playlist/:id', component: Playlist, props: true },
+  { path: '/playlists', component: Playlists, props: true },
 ];
 
 const router = createRouter({
@@ -42,9 +61,12 @@ const router = createRouter({
 app.use(i18n);
 app.use(pinia);
 app.use(router);
+app.use(Toast);
 
 app.config.globalProperties.$filters = {
   camelizeKeys,
 };
+
+app.component('AudioPlayer', AudioPlayer);
 
 app.mount('#app');

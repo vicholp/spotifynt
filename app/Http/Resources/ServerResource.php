@@ -2,8 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Server;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @mixin Server */
 class ServerResource extends JsonResource
 {
     /**
@@ -22,6 +24,11 @@ class ServerResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'path' => $this->path,
+            // 'owner' => $this->owner,
+        ];
     }
 }

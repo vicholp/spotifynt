@@ -19,6 +19,7 @@ return new class() extends Migration {
             $table->date('date')->nullable();
             $table->string('country', 500);
             $table->foreignId('release_group_id')->constrained();
+            $table->string('main_color', 7)->nullable();
 
             $table->string('mb_release_id', 50);
             $table->json('mb_data');

@@ -7,24 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * App\Models\Server.
+ * App\Models\Server
  *
- * @property int                                                          $id
- * @property string                                                       $name
- * @property string                                                       $path
- * @property int                                                          $owner_id
- * @property string                                                       $visibility
- * @property string                                                       $access
- * @property string|null                                                  $last_sync
- * @property string|null                                                  $last_full_sync
- * @property \Illuminate\Support\Carbon|null                              $created_at
- * @property \Illuminate\Support\Carbon|null                              $updated_at
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Track[] $tracks
- * @property int|null                                                     $tracks_count
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\User[]  $users
- * @property int|null                                                     $users_count
- *
- * @method static \Database\Factories\ServerFactory            factory(...$parameters)
+ * @property int $id
+ * @property string $name
+ * @property string $path
+ * @property int $owner_id
+ * @property string $visibility
+ * @property string $access
+ * @property string|null $last_sync
+ * @property string|null $last_full_sync
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Track[] $tracks
+ * @property-read int|null $tracks_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @property-read int|null $users_count
+ * @method static \Database\Factories\ServerFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Server newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Server newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Server query()

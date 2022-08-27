@@ -1,11 +1,12 @@
 <template>
   <div
-    :class="`fixed bottom-0 w-full h-20`"
+    :class="`fixed bottom-0 w-full dark:bg-[#101010]`"
   >
+    <div class="bg-white dark:bg-opacity-5 p-2" hidden />
     <div
-      :class="`bg-white ${color === false ? 'bg-opacity-100' : 'bg-opacity-50'}`"
+      :class="`bg-white ${color === false ? 'bg-opacity-100' : 'bg-opacity-5'}`"
     >
-      <div class="h-0.5 w-full bg-black bg-opacity-10">
+      <div class="h-0.5 w-full bg-black bg-opacity-5">
         <div
           class="h-full bg-black bg-opacity-50"
           :style="{
@@ -17,33 +18,37 @@
         <div
           class="flex gap-3 items-center"
         >
-          <div
+          <router-link
             class="flex gap-3 items-center grow py-3"
+            to="/player"
           >
             <div class="">
               <div
                 v-if="loaded"
+                :style="`background-image: url(&quot;http://vicholp.duckdns.org:9000/album/${Math.floor(Math.random()*100)}/art&quot;);`"
                 class="h-14 bg-cover rounded shadow aspect-square"
               />
               <div
                 v-else
-                class="h-14 bg-cover rounded shadow aspect-square bg-gray-300"
+                class="h-14 bg-cover rounded shadow aspect-square dark:bg-white dark:bg-opacity-5"
               />
             </div>
             <div class="">
               <div
                 v-if="loaded"
                 class="text-medium flex-none"
-              />
+              >
+                {{ actual.title }} - {{ actual.release.title }}
+              </div>
               <div
                 v-else
-                class=""
+                class="dark:text-white dark:text-opacity-30"
               >
                 The playlist is empty
               </div>
             </div>
-          </div>
-          <div :class="`ml-auto flex items-center mr-10 ${loaded ? 'opacity-100' : 'opacity-30'}`">
+          </router-link>
+          <div :class="`flex items-end ${loaded ? 'opacity-100' : 'opacity-30'}`">
             <button
               class="text-4xl"
               @click="$emit('player-prev')"
@@ -57,7 +62,7 @@
               class="text-4xl"
               @click="$emit('player-play')"
             >
-              <div v-if="status">
+              <div v-if="playing">
                 <span
                   class="iconify"
                   data-icon="ic:round-pause"
@@ -87,6 +92,9 @@
 </template>
 <script>
 
+import PlayerStore from '../store/player';
+
+
 export default {
   props: {
     progress: {
@@ -101,18 +109,31 @@ export default {
       type: Boolean,
       required: true,
     },
+    playing: {
+      type: Boolean,
+      required: true,
+    },
+
   },
   emits: [
     'player-next',
     'player-prev',
     'player-play',
   ],
+  setup() {
+    return {
+      playerStore: PlayerStore(),
+    };
+  },
+  data() {
+    return {
+      n: 0,
+    };
+  },
   computed: {
     color() {
       return 'a';
     },
-  },
-  methods: {
   },
 };
 </script>

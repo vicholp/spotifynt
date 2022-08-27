@@ -1,10 +1,10 @@
 <template>
   <layout>
-    <div class="container mx-auto flex flex-col gap-5">
-      <div class="bg-white dark:bg-opacity-10 p-3 rounded flex flex-col gap-3">
+    <div class="container mx-auto flex flex-col gap-3  px-2">
+      <div class="bg-white dark:bg-opacity-5 p-3 rounded flex flex-col gap-3">
         <h2>New server</h2>
         <div class="flex gap-2">
-          <input v-model="serverName" type="text" class="focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-opacity-10 flex-1 block w-full rounded border-gray-300">
+          <input v-model="serverName" type="text" class="focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-opacity-5 flex-1 block w-full rounded border-gray-300">
           <button
             class="bg-white dark:bg-opacity-20 rounded p-2 px-4"
             @click="addServer"
@@ -13,7 +13,7 @@
           </button>
         </div>
       </div>
-      <div class="bg-white dark:bg-opacity-10 p-3 rounded">
+      <div class="bg-white dark:bg-opacity-5 p-3 rounded">
         <h2>Servers</h2>
         <div class="flex flex-col">
           <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -53,11 +53,20 @@
                       </td>
                       <td class="text-sm px-6 py-4 whitespace-nowrap">
                         <button
+                          v-if="server.id != serverStore.activeServer.id"
                           type="button"
                           @click="setActiveServer(server)"
                         >
-                          active
+                          enable
                         </button>
+                        <div
+                          v-else
+                        >
+                          active
+                        </div>
+                        <router-link :to="`server/${server.id}`">
+                          view
+                        </router-link>
                       </td>
                     </tr>
                   </tbody>
@@ -88,8 +97,8 @@ export default {
     },
   },
   setup() {
-    const example = ServerStore();
-    return { example };
+    const serverStore = ServerStore();
+    return { serverStore };
   },
   data() {
     return {
@@ -101,12 +110,16 @@ export default {
     ...mapWritableState(ServerStore, ['activeServer']),
   },
   async mounted() {
-    this.servers = (await UserServerApi.index(this.authUser.id)).data.data;
+    this.getServers();
   },
   methods: {
+    async getServers() {
+      this.servers = (await UserServerApi.index(this.authUser.id)).data.data;
+    },
     addServer() {
       UserServerApi.store(this.serverName, this.authUser.id);
       this.serverName = "";
+      this.getServers();
     },
     setActiveServer(server) {
       this.activeServer = server;

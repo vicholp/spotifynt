@@ -19,6 +19,7 @@ class ReleaseResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'tracks' => new TrackCollection($this->tracks),
+            'art' => $this->art_url,
         ];
     }
 }

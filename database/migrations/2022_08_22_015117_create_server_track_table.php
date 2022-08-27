@@ -18,6 +18,14 @@ return new class() extends Migration {
             $table->foreignId('server_id')->constrained();
             $table->foreignId('track_id')->constrained();
 
+            $table->string('format', 100)->nullable();
+            $table->unsignedInteger('bitrate')->nullable();
+            $table->unsignedInteger('length')->nullable();
+            $table->unsignedInteger('sample_rate')->nullable();
+            $table->unsignedInteger('bit_depth')->nullable();
+            $table->unsignedInteger('channels')->nullable();
+            $table->unsignedInteger('size')->nullable();
+
             $table->string('path');
             $table->integer('beets_id');
 

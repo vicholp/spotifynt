@@ -6,4 +6,5 @@ import state from './state';
 export default defineStore('server', {
   actions,
   state,
+  persist: true,
 });

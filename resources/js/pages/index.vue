@@ -1,28 +1,36 @@
 <template>
   <layout>
-    <div class="container mx-auto flex flex-col gap-5">
-      <div class="bg-white dark:bg-opacity-10 p-3 rounded flex flex-col gap-3">
+    <div class="container mx-auto flex flex-col gap-5 px-2">
+      <Server />
+      <div class="flex bg-white dark:bg-opacity-5 px-3 py-1 items-center rounded gap-3 shadow dark:shadow-none">
+        <span
+          class="iconify text-lg"
+          data-icon="mdi:magnify"
+        />
         <input
           v-model="query"
           type="text"
-          class="rounded w-full border bg-white dark:bg-opacity-10"
+          class="bg-white bg-opacity-0 w-full border-0 h-10 p-0"
           placeholder="search"
           @input="sendQuery"
         >
       </div>
-      <IndexRecommendations v-if="query.length === 0" />
+      <KeepAlive v-if="query.length === 0">
+        <IndexRecommendations />
+      </KeepAlive>
       <QueryResults v-else :results="queryResults" />
     </div>
   </layout>
 </template>
 <script>
 
-import Layout from '../layouts/main';
-import ServerApi from '../api/server';
-import IndexRecommendations from '../components/index/recommendations';
-import QueryResults from '../components/index/queryResults.vue';
-import ServerStore from '../store/server';
 import { mapState } from 'pinia';
+import IndexRecommendations from '../components/index/recommendations';
+import Layout from '../layouts/main';
+import QueryResults from '../components/index/queryResults.vue';
+import Server from '../components/server.vue';
+import ServerApi from '../api/server';
+import ServerStore from '../store/server';
 
 const WAITING_TIME_QUERY = 100; // [ms]
 
@@ -31,6 +39,7 @@ export default {
     IndexRecommendations,
     Layout,
     QueryResults,
+    Server,
   },
   setup() {
     const example = ServerStore();
@@ -38,7 +47,7 @@ export default {
   },
   data() {
     return {
-      query: '',
+      query: this.$route.query.q ?? '',
       queryResults: [],
     };
   },
@@ -52,12 +61,18 @@ export default {
         e.returnValue = '';
       });
     }
+
+    if (this.query.length > 0) {
+      this.sendQuery();
+    }
   },
   methods: {
     // Espera WAITING_TIME_QUERY para hacer la query, y comprueba que la query no ha cambiado para hacerla.
     async sendQuery() {
       if (this.query.length === 0) {
         this.queryResults = [];
+        history.pushState(null, null, 'player#/');
+
         return;
       }
       const initialQuery = this.query;
@@ -67,8 +82,14 @@ export default {
         const results = (await ServerApi.searchContent(this.activeServer.id, this.query)).data;
         const finalQuery = this.query;
         if (finalQuery !== initialQuery) return;
-        this.queryResults.albums = results.albums;
-        this.queryResults.tracks = results.tracks.data;
+        history.pushState(null, null, `#/?q=${this.query}`);
+
+        const queryResults = {
+          'albums': results.albums,
+          'artists': results.artists,
+          'tracks': results.tracks.data,
+        };
+        this.queryResults = queryResults;
       }, WAITING_TIME_QUERY);
     },
   },

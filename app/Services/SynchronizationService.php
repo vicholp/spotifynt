@@ -7,40 +7,43 @@ use App\Models\Release;
 use App\Models\ReleaseGroup;
 use App\Models\Server;
 use App\Models\Track;
+use App\Services\Api\MusicBrainzService;
+use App\Services\Api\BeetsService;
 
 /**
  * Class SynchronizationService.
  */
 class SynchronizationService
 {
+    public function __construct(
+        private MusicBrainzService $musicBrainzService = new MusicBrainzService)
+    {
+        //
+    }
+
     public function syncServer(Server $server): void
     {
         $beets = new BeetsService($server);
-        $albums = $beets->getAlbums();
+        $beets_albums = $beets->getAlbums();
 
-        foreach ($albums as $album) {
+        foreach ($beets_albums as $album) {
             $release = $this->syncRelease($album['mb_albumid']);
 
-            $tracks = $beets->getTracksFromAlbum($album['id']);
+            $beets_tracks = $beets->getTracksFromAlbum($album['id']);
 
-            foreach ($tracks as $track_s) {
-                $track = $this->syncTrack($release, $track_s['mb_trackid']);
+            foreach ($beets_tracks as $beets_track) {
+                $track = $this->syncTrack($release, $beets_track['mb_trackid']);
                 $server->tracks()->attach($track, [
-                    'path' => $track_s['path'],
-                    'beets_id' => $track_s['id'],
+                    'path' => $beets_track['path'],
+                    'beets_id' => $beets_track['id'],
                 ]);
             }
         }
     }
 
-    public function syncArt(Release $release): void
-    {
-        $image = (new CoverArtService())->getFront($release->mb_release_id);
-    }
-
     public function syncTrack(Release $release, string $id): Track
     {
-        $recording = (new MusicBrainzService())->getRecording($id);
+        $recording = $this->musicBrainzService->getRecording($id);
 
         return Track::updateOrCreate([
             'mb_recording_id' => $recording['id'],
@@ -53,7 +56,7 @@ class SynchronizationService
 
     public function syncRelease(string $id): Release
     {
-        $release = (new MusicBrainzService())->getRelese($id);
+        $release = $this->musicBrainzService->getRelease($id);
 
         $releaseGroup = $this->syncReleaseGroup($release['release-group']['id']);
 
@@ -69,7 +72,7 @@ class SynchronizationService
 
     public function syncReleaseGroup(string $id): ReleaseGroup
     {
-        $releaseGroup = (new MusicBrainzService())->getReleaseGroup($id);
+        $releaseGroup = $this->musicBrainzService->getReleaseGroup($id);
 
         $artist = $this->syncArtist($releaseGroup['artist-credit'][0]['artist']['id']);
 
@@ -85,7 +88,7 @@ class SynchronizationService
 
     public function syncArtist(string $id): Artist
     {
-        $artist = (new MusicBrainzService())->getArtist($id);
+        $artist = $this->musicBrainzService->getArtist($id);
 
         return Artist::updateOrCreate([
             'mb_artist_id' => $artist['id'],

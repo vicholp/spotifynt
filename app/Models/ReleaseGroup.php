@@ -4,20 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * App\Models\ReleaseGroup.
+ * App\Models\ReleaseGroup
  *
- * @property int                             $id
- * @property string                          $title
- * @property string                          $type
- * @property int                             $artist_id
- * @property string                          $mb_releasegroup_id
- * @property mixed                           $mb_data
+ * @property int $id
+ * @property string $title
+ * @property string $type
+ * @property int $artist_id
+ * @property string $mb_releasegroup_id
+ * @property mixed $mb_data
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
- * @method static \Database\Factories\ReleaseGroupFactory            factory(...$parameters)
+ * @property-read \App\Models\Artist $artist
+ * @method static \Database\Factories\ReleaseGroupFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseGroup newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseGroup newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseGroup query()
@@ -47,4 +48,13 @@ class ReleaseGroup extends Model
         'type',
         'mb_data',
     ];
+
+    /**
+     * @return BelongsTo<Artist, ReleaseGroup>
+     */
+    public function artist()
+    {
+        return $this->belongsTo(Artist::class);
+    }
+
 }

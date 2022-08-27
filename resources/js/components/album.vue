@@ -1,15 +1,18 @@
 <template>
   <div
-    class="rounded aspect-square w-full bg-black bg-opacity-70 hover:bg-opacity-100 transition duration-300 relative col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2"
+    class="rounded aspect-square w-full bg-black bg-opacity-90 transition duration-300 relative col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2 shadow dark:shadow-none"
     @click="addAlbum(album.id)"
   >
     <div
-      style="background-image: url(&quot;http://vicholp.duckdns.org:9000/album/60/art&quot;);"
-      class="opacity-50 h-full w-full bg-cover rounded shadow"
+      :style="`background-image: url(&quot;${album.art}&quot;);`"
+      class="opacity-90 h-full w-full bg-cover rounded hover:opacity-100 transition duration-300"
     />
-    <div class="flex items-center absolute top-0 flex-col h-full w-full text-white justify-around px-5">
-      <span class="text-center font-bold text-opacity-90">{{ album.title }}</span>
-      <span class="text-sm text-opacity-70">{{ album.id }}</span>
+    <div class="flex flex-row items-end absolute top-0 h-full w-full text-white justify-around hover:text-opacity-90 text-opacity-0 pointer-events-none transition duration-300">
+      <div class="flex flex-col w-full items-center gap-3 pointer-events-auto p-5">
+        <RouterLink class="text-sm" :to="`/album/${album.id}`">
+          <span class="text-center font-bold">{{ album.title }}</span>
+        </RouterLink>
+      </div>
     </div>
   </div>
 </template>

@@ -1,16 +1,19 @@
 <template>
-  <navbar />
+  <navbar :auth-user="authUser" />
   <slot />
-  <Player />
 </template>
 <script>
 import Navbar from './navbar.vue';
-import Player from '../components/player';
 
 export default {
   components: {
     Navbar,
-    Player,
+  },
+  props: {
+    authUser: {
+      default: () => {},
+      type: Object,
+    },
   },
 };
 </script>

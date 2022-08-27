@@ -1,6 +1,7 @@
 <template>
   <div
-    :class="`absolute w-full ${full ? 'top-0 h-full' : 'bottom-0 h-20'}`"
+    class="absolute w-full"
+    @keyup.enter="playPause()"
   >
     <audio
       ref="player"
@@ -8,10 +9,16 @@
       @ended="nextTrack()"
       @loadedmetadata="loadMetadata"
       @timeupdate="checkPlayed"
+      @canplaythrough="loadNextTrack"
+    />
+    <audio
+      ref="playerPreloader"
+      preload="auto"
     />
     <player-bar
-      :progress="progress"
+      :progress="progressPercent"
       :actual="playerStore.currentTrack"
+      :playing="playerStore.status.playing"
       :loaded="playerStore.playlist.tracks.length > 0"
       @player-play="playPause"
       @player-next="nextTrack"
@@ -45,28 +52,39 @@ export default {
       totalTime: 0,
       currentTime: 0,
       progressPercent: 0,
-      playing: false,
     };
   },
   computed: {
   },
   watch: {
     'playerStore.currentTrack'(track) {
-      this.loadTrack(track);
+      if (track != {}){
+        this.loadTrack(track);
+      }else {
+        document.title = 'spotifynt';
+      }
     },
   },
   mounted() {
-
+    this.$refs.player.src = `${this.serverStore.activeServer.path}/item/${this.playerStore.currentTrack.serverTrack.beetsId}/file`;
+    document.title = `${this.playerStore.currentTrack.title}`;
   },
   methods: {
+    loadNextTrack() {
+      const nextTrack = this.playerStore.getNextTrack;
+
+      this.$refs.playerPreloader.src = `${this.serverStore.activeServer.path}/item/${nextTrack.serverTrack.beetsId}/file`;
+    },
     loadMetadata(event) {
       this.totalTime = event.target.duration;
     },
     loadTrack(track) {
-      this.$refs.player.src = `${this.serverStore.activeServer.path}/item/${this.playerStore.currentTrack.serverTrack.beetsId}/file`;
+      this.$refs.player.src = `${this.serverStore.activeServer.path}/item/${track.serverTrack.beetsId}/file`;
+      this.$refs.playerPreloader.src = '';
+
       document.title = `${track.name}`;
       this.listened = false;
-      this.playing = false;
+      this.playerStore.status.playing = false;
       // setMediaMetadata(track);
       this.playPause('play');
     },
@@ -96,8 +114,8 @@ export default {
         this.listened = true;
         // StatsApi.playedTrack(this.actual.id);
       }
-      if (this.playing === false && event.target.currentTime > 1) {
-        this.playing = true;
+      if (this.playerStore.status.playing === false && event.target.currentTime > 1) {
+        // this.playerStore.status.playing = true;
         // StatsApi.nowPlaying(this.actual.id);
       }
     },

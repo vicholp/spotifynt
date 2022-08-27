@@ -45,4 +45,25 @@ export default {
   async loadTrack() {
     this.currentTrack = this.playlist.tracks[this.playlist.index];
   },
+
+  playlistShuffle() {
+    const tracks = this.playlist.tracks;
+    let temp = {};
+    let j = 0;
+
+    for (let i = tracks.length - 1; i > 0; i--) {
+      j = Math.floor(Math.random() * (i + 1));
+      temp = tracks[i];
+      tracks[i] = tracks[j];
+      tracks[j] = temp;
+    }
+
+    this.playlist.tracks = tracks;
+  },
+  async playlistClear() {
+    this.playlist.tracks = [];
+    this.playlist.count = 0;
+    this.playlist.index = 0;
+    this.currentTrack = {};
+  },
 };

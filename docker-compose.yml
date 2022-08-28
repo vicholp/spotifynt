@@ -6,6 +6,7 @@ services:
       - .:/var/www/html
     environment:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
+      PHP_MEMORY_LIMIT: "512M"
       AUTORUN_LARAVEL_STORAGE_LINK: "false"
     network_mode: host
 

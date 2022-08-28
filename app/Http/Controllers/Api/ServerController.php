@@ -32,7 +32,7 @@ class ServerController extends Controller
         $album_constrain = Release::with([]);
         $track_constrain = Track::with([]);
 
-        StatsService::newSearchedTerm(Auth::user(), $request->q);
+        StatsService::newSearchedTerm(Auth::user(), $request->q); // @phpstan-ignore-line
 
         return [
             'artists' => new ArtistSimpleCollection(Artist::search($request->q)->constrain($artist_constrain)->get()),

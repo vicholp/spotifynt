@@ -25,7 +25,7 @@
             <div class="">
               <div
                 v-if="loaded"
-                :style="`background-image: url(&quot;http://vicholp.duckdns.org:9000/album/${Math.floor(Math.random()*100)}/art&quot;);`"
+                :style="`background-image: url(&quot;${actual.release.art}&quot;);`"
                 class="h-14 bg-cover rounded shadow aspect-square"
               />
               <div

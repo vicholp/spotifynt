@@ -7,8 +7,8 @@ use App\Models\Release;
 use App\Models\ReleaseGroup;
 use App\Models\Server;
 use App\Models\Track;
-use App\Services\Api\MusicBrainzService;
 use App\Services\Api\BeetsService;
+use App\Services\Api\MusicBrainzService;
 
 /**
  * Class SynchronizationService.
@@ -16,7 +16,7 @@ use App\Services\Api\BeetsService;
 class SynchronizationService
 {
     public function __construct(
-        private MusicBrainzService $musicBrainzService = new MusicBrainzService)
+        private MusicBrainzService $musicBrainzService = new MusicBrainzService())
     {
         //
     }
@@ -30,6 +30,8 @@ class SynchronizationService
             $release = $this->syncRelease($album['mb_albumid']);
 
             $beets_tracks = $beets->getTracksFromAlbum($album['id']);
+
+            (new ArtService())->syncArt($release, $beets);
 
             foreach ($beets_tracks as $beets_track) {
                 $track = $this->syncTrack($release, $beets_track['mb_trackid']);

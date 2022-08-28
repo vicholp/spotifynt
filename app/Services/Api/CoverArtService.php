@@ -17,9 +17,16 @@ class CoverArtService
 
     private int $cache_time = 60 * 60 * 24 * 28; // 28 [days]
 
-    public function getArt(Release $release): GdImage|false
+    public function getArt(Release $release, ?BeetsService $beetsService): GdImage|false
     {
-        $url = Cache::remember('ca_'.$release->mb_release_id.'_url', $this->cache_time, function () use ($release) {
+        $url = Cache::remember('ca_'.$release->mb_release_id.'_urlaa', $this->cache_time, function () use ($release, $beetsService) {
+            if ($beetsService) {
+                $url = $this->getArtFromBeets($beetsService, $release->mb_release_id);
+                if($url) {
+                    return $url;
+                }
+            }
+
             $url = $this->getArtFromCoverArtArchive($release->mb_release_id);
             if ($url) {
                 return $url;
@@ -66,6 +73,19 @@ class CoverArtService
         }
 
         return $response->json()['results'][0]['artworkUrl100'];
+    }
 
+    private function getArtFromBeets(BeetsService $beetsService, string $id): string|false
+    {
+        $response = $beetsService->getAlbumQuery('mb_albumid:'.$id);
+        $beetsId = $response['results'][0]['id'];
+
+        $response = $beetsService->getArt($beetsId);
+
+        if (!$response->ok()) {
+            return false;
+        }
+
+        return $response->handlerStats()['url'];
     }
 }

@@ -5,7 +5,7 @@
         <div class="col-span-3">
           <div
             v-if="playerStore.currentTrack.title != null"
-            :style="`background-image: url(&quot;http://vicholp.duckdns.org:9000/album/${Math.floor(Math.random()*100)}/art&quot;);`"
+            :style="`background-image: url(&quot;${playerStore.currentTrack.release.art}&quot;);`"
             class="bg-cover rounded-l aspect-square dark:opacity-90"
           />
           <div

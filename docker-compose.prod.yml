@@ -12,6 +12,7 @@ services:
       - traefik_default
     environment:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
+      PHP_MEMORY_LIMIT: "512M"
       AUTORUN_LARAVEL_STORAGE_LINK: false
     restart: unless-stopped
 

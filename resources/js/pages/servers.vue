@@ -2,11 +2,13 @@
   <layout>
     <div class="container mx-auto flex flex-col gap-3  px-2">
       <div class="bg-white dark:bg-opacity-5 p-3 rounded flex flex-col gap-3">
-        <h2>New server</h2>
+        <div class="p-1">
+          <h2>Add server</h2>
+        </div>
         <div class="flex gap-2">
-          <input v-model="serverName" type="text" class="focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-opacity-5 flex-1 block w-full rounded border-gray-300">
+          <input v-model="serverName" type="text" class="focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-opacity-5 flex-1 block w-full rounded border-none">
           <button
-            class="bg-white dark:bg-opacity-20 rounded p-2 px-4"
+            class="bg-white dark:bg-opacity-10 rounded p-2 px-4"
             @click="addServer"
           >
             Add
@@ -14,7 +16,9 @@
         </div>
       </div>
       <div class="bg-white dark:bg-opacity-5 p-3 rounded">
-        <h2>Servers</h2>
+        <div class="flex justify-between items-center p-1">
+          <h2>Servers</h2>
+        </div>
         <div class="flex flex-col">
           <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">

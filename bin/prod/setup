@@ -3,5 +3,4 @@
 cp .env.example .env
 cp public/.htaccess.example public/.htaccess
 
-./bin/prod/exec php artisan key:generate
-./bin/prod/exec artisan storage:link --relative
+./bin/prod/php php artisan key:generate

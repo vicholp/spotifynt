@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Release;
+use App\Services\Api\BeetsService;
 use App\Services\Api\CoverArtService;
 use Illuminate\Support\Facades\Storage as Storage;
 
@@ -22,9 +23,9 @@ class ArtService
         return config('APP_URL') . '/art/' . $release->mb_release_id . '.jpeg';
     }
 
-    public function syncArt(Release $release): null|string
+    public function syncArt(Release $release, ?BeetsService $beetsService): null|string
     {
-        $image = $this->coverArtService->getArt($release);
+        $image = $this->coverArtService->getArt($release, $beetsService);
 
         if (!$image) {
             return null;
@@ -43,8 +44,6 @@ class ArtService
 
         $release->main_color = $color;
         $release->save();
-
-        dump($color);
 
         return $color;
     }

@@ -89,7 +89,7 @@ jobs:
           KEY: ${{ secrets.SSH_KEY }}
           PORT: ${{ secrets.SSH_PORT }}
           MODE: pull
-          SOURCE: ${{ secrets.REMOTE_PATH }}/.env
+          SOURCE: ${{ env.REMOTE_PATH }}/.env
           TARGET: ./source
 
 

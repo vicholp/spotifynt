@@ -41,7 +41,7 @@ class MusicBrainzService
 
         if ($cache) return $cache;
 
-        $response = Http::get($this->api_url . '/release/'.$id.'?inc=artist-credits+labels+recordings+release-groups+media+discids+isrcs+annotation+tags+genres&fmt=json')->json();
+        $response = Http::get($this->api_url . '/release/'.$id.'?inc=artist-credits+labels+recordings+release-groups+media+discids+isrcs+annotation+tags+genres&fmt=json');
 
         if (!$response->ok()) throw new \Exception("Error Processing Request");
 
@@ -60,7 +60,7 @@ class MusicBrainzService
             return $cache;
         }
 
-        $response = Http::get($this->api_url . '/release-group/'.$id.'?inc=artist-credits+annotation+tags+genres&fmt=json')->json();
+        $response = Http::get($this->api_url . '/release-group/'.$id.'?inc=artist-credits+annotation+tags+genres&fmt=json');
 
         if ($response->ok())
         {
@@ -82,7 +82,7 @@ class MusicBrainzService
             return $cache;
         }
 
-        $response = Http::get($this->api_url . '/artist/'.$id.'?inc=aliases+annotation+tags+genres&fmt=json')->json();
+        $response = Http::get($this->api_url . '/artist/'.$id.'?inc=aliases+annotation+tags+genres&fmt=json');
 
         if ($response->ok())
         {

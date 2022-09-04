@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\Synchronization\SyncServerJob;
 use App\Models\Server;
 use App\Services\SynchronizationService;
 use Illuminate\Console\Command;
@@ -26,7 +27,7 @@ class SyncAllServersCommand extends Command
         $servers = Server::get();
 
         foreach ($servers as $server) {
-            (new SynchronizationService())->syncServer($server);
+            SyncServerJob::dispatch($server);
         }
 
         return 0;

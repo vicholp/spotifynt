@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\Art\SyncArtJob;
 use App\Models\Artist;
 use App\Models\Release;
 use App\Models\ReleaseGroup;
@@ -31,7 +32,7 @@ class SynchronizationService
 
             $beets_tracks = $beets->getTracksFromAlbum($album['id']);
 
-            (new ArtService())->syncArt($release, $beets);
+            SyncArtJob::dispatch($release, $beets)->onQueue('low');
 
             foreach ($beets_tracks as $beets_track) {
                 $track = $this->syncTrack($release, $beets_track['mb_trackid']);

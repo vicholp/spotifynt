@@ -1,38 +1,46 @@
-version: '3.9'
+version: "3.9"
 services:
   php:
-    image: serversideup/php:7.4-fpm-apache
+    container_name: ${APP_NAME}-${APP_ACTUAL_ENV}-php
+    image: serversideup/php:8.1-fpm-apache
     ports:
-      - 127.0.0.1::80
+      - 80
     volumes:
       - .:/var/www/html
     labels:
-      - "traefik.http.routers.${APP_NAME}.rule=Host(`${TRAEFIK_HOST}`)"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}.rule=Host(`${TRAEFIK_HOST}`)"
     networks:
-      - traefik_default
+      - traefik
+      - default
+    command: ["su", "webuser", "-c", "php artisan queue:work --tries=3 --queue=high,default,low"]
     environment:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
-      PHP_MEMORY_LIMIT: "512M"
+      PHP_MEMORY_LIMIT: 512M
       AUTORUN_LARAVEL_STORAGE_LINK: false
+      PHP_DISPLAY_ERRORS: false
+      PHP_MAX_EXECUTION_TIME: 300
     restart: unless-stopped
 
   db:
     image: percona:5.7-centos
+    networks:
+      - default
     ports:
-      - 127.0.0.1::3306
+      - 3306
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db:/var/lib/mysql
-    networks:
-      - traefik_default
     restart: unless-stopped
 
 volumes:
   db:
+    name: ${APP_NAME}-${APP_ACTUAL_ENV}-db
 
 networks:
-  traefik_default:
+  traefik:
     external: true
+  default:
+    name: ${APP_NAME}-${APP_ACTUAL_ENV}

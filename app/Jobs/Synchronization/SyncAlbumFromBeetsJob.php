@@ -1,23 +1,20 @@
 <?php
 
-namespace App\Jobs\Art;
+namespace App\Jobs\Synchronization;
 
-use App\Models\Release;
 use App\Models\Server;
 use App\Services\Api\BeetsService;
-use App\Services\ArtService;
+use App\Services\SynchronizationService;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class SyncArtJob implements ShouldQueue
+class SyncAlbumFromBeetsJob implements ShouldQueue
 {
-    use Dispatchable;
-    use InteractsWithQueue;
-    use Queueable;
-    use SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Create a new job instance.
@@ -25,9 +22,9 @@ class SyncArtJob implements ShouldQueue
      * @return void
      */
     public function __construct(
-        private Release $release,
-        private ?Server $server
-    ) {
+        private array $album,
+        private Server $server,
+    ){
         //
     }
 
@@ -38,12 +35,8 @@ class SyncArtJob implements ShouldQueue
      */
     public function handle()
     {
-        $beetsService = null;
+        $beetsService = new BeetsService($this->server);
 
-        if ($this->server){
-            $beetsService = new BeetsService($this->server);
-        }
-
-        (new ArtService())->syncArt($this->release, $beetsService);
+        (new SynchronizationService())->syncAlbumFromBeets($beetsService, $this->album, $this->server);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Jobs\Art\SyncArtJob;
+use App\Jobs\Synchronization\SyncAlbumFromBeetsJob;
 use App\Models\Artist;
 use App\Models\Release;
 use App\Models\ReleaseGroup;
@@ -17,8 +18,8 @@ use App\Services\Api\MusicBrainzService;
 class SynchronizationService
 {
     public function __construct(
-        private MusicBrainzService $musicBrainzService = new MusicBrainzService())
-    {
+        private MusicBrainzService $musicBrainzService = new MusicBrainzService()
+    ){
         //
     }
 
@@ -28,19 +29,24 @@ class SynchronizationService
         $beets_albums = $beets->getAlbums();
 
         foreach ($beets_albums as $album) {
-            $release = $this->syncRelease($album['mb_albumid']);
+            SyncAlbumFromBeetsJob::dispatch($album, $server);
+        }
+    }
 
-            $beets_tracks = $beets->getTracksFromAlbum($album['id']);
+    public function syncAlbumFromBeets(BeetsService $beets, array $album, Server $server): void
+    {
+        $release = $this->syncRelease($album['mb_albumid']);
 
-            SyncArtJob::dispatch($release, $beets)->onQueue('low');
+        $beets_tracks = $beets->getTracksFromAlbum($album['id']);
 
-            foreach ($beets_tracks as $beets_track) {
-                $track = $this->syncTrack($release, $beets_track['mb_trackid']);
-                $server->tracks()->attach($track, [
-                    'path' => $beets_track['path'],
-                    'beets_id' => $beets_track['id'],
-                ]);
-            }
+        SyncArtJob::dispatch($release, $server)->onQueue('low');
+
+        foreach ($beets_tracks as $beets_track) {
+            $track = $this->syncTrack($release, $beets_track['mb_trackid']);
+            $server->tracks()->attach($track, [
+                'path' => $beets_track['path'],
+                'beets_id' => $beets_track['id'],
+            ]);
         }
     }
 

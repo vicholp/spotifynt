@@ -65,5 +65,8 @@ export default {
     this.playlist.count = 0;
     this.playlist.index = 0;
     this.currentTrack = {};
+
+    this.status.playing = false;
+    this.status.time = 0;
   },
 };

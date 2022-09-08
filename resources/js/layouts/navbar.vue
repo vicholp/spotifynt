@@ -1,14 +1,10 @@
 <template>
   <nav
-    class="p-6"
+    class="h-20 flex items-center justify-center px-3 container mx-auto"
   >
-    <div class="flex">
-      <router-link to="/" class="text-opacity-90">
-        spotifynt
-      </router-link>
-      <div class="ml-auto" />
-      <div />
-    </div>
+    <router-link to="/" class="text-opacity-90 text-3xl font-[Allura]">
+      spotifynt
+    </router-link>
   </nav>
 </template>
 <script>

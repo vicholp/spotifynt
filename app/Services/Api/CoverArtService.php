@@ -22,7 +22,7 @@ class CoverArtService
         $url = Cache::remember('ca_'.$release->mb_release_id.'_urlaa', $this->cache_time, function () use ($release, $beetsService) {
             if ($beetsService) {
                 $url = $this->getArtFromBeets($beetsService, $release->mb_release_id);
-                if($url) {
+                if ($url) {
                     return $url;
                 }
             }
@@ -55,7 +55,7 @@ class CoverArtService
 
     private function getArtFromCoverArtArchive(string $id): string|false
     {
-        $response = Http::get($this->cover_art_archive_url . 'release/'.$id);
+        $response = Http::get($this->cover_art_archive_url.'release/'.$id);
 
         if (!$response->ok()) {
             return false;
@@ -66,7 +66,7 @@ class CoverArtService
 
     private function getArtFromItunes(string $release, string $artist): string|false
     {
-        $response = Http::get($this->itunes_url . 'search?term=' . urlencode($release) . '+' . urlencode($artist));
+        $response = Http::get($this->itunes_url.'search?term='.urlencode($release).'+'.urlencode($artist));
 
         if (!$response->ok()) {
             return false;
@@ -78,6 +78,11 @@ class CoverArtService
     private function getArtFromBeets(BeetsService $beetsService, string $id): string|false
     {
         $response = $beetsService->getAlbumQuery('mb_albumid:'.$id);
+
+        if (!$response || !isset($response['results'][0])) {
+            return false;
+        }
+
         $beetsId = $response['results'][0]['id'];
 
         $response = $beetsService->getArt($beetsId);

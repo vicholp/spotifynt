@@ -8,8 +8,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * Class StatsService
- * @package App\Services
+ * Class StatsService.
  */
 class StatsService
 {

@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Jobs\Synchronization\SyncServerJob;
 use App\Models\Server;
-use App\Services\SynchronizationService;
 use Illuminate\Console\Command;
 
 class SyncAllServersCommand extends Command

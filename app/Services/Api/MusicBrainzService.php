@@ -21,11 +21,10 @@ class MusicBrainzService
             return $cache;
         }
 
-        $response = Http::get($this->api_url . '/recording/'.$id.'?inc=artist-credits+isrcs+annotation+tags+genres&fmt=json');
+        $response = Http::get($this->api_url.'/recording/'.$id.'?inc=artist-credits+isrcs+annotation+tags+genres&fmt=json');
 
-        if (!$response->ok())
-        {
-            throw new \Exception("Error Processing Request");
+        if (!$response->ok()) {
+            throw new \Exception('Error Processing Request');
         }
 
         $json = $response->json();
@@ -39,11 +38,15 @@ class MusicBrainzService
     {
         $cache = Cache::get('mb_release_'.$id);
 
-        if ($cache) return $cache;
+        if ($cache) {
+            return $cache;
+        }
 
-        $response = Http::get($this->api_url . '/release/'.$id.'?inc=artist-credits+labels+recordings+release-groups+media+discids+isrcs+annotation+tags+genres&fmt=json');
+        $response = Http::get($this->api_url.'/release/'.$id.'?inc=artist-credits+labels+recordings+release-groups+media+discids+isrcs+annotation+tags+genres&fmt=json');
 
-        if (!$response->ok()) throw new \Exception("Error Processing Request");
+        if (!$response->ok()) {
+            throw new \Exception('Error Processing Request');
+        }
 
         $json = $response->json();
 
@@ -60,10 +63,9 @@ class MusicBrainzService
             return $cache;
         }
 
-        $response = Http::get($this->api_url . '/release-group/'.$id.'?inc=artist-credits+annotation+tags+genres&fmt=json');
+        $response = Http::get($this->api_url.'/release-group/'.$id.'?inc=artist-credits+annotation+tags+genres&fmt=json');
 
-        if ($response->ok())
-        {
+        if ($response->ok()) {
             $json = $response->json();
 
             Cache::put('mb_releasegroup_'.$id, $json, $this->cache_time);
@@ -71,21 +73,20 @@ class MusicBrainzService
             return $json;
         }
 
-        throw new \Exception("Error Processing Request");
+        throw new \Exception('Error Processing Request');
     }
 
     public function getArtist(string $id): array
     {
         $cache = Cache::get('mb_artist_'.$id);
 
-        if($cache){
+        if ($cache) {
             return $cache;
         }
 
-        $response = Http::get($this->api_url . '/artist/'.$id.'?inc=aliases+annotation+tags+genres&fmt=json');
+        $response = Http::get($this->api_url.'/artist/'.$id.'?inc=aliases+annotation+tags+genres&fmt=json');
 
-        if ($response->ok())
-        {
+        if ($response->ok()) {
             $json = $response->json();
 
             Cache::put('mb_artist_'.$id, $json, $this->cache_time);
@@ -93,6 +94,6 @@ class MusicBrainzService
             return $json;
         }
 
-        throw new \Exception("Error Processing Request");
+        throw new \Exception('Error Processing Request');
     }
 }

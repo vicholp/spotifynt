@@ -40,7 +40,7 @@ class SyncArtJob implements ShouldQueue
     {
         $beetsService = null;
 
-        if ($this->server){
+        if ($this->server) {
             $beetsService = new BeetsService($this->server);
         }
 

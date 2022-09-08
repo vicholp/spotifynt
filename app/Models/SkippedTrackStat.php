@@ -6,15 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Models\SkippedTrackStat
+ * App\Models\SkippedTrackStat.
  *
- * @property int $id
- * @property int $track_id
- * @property int $user_id
- * @property int $time
+ * @property int                             $id
+ * @property int                             $track_id
+ * @property int                             $user_id
+ * @property int                             $time
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Database\Factories\SkippedTrackStatFactory factory(...$parameters)
+ *
+ * @method static \Database\Factories\SkippedTrackStatFactory            factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|SkippedTrackStat newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SkippedTrackStat newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SkippedTrackStat query()

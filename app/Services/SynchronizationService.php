@@ -19,7 +19,7 @@ class SynchronizationService
 {
     public function __construct(
         private MusicBrainzService $musicBrainzService = new MusicBrainzService()
-    ){
+    ) {
         //
     }
 

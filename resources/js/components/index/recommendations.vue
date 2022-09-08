@@ -8,6 +8,16 @@
         name="fade"
         class="grid grid-cols-12 gap-3"
       >
+        <div
+          class="rounded aspect-square w-full col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2 shadow dark:shadow-none"
+        >
+          <div
+            class="h-full w-full bg-white bg-opacity-10 rounded text-white text-opacity-60 flex items-center justify-evenly font-medium flex-col"
+          >
+            <span class="iconify-inline text-4xl" data-icon="mdi:shuffle" />
+            random album
+          </div>
+        </div>
         <album
           v-for="album in albums"
           :key="album.id"

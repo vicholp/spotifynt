@@ -3,7 +3,7 @@
 
     class="flex flex-col gap-3"
   >
-    <div class="col-span-12 ">
+    <div class="col-span-12 flex flex-col gap-3">
       <div
         name="fade"
         class="grid grid-cols-12 gap-3"
@@ -14,6 +14,13 @@
           :album="album"
         />
       </div>
+      <button
+        type="button"
+        class="dark:bg-white dark:bg-opacity-5 p-3 rounded text-white text-opacity-60 text-sm text-center w-full"
+        @click="loadRecommendations()"
+      >
+        load new recommendations
+      </button>
     </div>
   </div>
 </template>
@@ -33,10 +40,15 @@ export default {
     };
   },
   async mounted() {
+    await this.loadRecommendations();
+  },
+  methods: {
+    async loadRecommendations() {
     const recommendations = (await RecommendationApi.random(1)).data;
     this.artists = recommendations.artists;
     this.albums = recommendations.albums;
     this.tracks = recommendations.tracks;
+    },
   },
 };
 </script>

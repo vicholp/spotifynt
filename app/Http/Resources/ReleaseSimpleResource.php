@@ -20,7 +20,11 @@ class ReleaseSimpleResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'art' => $this->art_url,
+            'art' => [
+                'full' => $this->artUrl(),
+                '250' => $this->artUrl(250),
+                '75' => $this->artUrl(75),
+            ]
         ];
     }
 }

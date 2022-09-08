@@ -102,9 +102,9 @@ class Release extends Model
         ];
     }
 
-    public function getArtUrlAttribute() : string
+    public function artUrl(int $size = 0, string $format = 'webp'): string
     {
-        return (new ArtService)->getUrl($this);
+        return (new ArtService)->getUrl($this, $size, $format);
     }
 
     /**

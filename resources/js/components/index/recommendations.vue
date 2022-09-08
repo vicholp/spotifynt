@@ -1,6 +1,5 @@
 <template>
   <div
-
     class="flex flex-col gap-3"
   >
     <div class="col-span-12 flex flex-col gap-3">
@@ -18,6 +17,7 @@
             random album
           </div>
         </div>
+
         <album
           v-for="album in albums"
           :key="album.id"
@@ -54,10 +54,10 @@ export default {
   },
   methods: {
     async loadRecommendations() {
-    const recommendations = (await RecommendationApi.random(1)).data;
-    this.artists = recommendations.artists;
-    this.albums = recommendations.albums;
-    this.tracks = recommendations.tracks;
+      const recommendations = (await RecommendationApi.random(1)).data;
+      this.artists = recommendations.artists;
+      this.albums = recommendations.albums;
+      this.tracks = recommendations.tracks;
     },
   },
 };

@@ -105,6 +105,7 @@ export default {
         this.playerStore.status.playing = false;
         this.$refs.player.pause();
       }
+      this.loadMediaMetadata(this.playerStore.currentTrack);
     },
     nextTrack() {
       this.playerStore.playlistSetIndex(1, true);
@@ -126,6 +127,24 @@ export default {
       if (this.playerStore.status.playing === false && event.target.currentTime > 1) {
         // this.playerStore.status.playing = true;
         // StatsApi.nowPlaying(this.actual.id);
+      }
+    },
+    loadMediaMetadata(track) {
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: track.title,
+          artist: 'spotifynt',
+          album: track.release.title,
+          artwork: [
+            { src: track.release.art[250], sizes: '250x250', type: 'image/webp' },
+            { src: track.release.art[75], sizes: '75x75', type: 'image/webp' },
+          ],
+        });
+
+        navigator.mediaSession.setActionHandler('play', () => this.playPause('play'));
+        navigator.mediaSession.setActionHandler('pause', () => this.playPause('pause'));
+        navigator.mediaSession.setActionHandler('previoustrack', () => this.previousTrack());
+        navigator.mediaSession.setActionHandler('nexttrack', () => this.nextTrack());
       }
     },
   },

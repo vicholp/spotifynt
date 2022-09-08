@@ -2,4 +2,4 @@
 
 ./bin/prod/cache
 
-./bin/prod/php php artisan up
+./bin/prod/php artisan up

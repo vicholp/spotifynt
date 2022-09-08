@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="`fixed bottom-0 w-full dark:bg-[#101010]`"
+    :class="`fixed bottom-0 w-full bg-[#EFEFEF] dark:bg-[#101010]`"
   >
     <div class="bg-white dark:bg-opacity-5 p-2" hidden />
     <div
@@ -25,7 +25,7 @@
             <div class="">
               <div
                 v-if="loaded"
-                :style="`background-image: url(&quot;${actual.release.art}&quot;);`"
+                :style="`background-image: url(&quot;${actual.release.art[75]}&quot;);`"
                 class="h-14 bg-cover rounded shadow aspect-square"
               />
               <div

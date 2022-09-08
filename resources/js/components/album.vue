@@ -4,7 +4,7 @@
     @click="addAlbum(album.id)"
   >
     <div
-      :style="`background-image: url(&quot;${album.art}&quot;);`"
+      :style="`background-image: url(&quot;${album.art[250]}&quot;);`"
       class="opacity-90 h-full w-full bg-cover rounded hover:opacity-100 transition duration-300"
     />
     <div class="flex flex-row items-end absolute top-0 h-full w-full text-white justify-around hover:text-opacity-90 text-opacity-0 pointer-events-none transition duration-300">

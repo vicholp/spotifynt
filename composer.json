@@ -25,6 +25,7 @@
         "spatie/laravel-settings": "^2.4",
         "spatie/laravel-sitemap": "^6.2",
         "spatie/schema-org": "^3.11",
+        "stefangabos/zebra_image": "^2.8",
         "stephan-strate/php-cover-art-archive-api": "^1.0",
         "stephan-strate/php-music-brainz-api": "^0.0.2@alpha",
         "symfony/filesystem": "^6.1",

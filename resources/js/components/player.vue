@@ -58,18 +58,27 @@ export default {
   },
   watch: {
     'playerStore.currentTrack'(track) {
-      if (track != {}){
+      if (Object.keys(track).length !== 0){
         this.loadTrack(track);
       }else {
         document.title = 'spotifynt';
+        this.clearTrack();
       }
     },
   },
   mounted() {
-    this.$refs.player.src = `${this.serverStore.activeServer.path}/item/${this.playerStore.currentTrack.serverTrack.beetsId}/file`;
+    if (Object.keys(this.playerStore.currentTrack).length === 0){
+      document.title = 'spotifynt';
+      return;
+    }
     document.title = `${this.playerStore.currentTrack.title}`;
+    this.$refs.player.src = `${this.serverStore.activeServer.path}/item/${this.playerStore.currentTrack.serverTrack.beetsId}/file`;
   },
   methods: {
+    clearTrack() {
+      this.$refs.player.src = ``;
+      this.$refs.playerPreloader.src = ``;
+    },
     loadNextTrack() {
       const nextTrack = this.playerStore.getNextTrack;
 

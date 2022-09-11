@@ -21,6 +21,8 @@ class MusicBrainzService
             return $cache;
         }
 
+        sleep(1); // sleep 1 second to avoid exceeding the rate limit of the API
+
         $response = Http::get($this->api_url.'/recording/'.$id.'?inc=artist-credits+isrcs+annotation+tags+genres&fmt=json');
 
         if (!$response->ok()) {

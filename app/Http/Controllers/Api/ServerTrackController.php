@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TrackResource;
 use App\Models\Server;
+use App\Models\ServerTrack;
 use App\Models\Track;
 use Illuminate\Http\Request;
 
@@ -35,7 +36,9 @@ class ServerTrackController extends Controller
      */
     public function show(Server $server, Track $track): TrackResource
     {
-        $track = $server->tracks->where('id', $track->id)->first();
+        $serverTrack = ServerTrack::whereServerId($server->id)->whereTrackId($track->id)->first();
+
+        $track->pivot = $serverTrack;
 
         return new TrackResource($track);
     }

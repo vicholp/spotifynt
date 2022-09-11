@@ -80,5 +80,13 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class ServerTrack extends Pivot
 {
-    //
+    public function track()
+    {
+        return $this->belongsTo(Track::class);
+    }
+
+    public function server()
+    {
+        return $this->belongsTo(Server::class);
+    }
 }

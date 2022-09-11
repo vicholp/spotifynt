@@ -34,7 +34,7 @@ class ReleaseController extends Controller
      */
     public function show(Release $release): ReleaseResource
     {
-        return new ReleaseResource($release);
+        return new ReleaseResource($release->load('tracks'));
     }
 
     /**

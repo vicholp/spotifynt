@@ -18,7 +18,7 @@ class ReleaseResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'tracks' => new TrackCollection($this->tracks),
+            'tracks' => new TrackCollection($this->tracks->load('release')),
             'art' => $this->art_url,
         ];
     }

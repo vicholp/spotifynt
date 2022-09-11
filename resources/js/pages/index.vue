@@ -15,10 +15,10 @@
           @input="sendQuery"
         >
       </div>
-      <KeepAlive v-if="query.length === 0">
-        <IndexRecommendations />
+      <KeepAlive>
+        <IndexRecommendations v-if="query.length === 0" />
+        <QueryResults v-else :results="queryResults" />
       </KeepAlive>
-      <QueryResults v-else :results="queryResults" />
     </div>
   </layout>
 </template>

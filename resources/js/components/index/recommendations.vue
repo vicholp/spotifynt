@@ -11,7 +11,7 @@
           class="rounded aspect-square w-full col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2 shadow dark:shadow-none"
         >
           <div
-            class="h-full w-full bg-white bg-opacity-10 rounded text-white text-opacity-60 flex items-center justify-evenly font-medium flex-col"
+            class="h-full w-full bg-white bg-opacity-10 rounded dark:text-white text-black text-opacity-60 flex items-center justify-evenly font-medium flex-col"
           >
             <span class="iconify-inline text-4xl" data-icon="mdi:shuffle" />
             random album
@@ -26,7 +26,7 @@
       </div>
       <button
         type="button"
-        class="dark:bg-white dark:bg-opacity-5 p-3 rounded text-white text-opacity-60 text-sm text-center w-full"
+        class="bg-white text-black dark:bg-white dark:bg-opacity-5 p-3 rounded dark:text-white text-opacity-60 text-sm text-center w-full"
         @click="loadRecommendations()"
       >
         load new recommendations
@@ -49,7 +49,7 @@ export default {
       tracks: [],
     };
   },
-  async mounted() {
+  async created() {
     await this.loadRecommendations();
   },
   methods: {

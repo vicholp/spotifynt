@@ -15,8 +15,8 @@ class ServerRecommendationController extends Controller
 {
     public function random(Server $server): array
     {
-        $albums = Release::limit(19)->inRandomOrder()->get();
-        $artists = Artist::limit(20)->inRandomOrder()->get();
+        $albums = Release::limit(11)->inRandomOrder()->get();
+        $artists = Artist::limit(1)->inRandomOrder()->get();
 
         StatsService::newShowedReleases(Auth::user(), $albums);  // @phpstan-ignore-line
 

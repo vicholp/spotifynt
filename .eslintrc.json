@@ -46,6 +46,6 @@
     }],
     "vue/max-attributes-per-line": 0,
     "vue/script-indent": 1,
-    "vue/multi-word-component-names": 1
+    "vue/multi-word-component-names": 0
   }
 }

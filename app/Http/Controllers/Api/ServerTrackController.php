@@ -38,7 +38,7 @@ class ServerTrackController extends Controller
     {
         $serverTrack = ServerTrack::whereServerId($server->id)->whereTrackId($track->id)->first();
 
-        $track->pivot = $serverTrack;
+        $track->pivot = $serverTrack; // @phpstan-ignore-line - i;m not sure if there is another way to do this.
 
         return new TrackResource($track);
     }

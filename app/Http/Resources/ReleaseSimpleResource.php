@@ -24,7 +24,7 @@ class ReleaseSimpleResource extends JsonResource
                 'full' => $this->artUrl(),
                 '250' => $this->artUrl(250),
                 '75' => $this->artUrl(75),
-            ]
+            ],
         ];
     }
 }

@@ -32,11 +32,11 @@ class ArtService
 
     public function getUrl(Release $release, int $size = 0, string $format = 'jpeg'): string
     {
-        if ($size == 0){
-            return config('APP_URL').'/art/'.$release->mb_release_id . '.' . $format;
+        if ($size == 0) {
+            return config('APP_URL').'/art/'.$release->mb_release_id.'.'.$format;
         }
 
-        return config('APP_URL').'/art/'.$release->mb_release_id . '-' . $size . 'x' . $size . '.' . $format;
+        return config('APP_URL').'/art/'.$release->mb_release_id.'-'.$size.'x'.$size.'.'.$format;
     }
 
     public function syncArt(Release $release, ?BeetsService $beetsService): null|string
@@ -53,8 +53,8 @@ class ArtService
 
         foreach ($this->minimizeSizes as $size) {
             foreach ($this->minimizeFormats as $format) {
-                $target_path = Storage::disk('art')->path($release->mb_release_id.'-'.$size[0].'x'.$size[1].'.' . $format);
-                MinimizeArtJob::dispatch($path, $target_path, $size[0], $size[1])->onQueue('low');;
+                $target_path = Storage::disk('art')->path($release->mb_release_id.'-'.$size[0].'x'.$size[1].'.'.$format);
+                MinimizeArtJob::dispatch($path, $target_path, $size[0], $size[1])->onQueue('low');
             }
         }
 

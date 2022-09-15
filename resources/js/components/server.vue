@@ -1,6 +1,9 @@
 <template>
   <div ref="dot" class="bg-white dark:bg-opacity-5 p-3 rounded flex items-center gap-2 shadow dark:shadow-none">
-    <span :class="`animate-pulse h-1 w-1 inline-flex rounded-full ${ serverAvailable == 1 ? 'bg-green-400': 'bg-red-400' } mx-2 opacity-75`" />
+    <span
+      :class="`animate-pulse h-1 w-1 inline-flex rounded-full   mx-2 opacity-75
+      ${ serverAvailable == 1 ? 'bg-green-400': 'bg-red-400' }`"
+    />
     <p>
       {{ serverStore.activeServer.name }}
     </p>

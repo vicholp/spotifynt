@@ -22,7 +22,6 @@ use Laravel\Scout\Searchable;
  * @property mixed                                                                    $mb_data
  * @property \Illuminate\Support\Carbon|null                                          $created_at
  * @property \Illuminate\Support\Carbon|null                                          $updated_at
- * @property string                                                                   $art_url
  * @property \App\Models\Artist|null                                                  $artist
  * @property \App\Models\ReleaseGroup                                                 $releaseGroup
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\ShowedReleaseStat[] $showedReleaseStats
@@ -99,12 +98,13 @@ class Release extends Model
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'artist_name' => $this->artist?->name,
         ];
     }
 
     public function artUrl(int $size = 0, string $format = 'webp'): string
     {
-        return (new ArtService)->getUrl($this, $size, $format);
+        return (new ArtService())->getUrl($this, $size, $format);
     }
 
     /**

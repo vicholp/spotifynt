@@ -14,7 +14,7 @@
     <div class="flex col-span-12 bg-white rounded shadow-lg py-6 flex-col items-center">
       <form action="/login" method="POST">
         @csrf
-        <input type="checkbox" name="remember" value="true" class="hidden">
+        <input type="text" name="remember" value="true" class="hidden">
         <button type="submit" class="p-4 font-medium">
           Log in
         </button>

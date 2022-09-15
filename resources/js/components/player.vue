@@ -91,7 +91,7 @@ export default {
       this.$refs.player.src = `${this.serverStore.activeServer.path}/item/${track.serverTrack.beetsId}/file`;
       this.$refs.playerPreloader.src = '';
 
-      document.title = `${track.name}`;
+      document.title = `${track.title}`;
       this.listened = false;
       this.playerStore.status.playing = false;
       // setMediaMetadata(track);

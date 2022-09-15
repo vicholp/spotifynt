@@ -29,7 +29,6 @@
           <div :class="`flex items-center mt-5`">
             <button
               class="text-4xl"
-              @click="$emit('previus-track')"
             >
               <span
                 class="iconify"
@@ -38,7 +37,6 @@
             </button>
             <button
               class="text-4xl"
-              @click="$emit('play-pause')"
             >
               <div v-if="playerStore.status.playing">
                 <span
@@ -55,7 +53,6 @@
             </button>
             <button
               class="text-4xl"
-              @click="$emit('next-track')"
             >
               <span
                 class="iconify"

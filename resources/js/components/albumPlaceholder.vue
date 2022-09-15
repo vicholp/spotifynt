@@ -8,10 +8,6 @@
   </div>
 </template>
 <script>
-
-import PlayerStore from '../store/player';
-
 export default {
-
 };
 </script>

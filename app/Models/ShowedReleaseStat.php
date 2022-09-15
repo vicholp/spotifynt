@@ -39,5 +39,6 @@ class ShowedReleaseStat extends Model
     protected $fillable = [
         'where',
         'user_id',
+        'release_id',
     ];
 }

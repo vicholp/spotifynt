@@ -18,7 +18,7 @@ class ServerRecommendationController extends Controller
         $albums = Release::limit(11)->inRandomOrder()->get();
         $artists = Artist::limit(1)->inRandomOrder()->get();
 
-        StatsService::newShowedReleases(Auth::user(), $albums);  // @phpstan-ignore-line
+        StatsService::newShowedReleases(Auth::user(), $albums, 'random');  // @phpstan-ignore-line
 
         return [
             'artists' => new ArtistSimpleCollection($artists),

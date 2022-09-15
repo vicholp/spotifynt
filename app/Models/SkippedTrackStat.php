@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int                             $time
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int                             $server_id
  *
  * @method static \Database\Factories\SkippedTrackStatFactory            factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|SkippedTrackStat newModelQuery()
@@ -21,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|SkippedTrackStat query()
  * @method static \Illuminate\Database\Eloquent\Builder|SkippedTrackStat whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SkippedTrackStat whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SkippedTrackStat whereServerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SkippedTrackStat whereTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SkippedTrackStat whereTrackId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SkippedTrackStat whereUpdatedAt($value)

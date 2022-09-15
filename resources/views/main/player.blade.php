@@ -3,6 +3,6 @@
 @section('content')
 
 <router-view :auth-user='@json(Auth::user())'></router-view>
-<audio-player></audio-player>
+<audio-player :auth-user='@json(Auth::user())'></audio-player>
 
 @endsection

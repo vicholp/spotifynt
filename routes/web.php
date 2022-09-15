@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ReleaseController;
 use App\Http\Controllers\Api\ServerController;
 use App\Http\Controllers\Api\ServerRecommendationController;
 use App\Http\Controllers\Api\ServerTrackController;
+use App\Http\Controllers\Api\StatsController;
 use App\Http\Controllers\Api\TrackController;
 use App\Http\Controllers\Api\UserServerController;
 use Illuminate\Support\Facades\Route;
@@ -38,4 +39,9 @@ Route::middleware('auth')->group(function () {
         Route::apiResource('servers.tracks', ServerTrackController::class);
         Route::apiResource('releases', ReleaseController::class);
     });
+});
+
+Route::prefix('api/stats')->group(function () {
+    Route::post('playedTrack', [StatsController::class, 'playedTrack']);
+    Route::post('skippedTrack', [StatsController::class, 'skippedTrack']);
 });

@@ -31,12 +31,20 @@ import PlayerBar from './playerBar.vue';
 import PlayerStore from '../store/player';
 import ServerStore from '../store/server';
 
+import StatsApi from '../api/stats';
+
 const TIME_AFTER_LISTENED = 240; // [s]
 const PROGRESS_AFTER_LISTENED = 0.5; // [%]
 
 export default {
   components: {
     PlayerBar,
+  },
+  props: {
+    authUser: {
+      default: () => {},
+      type: Object,
+    },
   },
   setup() {
     const playerStore = PlayerStore();
@@ -52,9 +60,8 @@ export default {
       totalTime: 0,
       currentTime: 0,
       progressPercent: 0,
+      listened: false,
     };
-  },
-  computed: {
   },
   watch: {
     'playerStore.currentTrack'(track) {
@@ -94,7 +101,6 @@ export default {
       document.title = `${track.title}`;
       this.listened = false;
       this.playerStore.status.playing = false;
-      // setMediaMetadata(track);
       this.playPause('play');
     },
     playPause(action = null) {
@@ -122,10 +128,9 @@ export default {
         (progress > PROGRESS_AFTER_LISTENED || event.target.currentTime > TIME_AFTER_LISTENED)
       ) {
         this.listened = true;
-        // StatsApi.playedTrack(this.actual.id);
+        StatsApi.playedTrack(this.serverStore.activeServer.id, this.playerStore.currentTrack.id, this.authUser.id);
       }
       if (this.playerStore.status.playing === false && event.target.currentTime > 1) {
-        // this.playerStore.status.playing = true;
         // StatsApi.nowPlaying(this.actual.id);
       }
     },

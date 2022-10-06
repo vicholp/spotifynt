@@ -35,6 +35,14 @@ class SynchronizationService
 
     public function syncAlbumFromBeets(BeetsService $beets, array $album, Server $server): void
     {
+        if (Release::whereMbReleaseId($album['mb_albumid'])->exists()) {
+            return;
+        }
+
+        if (empty($album['mb_albumid'])) {
+            return;
+        }
+
         $release = $this->syncRelease($album['mb_albumid']);
 
         $beets_tracks = $beets->getTracksFromAlbum($album['id']);

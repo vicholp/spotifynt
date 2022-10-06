@@ -29,17 +29,6 @@ import Playlists from './pages/playlists.vue';
 
 const app = createApp();
 
-Sentry.init({
-  app,
-  dsn: process.env.SENTRY_DSN || null,
-  environment: process.env.SENTRY_ENVIRONMENT,
-  integrations: [
-    new Integrations.BrowserTracing(),
-  ],
-  sampleRate: process.env.SENTRY_SAMPLE_RATE || false,
-  tracesSampleRate: process.env.SENTRY_TRACES_SAMPLE_RATE || false,
-});
-
 const routes = [
   { path: '/', component: Index, props: true },
   { path: '/servers', component: Servers, props: true },
@@ -56,6 +45,20 @@ const router = createRouter({
   // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
   history: createWebHashHistory('/player/'),
   routes, // short for `routes: routes`
+});
+
+Sentry.init({
+  app,
+  dsn: process.env.SENTRY_DSN || null,
+  environment: process.env.SENTRY_ENVIRONMENT,
+  integrations: [
+    new Integrations.BrowserTracing({
+      routingInstrumentation: Sentry.vueRouterInstrumentation(router),
+    }),
+  ],
+  sampleRate: process.env.SENTRY_SAMPLE_RATE || false,
+  tracesSampleRate: process.env.SENTRY_TRACES_SAMPLE_RATE || false,
+  trackComponents: true,
 });
 
 app.use(i18n);

@@ -42,6 +42,5 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('api/stats')->group(function () {
-    Route::post('playedTrack', [StatsController::class, 'playedTrack']);
-    Route::post('skippedTrack', [StatsController::class, 'skippedTrack']);
+    Route::post('playedTrack', [StatsController::class, 'storePlayedTrack']);
 });

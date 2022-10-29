@@ -9,6 +9,7 @@ use App\Models\Server;
 use App\Models\ShowedReleaseStat;
 use App\Models\Track;
 use App\Models\User;
+use App\Services\Api\ListenBrainzService;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -35,13 +36,15 @@ class StatsService
         }
     }
 
-    public function newPlayedTrack(User $user, Track $track, Server $server): void
+    public function storePlayedTrack(User $user, Server $server, Track $track, Release $release, int $time): void
     {
         PlayedTrackStat::create([
             'user_id' => $user->id,
             'track_id' => $track->id,
             'server_id' => $server->id,
         ]);
+
+        (new ListenBrainzService($user))->submitListens($track, $release, $time);
     }
 
     public static function newSearchedTerm(User $user, string $term): void

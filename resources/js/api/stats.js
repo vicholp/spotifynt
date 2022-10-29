@@ -1,15 +1,11 @@
 import api from './index';
 
 export default {
-  playedTrack(serverId, trackId, userId) {
+  playedTrack(data) {
     return api({
       method: 'post',
       url: `api/stats/playedTrack`,
-      data: {
-        serverId,
-        trackId,
-        userId,
-      },
+      data,
     });
   },
 };

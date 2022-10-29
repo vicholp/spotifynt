@@ -128,7 +128,14 @@ export default {
         (progress > PROGRESS_AFTER_LISTENED || event.target.currentTime > TIME_AFTER_LISTENED)
       ) {
         this.listened = true;
-        StatsApi.playedTrack(this.serverStore.activeServer.id, this.playerStore.currentTrack.id, this.authUser.id);
+
+        let data = {
+          trackId: this.playerStore.currentTrack.id,
+          userId: this.authUser.id,
+          serverId: this.serverStore.activeServer.id,
+          releaseId: this.playerStore.currentTrack.release.id,
+        };
+        StatsApi.playedTrack(data);
       }
       if (this.playerStore.status.playing === false && event.target.currentTime > 1) {
         // StatsApi.nowPlaying(this.actual.id);

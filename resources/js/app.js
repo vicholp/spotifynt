@@ -18,8 +18,13 @@ import pinia from './store';
 
 import AudioPlayer from './components/player.vue';
 import Index from './pages/index.vue';
-import Servers from './pages/servers.vue';
-import Server from './pages/server.vue';
+
+
+import ServersIndex from './pages/servers/index.vue';
+import ServersCreate from './pages/servers/create.vue';
+// import ServersEdit from './pages/servers/edit.vue';
+import ServersShow from './pages/servers/show.vue';
+
 import Player from './pages/player.vue';
 import Artist from './pages/artist.vue';
 import Album from './pages/album.vue';
@@ -31,8 +36,12 @@ const app = createApp();
 
 const routes = [
   { path: '/', component: Index, props: true },
-  { path: '/servers', component: Servers, props: true },
-  { path: '/server/:id', component: Server, props: true },
+
+  { path: '/servers', component: ServersIndex, props: true },
+  { path: '/servers/create', component: ServersCreate, props: true },
+  { path: '/servers/:id', component: ServersShow, props: true },
+  // { path: '/server/:id/edit', component: ServersEdit, props: true },
+
   { path: '/player', component: Player, props: true },
   { path: '/artist/:id', component: Artist, props: true },
   { path: '/album/:id', component: Album, props: true },

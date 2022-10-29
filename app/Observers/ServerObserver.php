@@ -14,7 +14,9 @@ class ServerObserver
      */
     public function created(Server $server)
     {
-        (new SynchronizationService())->syncServer($server);
+        // (new SynchronizationService())->syncServer($server);
+
+        $server->users()->attach($server->owner_id);
     }
 
     /**
@@ -24,7 +26,7 @@ class ServerObserver
      */
     public function updated(Server $server)
     {
-        (new SynchronizationService())->syncServer($server);
+        // (new SynchronizationService())->syncServer($server);
     }
 
     /**

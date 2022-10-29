@@ -9,9 +9,9 @@
 </template>
 <script>
 
-import Layout from '../layouts/main.vue';
-import ServerApi from '../api/server';
-import ServerStore from '../store/server';
+import Layout from '../../layouts/main.vue';
+import ServerApi from '../../api/server';
+import ServerStore from '../../store/server';
 import { mapWritableState } from 'pinia';
 
 export default {

@@ -28,7 +28,7 @@ class ServerResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'path' => $this->path,
-            // 'owner' => $this->owner,
+            'owner' => $this->owner,
         ];
     }
 }

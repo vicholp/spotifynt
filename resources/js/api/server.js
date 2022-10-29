@@ -19,4 +19,11 @@ export default {
       url: `api/server/${serverId}`,
     });
   },
+  store(server) {
+    return api({
+      method: 'post',
+      url: 'api/server',
+      data: server,
+    });
+  },
 };

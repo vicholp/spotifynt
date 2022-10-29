@@ -48,7 +48,12 @@ class ServerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $server = Server::create([
+            ...$request->all(),
+            'owner_id' => Auth::user()?->id,
+        ]);
+
+        return $server;
     }
 
     /**

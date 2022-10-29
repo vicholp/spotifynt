@@ -5,6 +5,7 @@ namespace App\Jobs\Synchronization;
 use App\Models\Server;
 use App\Services\Api\BeetsService;
 use App\Services\SynchronizationService;
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -13,6 +14,7 @@ use Illuminate\Queue\SerializesModels;
 
 class SyncAlbumFromBeetsJob implements ShouldQueue
 {
+    use Batchable;
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
@@ -24,8 +26,9 @@ class SyncAlbumFromBeetsJob implements ShouldQueue
      * @return void
      */
     public function __construct(
-        private array $album,
         private Server $server,
+        private string $mb_id,
+        private string $beets_album_id,
     ) {
         //
     }
@@ -37,8 +40,10 @@ class SyncAlbumFromBeetsJob implements ShouldQueue
      */
     public function handle()
     {
+        if ($this->batch() && $this->batch()->cancelled()) return;
+
         $beetsService = new BeetsService($this->server);
 
-        (new SynchronizationService())->syncAlbumFromBeets($beetsService, $this->album, $this->server);
+        (new SynchronizationService())->syncAlbumFromBeets($beetsService, $this->server, $this->mb_id, $this->beets_album_id);
     }
 }

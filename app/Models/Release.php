@@ -65,6 +65,29 @@ class Release extends Model
     ];
 
     /**
+     * Modify the query used to retrieve models when making all of the models searchable.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<Release>  $query
+     * @return \Illuminate\Database\Eloquent\Builder<Release>
+     */
+    protected function makeAllSearchableUsing($query)
+    {
+        return $query->with('releaseGroup.artist');
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     */
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'artist_name' => $this->artist?->name,
+        ];
+    }
+
+    /**
      * @return HasMany<Track>
      */
     public function tracks()
@@ -86,20 +109,6 @@ class Release extends Model
     public function getArtistAttribute()
     {
         return $this->releaseGroup->artist;
-    }
-
-    /**
-     * Get the indexable data array for the model.
-     *
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-        return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'artist_name' => $this->artist?->name,
-        ];
     }
 
     public function artUrl(int $size = 0, string $format = 'webp'): string

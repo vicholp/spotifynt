@@ -11,6 +11,7 @@ use App\Models\Server;
 use App\Models\Track;
 use App\Services\Api\BeetsService;
 use App\Services\Api\MusicBrainzService;
+use Illuminate\Support\Facades\Bus;
 
 /**
  * Class SynchronizationService.
@@ -23,29 +24,58 @@ class SynchronizationService
         //
     }
 
+    private function searchRecordingInRelease(Release $release, string $id): array|false
+    {
+        $data = json_decode($release->mb_data, true)['media'][0]['tracks'];
+
+        foreach($data as $track){
+            if($track['recording']['id'] == $id){
+                return $track;
+            }
+        }
+
+        return false;
+    }
+
     public function syncServer(Server $server): void
     {
         $beets = new BeetsService($server);
         $beets_albums = $beets->getAlbums();
 
+        $batch = [];
+
         foreach ($beets_albums as $album) {
-            SyncAlbumFromBeetsJob::dispatch($album, $server);
+            array_push($batch, new SyncAlbumFromBeetsJob($server, $album['mb_albumid'], $album['id']));
         }
+
+        Bus::batch($batch)->allowFailures()
+            ->finally(function () {
+                $this->recreateIndex();
+            })
+            ->dispatch();
     }
 
-    public function syncAlbumFromBeets(BeetsService $beets, array $album, Server $server): void
+    public function recreateIndex(): void
     {
-        if (Release::whereMbReleaseId($album['mb_albumid'])->exists()) {
+        Artist::removeAllFromSearch();
+        Artist::makeAllSearchable();
+
+        Release::removeAllFromSearch();
+        Release::makeAllSearchable();
+
+        Track::removeAllFromSearch();
+        Track::makeAllSearchable();
+    }
+
+    public function syncAlbumFromBeets(BeetsService $beets, Server $server, string $mb_id, string $beets_album_id): void
+    {
+        if (empty($mb_id)) {
             return;
         }
 
-        if (empty($album['mb_albumid'])) {
-            return;
-        }
+        $release = $this->syncRelease($mb_id);
 
-        $release = $this->syncRelease($album['mb_albumid']);
-
-        $beets_tracks = $beets->getTracksFromAlbum($album['id']);
+        $beets_tracks = $beets->getTracksFromAlbum($beets_album_id);
 
         SyncArtJob::dispatch($release, $server)->onQueue('low');
 
@@ -62,13 +92,15 @@ class SynchronizationService
     {
         $recording = $this->musicBrainzService->getRecording($id);
 
-        return Track::updateOrCreate([
+        $track = Track::updateOrCreate([
             'mb_recording_id' => $recording['id'],
         ], [
             'title' => $recording['title'],
             'release_id' => $release->id,
             'mb_data' => json_encode($recording),
         ]);
+
+        return $track;
     }
 
     public function syncRelease(string $id): Release

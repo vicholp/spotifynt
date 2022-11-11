@@ -17,6 +17,7 @@ import i18n from './locales';
 import pinia from './store';
 
 import AudioPlayer from './components/player.vue';
+import PlayerTray from './components/tray.vue';
 import Index from './pages/index.vue';
 
 
@@ -80,5 +81,6 @@ app.config.globalProperties.$filters = {
 };
 
 app.component('AudioPlayer', AudioPlayer);
+app.component('PlayerTray', PlayerTray);
 
 app.mount('#app');

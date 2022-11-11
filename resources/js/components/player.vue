@@ -10,6 +10,8 @@
       @loadedmetadata="loadMetadata"
       @timeupdate="checkPlayed"
       @canplaythrough="loadNextTrack"
+      @waiting="loading = true"
+      @playing="loading = false"
     />
     <audio
       ref="playerPreloader"
@@ -20,6 +22,7 @@
       :actual="playerStore.currentTrack"
       :playing="playerStore.status.playing"
       :loaded="playerStore.playlist.tracks.length > 0"
+      :loading="loading"
       @player-play="playPause"
       @player-next="nextTrack"
       @player-prev="previousTrack"
@@ -61,6 +64,7 @@ export default {
       currentTime: 0,
       progressPercent: 0,
       listened: false,
+      loading: false,
     };
   },
   watch: {
@@ -122,7 +126,7 @@ export default {
     checkPlayed(event) {
       const progress = event.target.currentTime / this.totalTime;
 
-      this.progress = progress * 100;
+      this.progressPercent = progress * 100;
       if (
         this.listened === false &&
         (progress > PROGRESS_AFTER_LISTENED || event.target.currentTime > TIME_AFTER_LISTENED)

@@ -2,6 +2,7 @@ import ReleaseApi from '../../api/release';
 import ServerTrackApi from '../../api/serverTrack';
 
 import ServerStore from '../server';
+import MessagesStore from '../messages';
 
 export default {
   playlistAddTrack(track) {
@@ -26,6 +27,9 @@ export default {
     album.tracks.forEach(track => {
       this.playlistAddTrackById(track.id);
     });
+
+    const messagesStore = MessagesStore();
+    messagesStore.addedTracks(album.tracks.length);
   },
 
   async playlistSetIndex(int, relative) {

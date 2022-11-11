@@ -8,10 +8,8 @@
     >
       <div class="h-0.5 w-full bg-black bg-opacity-5">
         <div
-          class="h-full bg-black bg-opacity-50"
-          :style="{
-            'width': `${progress}%`,
-          }"
+          :class="`h-full dark:bg-white dark:bg-opacity-30 ${loading ? 'animate-pulse' : ''} transition-all duration-200`"
+          :style="`width: ${loading ? 100 : progress}%`"
         />
       </div>
       <div class="container mx-auto my-auto px-3">
@@ -113,7 +111,10 @@ export default {
       type: Boolean,
       required: true,
     },
-
+    loading: {
+      type: Boolean,
+      required: true,
+    },
   },
   emits: [
     'player-next',

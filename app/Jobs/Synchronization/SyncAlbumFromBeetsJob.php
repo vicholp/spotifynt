@@ -40,7 +40,9 @@ class SyncAlbumFromBeetsJob implements ShouldQueue
      */
     public function handle()
     {
-        if ($this->batch() && $this->batch()->cancelled()) return;
+        if ($this->batch() && $this->batch()->cancelled()) {
+            return;
+        }
 
         $beetsService = new BeetsService($this->server);
 

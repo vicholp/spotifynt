@@ -28,8 +28,8 @@ class SynchronizationService
     {
         $data = json_decode($release->mb_data, true)['media'][0]['tracks'];
 
-        foreach($data as $track){
-            if($track['recording']['id'] == $id){
+        foreach ($data as $track) {
+            if ($track['recording']['id'] == $id) {
                 return $track;
             }
         }

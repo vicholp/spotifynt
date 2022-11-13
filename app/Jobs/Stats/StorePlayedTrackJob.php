@@ -8,7 +8,6 @@ use App\Models\Track;
 use App\Models\User;
 use App\Services\StatsService;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -16,7 +15,10 @@ use Illuminate\Queue\SerializesModels;
 
 class StorePlayedTrackJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new job instance.
@@ -29,7 +31,7 @@ class StorePlayedTrackJob implements ShouldQueue
         private int $track,
         private int $release,
         private int $time
-    ){
+    ) {
         //
     }
 
@@ -40,7 +42,7 @@ class StorePlayedTrackJob implements ShouldQueue
      */
     public function handle()
     {
-        (new StatsService)->storePlayedTrack(
+        (new StatsService())->storePlayedTrack(
             User::findOrFail($this->user),
             Server::findOrFail($this->server),
             Track::findOrFail($this->track),

@@ -20,6 +20,7 @@ class MusicBrainzService
 
         return Http::withHeaders(['User-Agent' => 'Spotifynt/dev (hello@vicho.dev)']);
     }
+
     public function getRecording(string $id): array
     {
         $cache = Cache::get('mb_recording_'.$id);
@@ -31,7 +32,7 @@ class MusicBrainzService
         $response = $this->getHttp()->get($this->api_url.'/recording/'.$id.'?inc=artist-credits+isrcs+annotation+tags+genres&fmt=json');
 
         if (!$response->ok()) {
-            throw new \Exception('Error Processing Request' . $response->status());
+            throw new \Exception('Error Processing Request'.$response->status());
         }
 
         $json = $response->json();
@@ -52,7 +53,7 @@ class MusicBrainzService
         $response = $this->getHttp()->get($this->api_url.'/release/'.$id.'?inc=artist-credits+labels+recordings+release-groups+media+discids+isrcs+annotation+tags+genres&fmt=json');
 
         if (!$response->ok()) {
-            throw new \Exception('Error Processing Request' . $response->status());
+            throw new \Exception('Error Processing Request'.$response->status());
         }
 
         $json = $response->json();
@@ -80,7 +81,7 @@ class MusicBrainzService
             return $json;
         }
 
-        throw new \Exception('Error Processing Request' . $response->status());
+        throw new \Exception('Error Processing Request'.$response->status());
     }
 
     public function getArtist(string $id): array
@@ -101,6 +102,6 @@ class MusicBrainzService
             return $json;
         }
 
-        throw new \Exception('Error Processing Request' . $response->status());
+        throw new \Exception('Error Processing Request'.$response->status());
     }
 }

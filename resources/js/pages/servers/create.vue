@@ -62,8 +62,6 @@ export default {
       ServerApi.store({
         'name': this.serverName,
         'path': this.serverPath,
-      }).then((response) => {
-        console.log(response);
       });
     },
   },

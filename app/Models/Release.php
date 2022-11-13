@@ -10,25 +10,26 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Searchable;
 
 /**
- * App\Models\Release
+ * App\Models\Release.
  *
- * @property int $id
- * @property string $title
- * @property string|null $date
- * @property string $country
- * @property int $release_group_id
- * @property string|null $main_color
- * @property string $mb_release_id
- * @property mixed $mb_data
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Artist|null $artist
- * @property-read \App\Models\ReleaseGroup $releaseGroup
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ShowedReleaseStat[] $showedReleaseStats
- * @property-read int|null $showed_release_stats_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Track[] $tracks
- * @property-read int|null $tracks_count
- * @method static \Database\Factories\ReleaseFactory factory(...$parameters)
+ * @property int                                                                      $id
+ * @property string                                                                   $title
+ * @property string|null                                                              $date
+ * @property string                                                                   $country
+ * @property int                                                                      $release_group_id
+ * @property string|null                                                              $main_color
+ * @property string                                                                   $mb_release_id
+ * @property mixed                                                                    $mb_data
+ * @property \Illuminate\Support\Carbon|null                                          $created_at
+ * @property \Illuminate\Support\Carbon|null                                          $updated_at
+ * @property \App\Models\Artist|null                                                  $artist
+ * @property \App\Models\ReleaseGroup                                                 $releaseGroup
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\ShowedReleaseStat[] $showedReleaseStats
+ * @property int|null                                                                 $showed_release_stats_count
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Track[]             $tracks
+ * @property int|null                                                                 $tracks_count
+ *
+ * @method static \Database\Factories\ReleaseFactory            factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Release newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Release newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Release query()
@@ -42,6 +43,7 @@ use Laravel\Scout\Searchable;
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereReleaseGroupId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Release extends Model
@@ -66,7 +68,8 @@ class Release extends Model
     /**
      * Modify the query used to retrieve models when making all of the models searchable.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder<Release>  $query
+     * @param \Illuminate\Database\Eloquent\Builder<Release> $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder<Release>
      */
     protected function makeAllSearchableUsing($query)

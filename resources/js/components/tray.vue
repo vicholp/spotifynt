@@ -3,9 +3,9 @@
     class="absolute w-full"
   >
     <div
-      :class="`fixed top-0 w-full dark:bg-black
+      :class="`fixed top-0 w-full bg-white dark:bg-black
         transition-all duration-300 ease-in
-        ${messagesStore.show ? 'dark:bg-opacity-100' : 'dark:bg-opacity-0 '}`"
+        ${messagesStore.show ? 'bg-opacity-100' : 'bg-opacity-0 '}`"
     >
       <div
         :class="`p-3 text-center text-xs dark:bg-white  dark:text-white

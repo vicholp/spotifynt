@@ -8,7 +8,8 @@
     >
       <div class="h-0.5 w-full bg-black bg-opacity-5">
         <div
-          :class="`h-full dark:bg-white dark:bg-opacity-30 ${loading ? 'animate-pulse' : ''} transition-all duration-200`"
+          :class="`h-full bg-black dark:bg-white bg-opacity-30 transition-all duration-200
+                  ${loading ? 'animate-pulse' : ''}`"
           :style="`width: ${loading ? 100 : progress}%`"
         />
       </div>

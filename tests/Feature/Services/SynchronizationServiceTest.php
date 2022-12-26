@@ -1,12 +1,32 @@
 <?php
 
 use App\Models\Artist;
-use App\Models\ReleaseGroup;
-use App\Models\Server;
+use App\Models\Release;
 use App\Services\Api\MusicBrainzService;
 use App\Services\SynchronizationService;
 use Mockery\MockInterface;
 
+test('sync track', function () {
+    $release = Release::factory()->create();
+
+    $recording = [
+        'id' => '123',
+        'title' => 'Test',
+        'test' => 123,
+    ];
+
+    $musicBrainzServiceMock = Mockery::mock(MusicBrainzService::class, function (MockInterface $mock) use ($recording) {
+        $mock->shouldReceive([
+            'getRecording' => $recording,
+        ])
+        ->with('id')
+        ->once();
+    });
+
+    $track = (new SynchronizationService($musicBrainzServiceMock))->syncTrack($release, 'id');
+
+    expect($track->title)->toBe($recording['title']);
+});
 
 test('sync artist', function () {
     $artist = [
@@ -24,7 +44,9 @@ test('sync artist', function () {
         ->once();
     });
 
-    expect((new SynchronizationService($musicBrainzServiceMock))->syncArtist('id'))->toBeObject();
+    $artist = (new SynchronizationService($musicBrainzServiceMock))->syncArtist('id'); // @phpstan-ignore-line
+
+    expect($artist->name)->toBe($artist['name']);
 });
 
 test('sync release group', function () {
@@ -35,10 +57,10 @@ test('sync release group', function () {
         'artist-credit' => [
             [
                 'artist' => [
-                    'id' => '1'
-                ]
-            ]
-        ]
+                    'id' => '1',
+                ],
+            ],
+        ],
     ];
 
     $musicBrainzServiceMock = Mockery::mock(MusicBrainzService::class, function (MockInterface $mock) use ($releaseGroup) {
@@ -49,12 +71,11 @@ test('sync release group', function () {
         ->once();
     });
 
-    $syncronizationService = Mockery::mock(SynchronizationService::class, [$musicBrainzServiceMock], function (MockInterface $mock) use ($musicBrainzServiceMock) {
+    $syncronizationService = Mockery::mock(SynchronizationService::class, [$musicBrainzServiceMock], function (MockInterface $mock) {
         $mock->shouldReceive([
             'syncArtist' => Artist::factory()->create(),
         ]);
     })->makePartial();
-
 
     expect($syncronizationService->syncReleaseGroup('id'))->toBeObject();
 }

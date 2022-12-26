@@ -23,6 +23,11 @@ class BeetsService
         return Http::get($this->server->path.'/album')->json()['albums'];
     }
 
+    public function getAlbumsByAddedDate(): array
+    {
+        return Http::get($this->server->path.'/album/query/added-')->json();
+    }
+
     public function getAlbumQuery(string $q): array
     {
         return Http::get($this->server->path.'/album/query/'.$q)->json();

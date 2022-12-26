@@ -13,46 +13,46 @@ return new class() extends Migration {
     public function up()
     {
         Schema::table('release_groups', function (Blueprint $table) {
-            $table->unsignedBigInteger('artist_id')->constrained()->onDelete('cascade')->cascadeOnUpdate('cascade')->change();
+            $table->unsignedBigInteger('artist_id')->references('id')->on('artist')->onDelete('cascade')->onUpdate('cascade')->change();
         });
 
         Schema::table('releases', function (Blueprint $table) {
-            $table->unsignedBigInteger('release_group_id')->constrained()->onDelete('cascade')->cascadeOnUpdate('cascade')->change();
+            $table->unsignedBigInteger('release_group_id')->references('id')->on('release_group')->onDelete('cascade')->onUpdate('cascade')->change();
         });
 
         Schema::table('tracks', function (Blueprint $table) {
-            $table->unsignedBigInteger('release_id')->constrained()->onDelete('cascade')->cascadeOnUpdate('cascade')->change();
+            $table->unsignedBigInteger('release_id')->references('id')->on('release')->onDelete('cascade')->onUpdate('cascade')->change();
         });
 
         Schema::table('played_track_stats', function (Blueprint $table) {
-            $table->unsignedBigInteger('track_id')->constrained()->onDelete('cascade')->cascadeOnUpdate('cascade')->change();
-            $table->unsignedBigInteger('user_id')->constrained()->onDelete('cascade')->cascadeOnUpdate('cascade')->change();
-            $table->unsignedBigInteger('server_id')->constrained()->onDelete('cascade')->cascadeOnUpdate('cascade')->change();
+            $table->unsignedBigInteger('track_id')->references('id')->on('track')->onDelete('cascade')->onUpdate('cascade')->change();
+            $table->unsignedBigInteger('user_id')->references('id')->on('user')->onDelete('cascade')->onUpdate('cascade')->change();
+            $table->unsignedBigInteger('server_id')->references('id')->on('server')->onDelete('cascade')->onUpdate('cascade')->change();
         });
 
         Schema::table('searched_term_stats', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id')->constrained()->onDelete('cascade')->cascadeOnUpdate('cascade')->change();
+            $table->unsignedBigInteger('user_id')->references('id')->on('user')->onDelete('cascade')->onUpdate('cascade')->change();
         });
 
         Schema::table('showed_release_stats', function (Blueprint $table) {
-            $table->unsignedBigInteger('release_id')->constrained()->onDelete('cascade')->cascadeOnUpdate('cascade')->change();
-            $table->unsignedBigInteger('user_id')->constrained()->onDelete('cascade')->cascadeOnUpdate('cascade')->change();
+            $table->unsignedBigInteger('release_id')->references('id')->on('release')->onDelete('cascade')->onUpdate('cascade')->change();
+            $table->unsignedBigInteger('user_id')->references('id')->on('user')->onDelete('cascade')->onUpdate('cascade')->change();
         });
 
         Schema::table('skipped_track_stats', function (Blueprint $table) {
-            $table->unsignedBigInteger('track_id')->constrained()->onDelete('cascade')->cascadeOnUpdate('cascade')->change();
-            $table->unsignedBigInteger('user_id')->constrained()->onDelete('cascade')->cascadeOnUpdate('cascade')->change();
-            $table->unsignedBigInteger('server_id')->constrained()->onDelete('cascade')->cascadeOnUpdate('cascade')->change();
+            $table->unsignedBigInteger('track_id')->references('id')->on('track')->onDelete('cascade')->onUpdate('cascade')->change();
+            $table->unsignedBigInteger('user_id')->references('id')->on('user')->onDelete('cascade')->onUpdate('cascade')->change();
+            $table->unsignedBigInteger('server_id')->references('id')->on('server')->onDelete('cascade')->onUpdate('cascade')->change();
         });
 
         Schema::table('server_track', function (Blueprint $table) {
-            $table->unsignedBigInteger('server_id')->constrained()->onDelete('cascade')->cascadeOnUpdate('cascade')->change();
-            $table->unsignedBigInteger('track_id')->constrained()->onDelete('cascade')->cascadeOnUpdate('cascade')->change();
+            $table->unsignedBigInteger('server_id')->references('id')->on('server')->onDelete('cascade')->onUpdate('cascade')->change();
+            $table->unsignedBigInteger('track_id')->references('id')->on('track')->onDelete('cascade')->onUpdate('cascade')->change();
         });
 
         Schema::table('server_user', function (Blueprint $table) {
-            $table->unsignedBigInteger('server_id')->constrained()->onDelete('cascade')->cascadeOnUpdate('cascade')->change();
-            $table->unsignedBigInteger('user_id')->constrained()->onDelete('cascade')->cascadeOnUpdate('cascade')->change();
+            $table->unsignedBigInteger('server_id')->references('id')->on('server')->onDelete('cascade')->onUpdate('cascade')->change();
+            $table->unsignedBigInteger('user_id')->references('id')->on('user')->onDelete('cascade')->onUpdate('cascade')->change();
         });
     }
 
@@ -64,46 +64,46 @@ return new class() extends Migration {
     public function down()
     {
         Schema::table('release_groups', function (Blueprint $table) {
-            $table->unsignedBigInteger('artist_id')->constrained()->change();
+            $table->unsignedBigInteger('artist_id')->references('id')->on('artist')->change();
         });
 
         Schema::table('releases', function (Blueprint $table) {
-            $table->unsignedBigInteger('release_group_id')->constrained()->change();
+            $table->unsignedBigInteger('release_group_id')->references('id')->on('release_group')->change();
         });
 
         Schema::table('tracks', function (Blueprint $table) {
-            $table->unsignedBigInteger('release_id')->constrained()->change();
+            $table->unsignedBigInteger('release_id')->references('id')->on('release')->change();
         });
 
         Schema::table('played_track_stats', function (Blueprint $table) {
-            $table->unsignedBigInteger('track_id')->constrained()->change();
-            $table->unsignedBigInteger('user_id')->constrained()->change();
-            $table->unsignedBigInteger('server_id')->constrained()->change();
+            $table->unsignedBigInteger('track_id')->references('id')->on('track')->change();
+            $table->unsignedBigInteger('user_id')->references('id')->on('user')->change();
+            $table->unsignedBigInteger('server_id')->references('id')->on('server')->change();
         });
 
         Schema::table('searched_term_stats', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id')->constrained()->change();
+            $table->unsignedBigInteger('user_id')->references('id')->on('user')->change();
         });
 
         Schema::table('showed_release_stats', function (Blueprint $table) {
-            $table->unsignedBigInteger('release_id')->constrained()->change();
-            $table->unsignedBigInteger('user_id')->constrained()->change();
+            $table->unsignedBigInteger('release_id')->references('id')->on('release')->change();
+            $table->unsignedBigInteger('user_id')->references('id')->on('user')->change();
         });
 
         Schema::table('skipped_track_stats', function (Blueprint $table) {
-            $table->unsignedBigInteger('track_id')->constrained()->change();
-            $table->unsignedBigInteger('user_id')->constrained()->change();
-            $table->unsignedBigInteger('server_id')->constrained()->change();
+            $table->unsignedBigInteger('track_id')->references('id')->on('track')->change();
+            $table->unsignedBigInteger('user_id')->references('id')->on('user')->change();
+            $table->unsignedBigInteger('server_id')->references('id')->on('server')->change();
         });
 
         Schema::table('server_track', function (Blueprint $table) {
-            $table->unsignedBigInteger('server_id')->constrained()->change();
-            $table->unsignedBigInteger('track_id')->constrained()->change();
+            $table->unsignedBigInteger('server_id')->references('id')->on('server')->change();
+            $table->unsignedBigInteger('track_id')->references('id')->on('track')->change();
         });
 
         Schema::table('server_user', function (Blueprint $table) {
-            $table->unsignedBigInteger('server_id')->constrained()->change();
-            $table->unsignedBigInteger('user_id')->constrained()->change();
+            $table->unsignedBigInteger('server_id')->references('id')->on('server')->change();
+            $table->unsignedBigInteger('user_id')->references('id')->on('user')->change();
         });
     }
 };

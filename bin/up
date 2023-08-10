@@ -1,9 +1,9 @@
 #! /bin/bash
 
-# Run this command just after cloning the repo
+# Run this command before start development
 
 set -e
 
-docker-compose up -d
+docker compose up -d
 
-npm run watch
+npm run watch "$@"

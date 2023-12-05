@@ -7,7 +7,6 @@ use App\Models\Release;
 use App\Services\Api\BeetsService;
 use App\Services\Api\CoverArtService;
 use Illuminate\Support\Facades\Storage;
-use Zebra_Image;
 
 /**
  * Class ArtService.
@@ -25,8 +24,8 @@ class ArtService
     ];
 
     public function __construct(
-        private CoverArtService $coverArtService = new CoverArtService())
-    {
+        private CoverArtService $coverArtService = new CoverArtService()
+    ) {
         //
     }
 
@@ -76,7 +75,7 @@ class ArtService
 
     public function minimizeArt(string $source_path, string $target_path, int $height, int $width, int $quality = 80): bool
     {
-        $image = new Zebra_Image();
+        $image = new \Zebra_Image();
 
         $image->source_path = $source_path;
         $image->target_path = $target_path;
@@ -87,7 +86,7 @@ class ArtService
         $image->preserve_aspect_ratio = true;
 
         if (!$image->resize($width, $height)) {
-            return false;
+            throw new \Exception('Failed to resize image: '.$image->error);
         }
 
         return true;

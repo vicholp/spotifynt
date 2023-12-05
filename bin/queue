@@ -4,4 +4,4 @@
 
 set -e
 
-php artisan queue:listen --queue=high,default,low
+./bin/exec php artisan queue:listen --queue=high,default,low

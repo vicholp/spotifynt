@@ -8,6 +8,7 @@ services:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
       PHP_MEMORY_LIMIT: "512M"
       AUTORUN_LARAVEL_STORAGE_LINK: "false"
+      SSL_MODE: "off"
     network_mode: host
 
   db:
@@ -19,5 +20,19 @@ services:
       - db:/var/lib/mysql
     network_mode: host
 
+  beets:
+    build: https://github.com/vicholp/docker-beets.git#master
+    container_name: beets
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    network_mode: host
+    volumes:
+      - ./provision/beets/config.yaml:/config/config.yaml
+      - beet_music:/music
+      - ./provision/beets/music:/music_temp
+
 volumes:
   db:
+  beet_music:

@@ -1,7 +1,9 @@
 <template>
-  <navbar :auth-user="authUser" />
-  <slot />
-  <div class="h-40" />
+  <div>
+    <navbar :auth-user="authUser" />
+    <slot />
+    <div class="h-40" />
+  </div>
 </template>
 <script>
 import Navbar from './navbar.vue';

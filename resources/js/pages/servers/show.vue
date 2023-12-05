@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     async getServer() {
-      this.server = (await ServerApi.show(this.$route.params.id)).data;
+      this.server = (await ServerApi.show(this.$route.params.id)).data.data;
     },
     setActiveServer(server) {
       this.activeServer = server;

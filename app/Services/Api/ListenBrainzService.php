@@ -28,9 +28,9 @@ class ListenBrainzService
 
     public function submitListens(Track $track, Release $release, int $time): void
     {
-        $token = config('services.listenbrainz.key');
+        config('services.listenbrainz.key');
 
-        $this->getHttp()->post($this->base_url.'/1/submit-listens', [
+        $this->getHttp()->post($this->base_url . '/1/submit-listens', [
             'listen_type' => 'single',
             'payload' => [
                 [

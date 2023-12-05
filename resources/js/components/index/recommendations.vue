@@ -13,7 +13,10 @@
           <div
             class="h-full w-full bg-white bg-opacity-10 rounded dark:text-white text-black text-opacity-60 flex items-center justify-evenly font-medium flex-col"
           >
-            <span class="iconify-inline text-4xl" data-icon="mdi:shuffle" />
+            <span
+              class="iconify-inline text-4xl"
+              data-icon="mdi:shuffle"
+            />
             random album
           </div>
         </div>
@@ -36,7 +39,7 @@
 </template>
 <script>
 import RecommendationApi from '../../api/recommendation';
-import Album from '../album';
+import Album from '../album.vue';
 
 export default {
   components: {

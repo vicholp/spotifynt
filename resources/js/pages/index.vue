@@ -17,7 +17,10 @@
       </div>
       <KeepAlive>
         <IndexRecommendations v-if="query.length === 0" />
-        <QueryResults v-else :results="queryResults" />
+        <QueryResults
+          v-else
+          :results="queryResults"
+        />
       </KeepAlive>
     </div>
   </layout>
@@ -25,7 +28,7 @@
 <script>
 
 import { mapState } from 'pinia';
-import IndexRecommendations from '../components/index/recommendations';
+import IndexRecommendations from '@/components/index/recommendations';
 import Layout from '../layouts/main';
 import QueryResults from '../components/index/queryResults.vue';
 import Server from '../components/server.vue';

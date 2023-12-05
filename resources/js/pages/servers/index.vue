@@ -63,6 +63,7 @@
               </div>
               <router-link
                 class="p-2 rounded bg-white dark:bg-opacity-10"
+                :to="`servers/${server.id}`"
               >
                 view
               </router-link>

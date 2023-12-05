@@ -32,7 +32,7 @@
 </template>
 <script>
 
-import Album from '../album';
+import Album from '../album.vue';
 import SpTrack from '../track.vue';
 import AlbumPlaceholder from '../albumPlaceholder.vue';
 

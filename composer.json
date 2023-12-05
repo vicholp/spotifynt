@@ -1,92 +1,87 @@
 {
-    "name": "laravel/laravel",
-    "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
-    "license": "MIT",
-    "require": {
-        "php": "^8.0.2",
-        "doctrine/dbal": "^3.5",
-        "filament/filament": "^2.0",
-        "guzzlehttp/guzzle": "^7.4",
-        "http-interop/http-factory-guzzle": "^1.0",
-        "laravel/fortify": "^1.13",
-        "laravel/framework": "^9.19.0",
-        "laravel/scout": "^9.4",
-        "laravel/telescope": "^4.9",
-        "laravel/tinker": "^2.7",
-        "livewire/livewire": "^2.5",
-        "php-http/guzzle7-adapter": "^1.0",
-        "propaganistas/laravel-phone": "^4.3",
-        "rap2hpoutre/laravel-log-viewer": "^2.2",
-        "sentry/sentry-laravel": "^2.12",
-        "spatie/laravel-activitylog": "^4.5",
-        "spatie/laravel-robots-middleware": "^1.3",
-        "spatie/laravel-settings": "^2.4",
-        "spatie/laravel-sitemap": "^6.2",
-        "spatie/schema-org": "^3.11",
-        "stefangabos/zebra_image": "^2.8",
-        "stephan-strate/php-cover-art-archive-api": "^1.0",
-        "stephan-strate/php-music-brainz-api": "^0.0.2@alpha",
-        "symfony/filesystem": "^6.1",
-        "teamtnt/laravel-scout-tntsearch-driver": "^11.6",
-        "teamtnt/tntsearch": "^2.9",
-        "vinkla/hashids": "^10.0"
-    },
-    "require-dev": {
-        "barryvdh/laravel-ide-helper": "^2.12",
-        "fakerphp/faker": "^1.9.1",
-        "friendsofphp/php-cs-fixer": "^3.10",
-        "getsolaris/laravel-make-service": "^1.1",
-        "laravel/dusk": "^6.24",
-        "laravel/sail": "^1.0.1",
-        "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^6.1",
-        "nunomaduro/larastan": "^2.1",
-        "pestphp/pest": "^1.21",
-        "pestphp/pest-plugin-faker": "^1.0",
-        "pestphp/pest-plugin-laravel": "^1.2",
-        "pestphp/pest-plugin-mock": "^1.0",
-        "phpstan/phpstan": "^1.7",
-        "phpunit/phpunit": "^9.5.10",
-        "spatie/laravel-ignition": "^1.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "App\\": "app/",
-            "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "tests/"
-        }
-    },
-    "scripts": {
-        "post-autoload-dump": [
-            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
-        ],
-        "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
-            "@php artisan filament:upgrade"
-        ]
-    },
-    "extra": {
-        "laravel": {
-            "dont-discover": [
-            ]
-        }
-    },
-    "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-packages": true,
-        "allow-plugins": {
-            "pestphp/pest-plugin": true
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+  "name": "laravel/laravel",
+  "type": "project",
+  "description": "The Laravel Framework.",
+  "keywords": [
+    "framework",
+    "laravel"
+  ],
+  "license": "MIT",
+  "require": {
+    "php": "^7.3|^8.0",
+    "beyondcode/laravel-server-timing": "*",
+    "guzzlehttp/guzzle": "^7.7",
+    "laravel/dusk": "^7.8.0",
+    "laravel/fortify": "^1.17.4",
+    "laravel/framework": "^10.15.0",
+    "laravel/scout": "^10.2.3",
+    "laravel/telescope": "^4.15.2",
+    "laravel/tinker": "^2.8.1",
+    "maatwebsite/excel": "^3.1.48",
+    "rap2hpoutre/laravel-log-viewer": "^2.3",
+    "sentry/sentry-laravel": "^3.6.1",
+    "spatie/laravel-medialibrary": "^10.10.1",
+    "spatie/laravel-model-states": "^2.4.6",
+    "spatie/laravel-robots-middleware": "^1.3.2",
+    "stefangabos/zebra_image": "^2.8",
+    "symfony/filesystem": "^6.3.1",
+    "teamtnt/laravel-scout-tntsearch-driver": "^v13",
+    "teamtnt/tntsearch": "^v4.0.1"
+  },
+  "require-dev": {
+    "barryvdh/laravel-ide-helper": "^2.13",
+    "emielmolenaar/phpcs-laravel": "^2.1",
+    "fakerphp/faker": "^1.23.0",
+    "friendsofphp/php-cs-fixer": "^3.21.1",
+    "getsolaris/laravel-make-service": "^1.1.1",
+    "mockery/mockery": "^1.6.2",
+    "nunomaduro/collision": "^7.7",
+    "nunomaduro/larastan": "^2.6.3",
+    "pestphp/pest": "^2.8.3",
+    "pestphp/pest-plugin-faker": "^2.0",
+    "pestphp/pest-plugin-laravel": "^2.0",
+    "pestphp/pest-plugin-watch": "^2.0",
+    "phpstan/phpstan": "^1.10.25",
+    "slevomat/coding-standard": "^8.13.1",
+    "spatie/laravel-ignition": "^2.2",
+    "squizlabs/php_codesniffer": "^3.7.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/",
+      "Database\\Factories\\": "database/factories/",
+      "Database\\Seeders\\": "database/seeders/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "post-autoload-dump": [
+      "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+      "@php artisan package:discover --ansi"
+    ],
+    "post-update-cmd": [
+      "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+    ]
+  },
+  "extra": {
+    "laravel": {
+      "dont-discover": []
+    }
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "allow-plugins": {
+      "pestphp/pest-plugin": true,
+      "php-http/discovery": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
 }

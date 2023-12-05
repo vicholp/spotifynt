@@ -128,7 +128,7 @@
 </template>
 <script>
 
-import Layout from '../layouts/main';
+import Layout from '../layouts/main.vue';
 
 import playerStore from '../store/player';
 

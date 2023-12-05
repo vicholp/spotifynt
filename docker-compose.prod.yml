@@ -13,7 +13,13 @@ services:
     networks:
       - traefik
       - default
-    command: ["su", "webuser", "-c", "php artisan queue:work --tries=3 --queue=high,default,low"]
+    command:
+      [
+        "su",
+        "webuser",
+        "-c",
+        "php artisan queue:work --tries=3 --queue=high,default,low"
+      ]
     environment:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
       PHP_MEMORY_LIMIT: 512M
@@ -23,6 +29,7 @@ services:
     restart: unless-stopped
 
   db:
+    container_name: ${APP_NAME}-${APP_ACTUAL_ENV}-db
     image: percona:5.7-centos
     networks:
       - default

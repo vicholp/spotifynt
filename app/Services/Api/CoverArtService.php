@@ -3,7 +3,6 @@
 namespace App\Services\Api;
 
 use App\Models\Release;
-use GdImage;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
@@ -17,7 +16,7 @@ class CoverArtService
 
     private int $cache_time = 60 * 60 * 24 * 28; // 28 [days]
 
-    public function getArt(Release $release, ?BeetsService $beetsService): GdImage|false
+    public function getArt(Release $release, ?BeetsService $beetsService): \GdImage|false
     {
         $url = Cache::remember('ca_'.$release->mb_release_id.'_urlaa', $this->cache_time, function () use ($release, $beetsService) {
             if ($beetsService) {

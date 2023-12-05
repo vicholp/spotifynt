@@ -2,7 +2,10 @@
   <div
     :class="`fixed bottom-0 w-full bg-[#EFEFEF] dark:bg-[#101010]`"
   >
-    <div class="bg-white dark:bg-opacity-5 p-2" hidden />
+    <div
+      class="bg-white dark:bg-opacity-5 p-2"
+      hidden
+    />
     <div
       :class="`bg-white ${color === false ? 'bg-opacity-100' : 'bg-opacity-5'}`"
     >
@@ -25,7 +28,7 @@
               <div
                 v-if="loaded"
                 :style="`background-image: url(&quot;${actual.release.art[75]}&quot;);`"
-                class="h-14 bg-cover rounded shadow aspect-square"
+                class="h-14 bg-cover rounded shadow aspect-1"
               />
               <div
                 v-else

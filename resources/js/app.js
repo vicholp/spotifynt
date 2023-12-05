@@ -2,16 +2,11 @@ import { createApp } from 'vue';
 // eslint-disable-next-line no-unused-vars
 import Iconify from '@iconify/iconify';
 
-import Toast from "vue-toastification";
-// Import the CSS or use your own!
-import "vue-toastification/dist/index.css";
-
 import { createRouter, createWebHashHistory } from 'vue-router';
 
 import { camelizeKeys } from 'humps';
 
 import * as Sentry from '@sentry/vue';
-import { Integrations } from '@sentry/tracing';
 
 import i18n from './locales';
 import pinia from './store';
@@ -19,7 +14,6 @@ import pinia from './store';
 import AudioPlayer from './components/player.vue';
 import PlayerTray from './components/tray.vue';
 import Index from './pages/index.vue';
-
 
 import ServersIndex from './pages/servers/index.vue';
 import ServersCreate from './pages/servers/create.vue';
@@ -34,6 +28,11 @@ import Playlist from './pages/playlist.vue';
 import Playlists from './pages/playlists.vue';
 
 const app = createApp();
+
+import.meta.glob([
+  '../../resources/images/**',
+  '../../resources/fonts/**',
+]);
 
 const routes = [
   { path: '/', component: Index, props: true },
@@ -59,22 +58,20 @@ const router = createRouter({
 
 Sentry.init({
   app,
-  dsn: process.env.SENTRY_DSN || null,
-  environment: process.env.SENTRY_ENVIRONMENT,
+  dsn: import.meta.env.VITE_SENTRY_DSN || null,
+  environment: import.meta.env.VITE_SENTRY_ENVIRONMENT,
   integrations: [
-    new Integrations.BrowserTracing({
+    new Sentry.BrowserTracing({
       routingInstrumentation: Sentry.vueRouterInstrumentation(router),
     }),
   ],
-  sampleRate: process.env.SENTRY_SAMPLE_RATE || false,
-  tracesSampleRate: process.env.SENTRY_TRACES_SAMPLE_RATE || false,
-  trackComponents: true,
+  sampleRate: import.meta.env.VITE_SENTRY_SAMPLE_RATE || false,
+  tracesSampleRate: import.meta.env.VITE_SENTRY_TRACES_SAMPLE_RATE || false,
 });
 
 app.use(i18n);
 app.use(pinia);
 app.use(router);
-app.use(Toast);
 
 app.config.globalProperties.$filters = {
   camelizeKeys,

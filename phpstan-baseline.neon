@@ -1,0 +1,216 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ArtistController\\:\\:destroy\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ArtistController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ArtistController\\:\\:index\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ArtistController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ArtistController\\:\\:show\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ArtistController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ArtistController\\:\\:store\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ArtistController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ArtistController\\:\\:update\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ArtistController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ReleaseController\\:\\:destroy\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ReleaseController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ReleaseController\\:\\:index\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ReleaseController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ReleaseController\\:\\:store\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ReleaseController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ReleaseController\\:\\:update\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ReleaseController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ReleaseGroupController\\:\\:destroy\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ReleaseGroupController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ReleaseGroupController\\:\\:index\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ReleaseGroupController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ReleaseGroupController\\:\\:show\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ReleaseGroupController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ReleaseGroupController\\:\\:store\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ReleaseGroupController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ReleaseGroupController\\:\\:update\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ReleaseGroupController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ServerController\\:\\:destroy\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ServerController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ServerController\\:\\:store\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ServerController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ServerController\\:\\:update\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ServerController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ServerReleaseController\\:\\:destroy\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ServerReleaseController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ServerReleaseController\\:\\:index\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ServerReleaseController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ServerReleaseController\\:\\:show\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ServerReleaseController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ServerReleaseController\\:\\:store\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ServerReleaseController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ServerReleaseController\\:\\:update\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ServerReleaseController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ServerTrackController\\:\\:destroy\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ServerTrackController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ServerTrackController\\:\\:index\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ServerTrackController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ServerTrackController\\:\\:store\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ServerTrackController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ServerTrackController\\:\\:update\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ServerTrackController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\TrackController\\:\\:destroy\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/TrackController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\TrackController\\:\\:store\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/TrackController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\TrackController\\:\\:update\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/TrackController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\UserController\\:\\:destroy\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/UserController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\UserController\\:\\:index\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/UserController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\UserController\\:\\:show\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/UserController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\UserController\\:\\:store\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/UserController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\UserController\\:\\:update\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/UserController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\UserServerController\\:\\:destroy\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/UserServerController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\UserServerController\\:\\:show\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/UserServerController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\UserServerController\\:\\:update\\(\\) should return Illuminate\\\\Http\\\\Response but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/UserServerController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Resources\\\\ArtistSimpleCollection\\:\\:toArray\\(\\) return type with generic interface Illuminate\\\\Contracts\\\\Support\\\\Arrayable does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: app/Http/Resources/ArtistSimpleCollection.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Resources\\\\ArtistSimpleResource\\:\\:toArray\\(\\) return type with generic interface Illuminate\\\\Contracts\\\\Support\\\\Arrayable does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: app/Http/Resources/ArtistSimpleResource.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Resources\\\\ReleaseSimpleCollection\\:\\:toArray\\(\\) return type with generic interface Illuminate\\\\Contracts\\\\Support\\\\Arrayable does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: app/Http/Resources/ReleaseSimpleCollection.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Resources\\\\ReleaseSimpleResource\\:\\:toArray\\(\\) return type with generic interface Illuminate\\\\Contracts\\\\Support\\\\Arrayable does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: app/Http/Resources/ReleaseSimpleResource.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Resources\\\\ServerResource\\:\\:toArray\\(\\) return type with generic interface Illuminate\\\\Contracts\\\\Support\\\\Arrayable does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: app/Http/Resources/ServerResource.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Resources\\\\TrackCollection\\:\\:toArray\\(\\) return type with generic interface Illuminate\\\\Contracts\\\\Support\\\\Arrayable does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: app/Http/Resources/TrackCollection.php

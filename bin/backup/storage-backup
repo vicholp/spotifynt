@@ -1,0 +1,23 @@
+#! /bin/bash
+
+APP="$(./bin/dotenv get APP_NAME)"
+
+if [ -z "$APP" ]
+then
+    echo "APP_NAME is not set"
+    exit 1
+fi
+
+if [ -z "$1" ]
+then
+    BACKUP_PATH="backups"
+else
+    BACKUP_PATH="$1"
+fi
+
+DATE=$(date +%Y-%m-%d_%H-%M-%S)
+FILE="$BACKUP_PATH/$APP/storage-app_$DATE.tar.gz"
+
+mkdir -p "$BACKUP_PATH/$APP"
+
+tar -czf "$FILE" storage/app

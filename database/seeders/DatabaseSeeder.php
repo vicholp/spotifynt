@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Server;
+use App\Models\Track;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,13 +15,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Artist::factory(10)
-            ->has(\App\Models\Album::factory()
-                ->count(rand(1,20))
-                ->has(\App\Models\Track::factory()
-                    ->count(rand(4,25))
-                    )
-                )
-            ->create();
+        Server::factory(3)->create();
+
+        Track::factory(20)->create();
     }
 }

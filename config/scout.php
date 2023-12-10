@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Search Engine
@@ -11,7 +10,7 @@ return [
     | using Laravel Scout. This connection is used when syncing all models
     | to the search service. You should adjust this based on your needs.
     |
-    | Supported: "algolia", "meilisearch", "collection", "null"
+    | Supported: "algolia", "meilisearch", "database", "collection", "null"
     |
     */
 
@@ -68,8 +67,8 @@ return [
     */
 
     'chunk' => [
-        'searchable' => 1,
-        'unsearchable' => 1,
+        'searchable' => 500,
+        'unsearchable' => 500,
     ],
 
     /*
@@ -134,8 +133,17 @@ return [
         'key' => env('MEILISEARCH_KEY', null),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Tntsearch Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure your Tntsearch settings.
+    |
+    */
+
     'tntsearch' => [
-        'storage'  => storage_path('app/tntsearch'),
+        'storage' => storage_path('app/tntsearch'),
         'fuzziness' => env('TNTSEARCH_FUZZINESS', true),
         'fuzzy' => [
             'prefix_length' => 2,
@@ -143,8 +151,7 @@ return [
             'distance' => 2,
         ],
         'asYouType' => true,
-        'searchBoolean' => env('TNTSEARCH_BOOLEAN', false),
+        'searchBoolean' => env('TNTSEARCH_BOOLEAN', true),
         'maxDocs' => env('TNTSEARCH_MAX_DOCS', 500),
     ],
-
 ];

@@ -15,13 +15,12 @@ class ArtistController extends Controller
      */
     public function index()
     {
-        Artist::get();
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -32,7 +31,6 @@ class ArtistController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Artist  $artist
      * @return \Illuminate\Http\Response
      */
     public function show(Artist $artist)
@@ -43,8 +41,6 @@ class ArtistController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Artist  $artist
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Artist $artist)
@@ -55,7 +51,6 @@ class ArtistController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Artist  $artist
      * @return \Illuminate\Http\Response
      */
     public function destroy(Artist $artist)

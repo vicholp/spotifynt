@@ -1,34 +1,32 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8"/>
 
-    @include('main.template.tag-manager')
+<head>
+    <meta charset="utf-8" />
 
-    <title>Spotifynt</title>
+    <title></title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#4d3077">
-    <meta name="description" content="@yield('meta_desc')">
-    <meta name="robots" content="@yield('meta_robots')">
+    <meta name="theme-color" content="">
+    <meta name="robots" content="noindex, nofollow" />
     <link rel="canonical" href="{{ Request::url() }}">
     {!! \Sentry\Laravel\Integration::sentryTracingMeta() !!}
 
-    <link rel="stylesheet" href="{{ mix('css/app.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'], 'build')
 
     @stack('import_head')
-  </head>
-  <body class="min-h-screen bg-gray-100">
-    @include('main.template.tag-manager-noscript')
+</head>
 
-    <div id="app" class="h-full">
-      @yield('content')
+<body class="bg-[#EFEFEF] dark:text-white dark:bg-[#101010]">
+    <div id="app">
+        @yield('content')
     </div>
 
-    <script defer src="{{mix('/js/manifest.js')}}"></script>
-    <script defer src="{{mix('/js/vendor.js')}}"></script>
-    <script defer src="{{mix('/js/app.js')}}"></script>
-
     @stack('import_foot')
-  </body>
+</body>
+
 </html>

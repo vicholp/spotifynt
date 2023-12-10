@@ -2,30 +2,25 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Track;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @mixin Track */
 class TrackSimpleResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @param \Illuminate\Http\Request $request
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'beets_id' => $this->beets_id,
-            'album' => [
-                'id' => $this->album->id,
-                'name' => $this->album->name,
-                'beets_id' => $this->album->beets_id,
-            ],
-            'artist' => [
-                'id' => $this->artist->id,
-                'name' => $this->artist->name,
+            'title' => $this->title,
+            'release' => [
+                'id' => $this->release->id,
+                'title' => $this->release->title,
             ],
         ];
     }

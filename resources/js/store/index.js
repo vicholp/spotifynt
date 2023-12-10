@@ -1,20 +1,8 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import VuexPersistence from 'vuex-persist';
-import player from './modules/player';
-import server from './modules/server';
+import { createPinia } from 'pinia';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 
-Vue.use(Vuex);
+const pinia = createPinia({});
 
-const vuexLocal = new VuexPersistence({
-  storage: window.localStorage,
-  key: 'vuex-spotifynt',
-});
+pinia.use(piniaPluginPersistedstate);
 
-export default new Vuex.Store({
-  modules: {
-    player,
-    server,
-  },
-  plugins: [vuexLocal.plugin],
-});
+export default pinia;

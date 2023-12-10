@@ -2,39 +2,50 @@
   "name": "laravel/laravel",
   "type": "project",
   "description": "The Laravel Framework.",
-  "keywords": ["framework", "laravel"],
+  "keywords": [
+    "framework",
+    "laravel"
+  ],
   "license": "MIT",
   "require": {
     "php": "^7.3|^8.0",
-    "beyondcode/laravel-server-timing": "^1.3",
-    "biscolab/laravel-recaptcha": "^5.2",
-    "fruitcake/laravel-cors": "^2.0",
-    "guzzlehttp/guzzle": "^7.0.1",
-    "laravel/framework": "^8.54",
-    "laravel/scout": "^9.3",
-    "laravel/slack-notification-channel": "^2.3",
-    "laravel/tinker": "^2.5",
-    "lorisleiva/laravel-search-string": "^1.1",
-    "maatwebsite/excel": "^3.1",
-    "rap2hpoutre/laravel-log-viewer": "^1.7",
-    "sentry/sentry-laravel": "^2.8",
-    "spatie/laravel-robots-middleware": "^1.3",
-    "spatie/laravel-sitemap": "^5.9",
-    "spatie/schema-org": "^3.8",
-    "teamtnt/laravel-scout-tntsearch-driver": "^11.5",
-    "tightenco/ziggy": "^1.4"
+    "beyondcode/laravel-server-timing": "*",
+    "guzzlehttp/guzzle": "^7.7",
+    "laravel/dusk": "^7.8.0",
+    "laravel/fortify": "^1.17.4",
+    "laravel/framework": "^10.15.0",
+    "laravel/scout": "^10.2.3",
+    "laravel/telescope": "^4.15.2",
+    "laravel/tinker": "^2.8.1",
+    "maatwebsite/excel": "^3.1.48",
+    "rap2hpoutre/laravel-log-viewer": "^2.3",
+    "sentry/sentry-laravel": "^3.6.1",
+    "spatie/laravel-medialibrary": "^10.10.1",
+    "spatie/laravel-model-states": "^2.4.6",
+    "spatie/laravel-robots-middleware": "^1.3.2",
+    "stefangabos/zebra_image": "^2.8",
+    "symfony/filesystem": "^6.3.1",
+    "teamtnt/laravel-scout-tntsearch-driver": "^v13",
+    "teamtnt/tntsearch": "^v4.0.1"
   },
-"require-dev": {
-    "barryvdh/laravel-ide-helper": "^2.10",
-    "facade/ignition": "^2.5",
-    "fakerphp/faker": "^1.9.1",
-    "getsolaris/laravel-make-service": "^1.0",
-    "laravel/dusk": "^6.17",
-    "laravel/telescope": "^4.6",
-    "mockery/mockery": "^1.4.2",
-    "nunomaduro/collision": "^5.0",
-    "phpunit/phpunit": "^9.3.3"
-},
+  "require-dev": {
+    "barryvdh/laravel-ide-helper": "^2.13",
+    "emielmolenaar/phpcs-laravel": "^2.1",
+    "fakerphp/faker": "^1.23.0",
+    "friendsofphp/php-cs-fixer": "^3.21.1",
+    "getsolaris/laravel-make-service": "^1.1.1",
+    "mockery/mockery": "^1.6.2",
+    "nunomaduro/collision": "^7.7",
+    "nunomaduro/larastan": "^2.6.3",
+    "pestphp/pest": "^2.8.3",
+    "pestphp/pest-plugin-faker": "^2.0",
+    "pestphp/pest-plugin-laravel": "^2.0",
+    "pestphp/pest-plugin-watch": "^2.0",
+    "phpstan/phpstan": "^1.10.25",
+    "slevomat/coding-standard": "^8.13.1",
+    "spatie/laravel-ignition": "^2.2",
+    "squizlabs/php_codesniffer": "^3.7.2"
+  },
   "autoload": {
     "psr-4": {
       "App\\": "app/",
@@ -53,27 +64,24 @@
       "@php artisan package:discover --ansi"
     ],
     "post-update-cmd": [
-      "@php artisan vendor:publish --tag=laravel-assets --ansi"
-    ],
-    "post-root-package-install": [
-      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-    ],
-    "post-create-project-cmd": [
-      "@php artisan key:generate --ansi"
+      "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
     ]
   },
   "extra": {
     "laravel": {
-      "dont-discover": [
-        "laravel/telescope"
-      ]
+      "dont-discover": []
     }
   },
   "config": {
     "optimize-autoloader": true,
     "preferred-install": "dist",
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "pestphp/pest-plugin": true,
+      "php-http/discovery": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   },
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "prefer-stable": true
 }

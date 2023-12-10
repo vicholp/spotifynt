@@ -1,53 +1,83 @@
-/* eslint-disable no-magic-numbers */
-import Vue from 'vue';
+import { createApp } from 'vue';
 // eslint-disable-next-line no-unused-vars
 import Iconify from '@iconify/iconify';
 
-import * as Sentry from '@sentry/vue';
-import { Integrations } from '@sentry/tracing';
+import { createRouter, createWebHashHistory } from 'vue-router';
 
 import { camelizeKeys } from 'humps';
 
-import Index from './components/index.vue';
-import Player from './components/layout/player/main.vue';
-import VNavbar from './components/layout/navbar.vue';
-import QueryIndex from './components/query/index.vue';
+import * as Sentry from '@sentry/vue';
 
 import i18n from './locales';
-import store from './store';
+import pinia from './store';
 
-Vue.filter('camelizeKeys', camelizeKeys);
+import AudioPlayer from './components/player.vue';
+import PlayerTray from './components/tray.vue';
+import Index from './pages/index.vue';
 
-// credit to @Bill Criswell for this filter
-Vue.filter('truncate', (text, stop, clamp) => text.slice(0, stop) + (stop < text.length ? clamp || '...' : ''));
+import ServersIndex from './pages/servers/index.vue';
+import ServersCreate from './pages/servers/create.vue';
+// import ServersEdit from './pages/servers/edit.vue';
+import ServersShow from './pages/servers/show.vue';
+
+import Player from './pages/player.vue';
+import Artist from './pages/artist.vue';
+import Album from './pages/album.vue';
+import Track from './pages/track.vue';
+import Playlist from './pages/playlist.vue';
+import Playlists from './pages/playlists.vue';
+
+const app = createApp();
+
+import.meta.glob([
+  '../../resources/images/**',
+  '../../resources/fonts/**',
+]);
+
+const routes = [
+  { path: '/', component: Index, props: true },
+
+  { path: '/servers', component: ServersIndex, props: true },
+  { path: '/servers/create', component: ServersCreate, props: true },
+  { path: '/servers/:id', component: ServersShow, props: true },
+  // { path: '/server/:id/edit', component: ServersEdit, props: true },
+
+  { path: '/player', component: Player, props: true },
+  { path: '/artist/:id', component: Artist, props: true },
+  { path: '/album/:id', component: Album, props: true },
+  { path: '/track/:id', component: Track, props: true },
+  { path: '/playlist/:id', component: Playlist, props: true },
+  { path: '/playlists', component: Playlists, props: true },
+];
+
+const router = createRouter({
+  // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
+  history: createWebHashHistory('/player/'),
+  routes, // short for `routes: routes`
+});
 
 Sentry.init({
-  Vue,
-  dsn: process.env.SENTRY_DSN || null,
-  environment: process.env.SENTRY_ENVIRONMENT,
+  app,
+  dsn: import.meta.env.VITE_SENTRY_DSN || null,
+  environment: import.meta.env.VITE_SENTRY_ENVIRONMENT,
   integrations: [
-    new Integrations.BrowserTracing(),
+    new Sentry.BrowserTracing({
+      routingInstrumentation: Sentry.vueRouterInstrumentation(router),
+    }),
   ],
-  sampleRate: process.env.SENTRY_SAMPLE_RATE || false,
-  tracesSampleRate: process.env.SENTRY_TRACES_SAMPLE_RATE || false,
+  sampleRate: import.meta.env.VITE_SENTRY_SAMPLE_RATE || false,
+  tracesSampleRate: import.meta.env.VITE_SENTRY_TRACES_SAMPLE_RATE || false,
 });
 
-// eslint-disable-next-line max-statements
-document.addEventListener('DOMContentLoaded', () => {
-  if (document.getElementById('app') !== null) {
-    Vue.component('Index', Index);
-    Vue.component('Player', Player);
-    Vue.component('VNavbar', VNavbar);
-    Vue.component('QueryIndex', QueryIndex);
+app.use(i18n);
+app.use(pinia);
+app.use(router);
 
-    const app = new Vue({
-      el: '#app',
-      store,
-      i18n,
-    });
+app.config.globalProperties.$filters = {
+  camelizeKeys,
+};
 
-    return app;
-  }
+app.component('AudioPlayer', AudioPlayer);
+app.component('PlayerTray', PlayerTray);
 
-  return false;
-});
+app.mount('#app');

@@ -4,36 +4,42 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Searchable;
 
 /**
- * App\Models\Artist
+ * App\Models\Artist.
  *
- * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property string $mb_id
- * @property string $name
- * @property string|null $country
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Album[] $albums
- * @property-read int|null $albums_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Track[] $tracks
- * @property-read int|null $tracks_count
- * @method static \Database\Factories\ArtistFactory factory(...$parameters)
+ * @property int                                                                 $id
+ * @property string                                                              $name
+ * @property string                                                              $type
+ * @property string                                                              $country
+ * @property string                                                              $mb_artist_id
+ * @property mixed                                                               $mb_data
+ * @property \Illuminate\Support\Carbon|null                                     $created_at
+ * @property \Illuminate\Support\Carbon|null                                     $updated_at
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\ReleaseGroup[] $releaseGroups
+ * @property int|null                                                            $release_groups_count
+ *
+ * @method static \Database\Factories\ArtistFactory            factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Artist newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Artist newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Artist query()
  * @method static \Illuminate\Database\Eloquent\Builder|Artist whereCountry($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Artist whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Artist whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Artist whereMbId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artist whereMbArtistId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artist whereMbData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Artist whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artist whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Artist whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Artist extends Model
 {
-    use HasFactory, Searchable;
+    use HasFactory;
+    use Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -41,10 +47,20 @@ class Artist extends Model
      * @var string[]
      */
     protected $fillable = [
-        'mb_id',
+        'mb_artist_id',
         'name',
+        'type',
         'country',
+        'mb_data',
     ];
+
+    /**
+     * @return HasMany<ReleaseGroup>
+     */
+    public function releaseGroups()
+    {
+        return $this->hasMany(ReleaseGroup::class);
+    }
 
     /**
      * Get the indexable data array for the model.
@@ -55,19 +71,7 @@ class Artist extends Model
     {
         return [
             'id' => $this->id,
-
             'name' => $this->name,
-            'contry' => $this->country,
         ];
-    }
-
-    public function albums()
-    {
-        return $this->hasMany(Album::class);
-    }
-
-    public function tracks()
-    {
-        return $this->hasManyThrough(Track::class, Album::class);
     }
 }

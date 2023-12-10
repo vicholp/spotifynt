@@ -2,27 +2,26 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Track;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @mixin Track */
 class TrackResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @param \Illuminate\Http\Request $request
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'beets_id' => $this->beets_id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'played' => $this->playedTrackStats()->count(),
-            'album' => $this->album,
-            'artist' => $this->artist,
+            'title' => $this->title,
+            'release' => new ReleaseSimpleResource($this->release),
+            'server_track' => $this->whenPivotLoaded('server_track', function () {
+                return $this->pivot; // @phpstan-ignore-line
+            }),
         ];
     }
 }

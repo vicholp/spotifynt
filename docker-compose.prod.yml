@@ -8,36 +8,47 @@ services:
     volumes:
       - .:/var/www/html
     labels:
+      - "traefik.enable=true"
       - "traefik.docker.network=traefik"
       - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}.rule=Host(`${TRAEFIK_HOST}`)"
     networks:
       - traefik
       - default
-    command:
-      [
-        "su",
-        "webuser",
-        "-c",
-        "php artisan queue:work --tries=3 --queue=high,default,low"
-      ]
     environment:
+      AUTORUN_ENABLED: "false"
       APACHE_DOCUMENT_ROOT: /var/www/html/public
-      PHP_MEMORY_LIMIT: 512M
-      AUTORUN_LARAVEL_STORAGE_LINK: false
+      PHP_MEMORY_LIMIT: "1G"
       PHP_DISPLAY_ERRORS: false
       PHP_MAX_EXECUTION_TIME: 300
+      SSL_MODE: "off"
+      PUID: 1000
+      PGID: 1000
     restart: unless-stopped
+
+  queue:
+    image: serversideup/php:8.1-cli
+    volumes:
+      - .:/var/www/html
+    command: ["su", "webuser", "-c", "php artisan queue:listen --queue=high,default,low"]
+    networks:
+      - default
+    environment:
+      PHP_MEMORY_LIMIT: "1G"
+      PHP_DISPLAY_ERRORS: false
+      PHP_MAX_EXECUTION_TIME: 300
+      PUID: 1000
+      PGID: 1000
 
   db:
     container_name: ${APP_NAME}-${APP_ACTUAL_ENV}-db
-    image: percona:5.7-centos
+    image: mariadb:10.6.16
     networks:
       - default
     ports:
       - 3306
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MARIADB_DATABASE: ${DB_DATABASE}
+      MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db:/var/lib/mysql
     restart: unless-stopped

@@ -54,25 +54,40 @@ class SynchronizationService
         Track::makeAllSearchable();
     }
 
-    public function syncAlbumFromBeets(BeetsService $beets, Server $server, string $mb_id, string $beets_album_id): void
+    public function syncAlbumFromBeets(BeetsService $beets, Server $server, string $mbId, string $beetsAlbumId): void
     {
-        if (empty($mb_id)) {
+        if (empty($mbId)) {
             return;
         }
 
-        $release = $this->syncRelease($mb_id);
+        $release = $this->syncRelease($mbId);
 
-        $beets_tracks = $beets->getTracksFromAlbum($beets_album_id);
+        $beetsTracks = $beets->getTracksFromAlbum($beetsAlbumId);
 
         SyncArtJob::dispatch($release, $server)->onQueue('low');
 
-        foreach ($beets_tracks as $beets_track) {
-            $track = $this->syncTrack($release, $beets_track['mb_releasetrackid']);
-            $server->tracks()->attach($track, [
-                'path' => $beets_track['path'],
-                'beets_id' => $beets_track['id'],
-            ]);
+        foreach ($beetsTracks as $beetsTrack) {
+            $track = $this->syncTrack($release, $beetsTrack['mb_releasetrackid']);
+
+            $this->attachTrackToServer($server, $track, $beetsTrack['path'], $beetsTrack['id']);
         }
+    }
+
+    private function attachTrackToServer(Server $server, Track $track, string $path, string $beetsId): void
+    {
+        // Migration purposes, a server can not have the same track twice
+        if ($server->tracks()->where('track_id', $track->id)->count() > 1) {
+            $server->tracks()->where('track_id', $track->id)->delete();
+        }
+
+        if ($server->tracks()->where('track_id', $track->id)->exists()) {
+            return;
+        }
+
+        $server->tracks()->attach($track, [
+            'path' => $path,
+            'beets_id' => $beetsId,
+        ]);
     }
 
     public function syncTrack(Release $release, string $trackId): Track

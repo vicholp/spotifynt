@@ -6,7 +6,7 @@
           <div
             v-if="playerStore.currentTrack.title != null"
             :style="`background-image: url(&quot;${playerStore.currentTrack.release.art[250]}&quot;);`"
-            class="bg-cover rounded-l aspect-square dark:opacity-90"
+            class="bg-cover rounded-l aspect-1 dark:opacity-90"
           />
           <div
             v-else

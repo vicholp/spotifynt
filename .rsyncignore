@@ -8,10 +8,11 @@
 /public/.htaccess
 /public/.user.ini
 /public/php.ini
+/public/art
+/public/storage
 /storage/app/**
 /storage/framework/**
 /storage/logs/**
 /tests/
 /.env
 /.htaccess
-

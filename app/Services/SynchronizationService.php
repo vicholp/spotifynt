@@ -24,19 +24,6 @@ class SynchronizationService
         //
     }
 
-    private function searchRecordingInRelease(Release $release, string $id): array|false
-    {
-        $data = json_decode($release->mb_data, true)['media'][0]['tracks'];
-
-        foreach ($data as $track) {
-            if ($track['recording']['id'] == $id) {
-                return $track;
-            }
-        }
-
-        return false;
-    }
-
     public function syncServer(Server $server): void
     {
         $beets = new BeetsService($server);
@@ -80,7 +67,7 @@ class SynchronizationService
         SyncArtJob::dispatch($release, $server)->onQueue('low');
 
         foreach ($beets_tracks as $beets_track) {
-            $track = $this->syncTrack($release, $beets_track['mb_trackid']);
+            $track = $this->syncTrack($release, $beets_track['mb_releasetrackid']);
             $server->tracks()->attach($track, [
                 'path' => $beets_track['path'],
                 'beets_id' => $beets_track['id'],
@@ -88,16 +75,34 @@ class SynchronizationService
         }
     }
 
-    public function syncTrack(Release $release, string $id): Track
+    public function syncTrack(Release $release, string $trackId): Track
     {
-        $recording = $this->musicBrainzService->getRecording($id);
+        $mbTrack = $this->musicBrainzService->getTrack($release->mb_release_id, $trackId);
+        $recordingId = $mbTrack['recording']['id'];
+
+        $recording = $this->musicBrainzService->getRecording($recordingId);
+
+        $track = Track::whereMbRecordingId($recordingId)
+            ->whereMbTrackId(null)->first();
+
+        if ($track) {
+            $track->update([
+                'mb_track_id' => $mbTrack['id'],
+                'mb_data' => json_encode($mbTrack),
+            ]);
+
+
+            return $track;
+        }
 
         $track = Track::updateOrCreate([
-            'mb_recording_id' => $recording['id'],
+            'mb_track_id' => $mbTrack['id'],
         ], [
             'title' => $recording['title'],
+            'track_position' => $mbTrack['position'],
             'release_id' => $release->id,
-            'mb_data' => json_encode($recording),
+            'mb_recording_id' => $recordingId,
+            'mb_data' => json_encode($mbTrack),
         ]);
 
         return $track;

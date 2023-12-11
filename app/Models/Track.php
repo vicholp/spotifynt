@@ -83,6 +83,8 @@ class Track extends Model
         'mb_recording_id',
         'title',
         'mb_data',
+        'track_position',
+        'mb_track_id',
     ];
 
     /**

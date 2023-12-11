@@ -21,15 +21,28 @@ export default {
     this.playlistAddTrack(track);
   },
 
-  async playlistAddAlbum(albumId) {
-    const album = (await ReleaseApi.show(albumId)).data.data;
+  async playlistAddRelease(releaseId) {
+    const release = (await ReleaseApi.show(releaseId)).data.data;
+    const serverStore = ServerStore();
+    const serverId = serverStore.activeServer.id;
 
-    album.tracks.forEach(track => {
-      this.playlistAddTrackById(track.id);
-    });
+    // first add the first track to the playlist,
+    // for performance reasons
+    let firstTrackId = release.tracks[0].id;
+    this.playlistAddTrack(
+      (await ServerTrackApi.show(serverId, firstTrackId)).data.data,
+    );
+
+    // then add the rest of the tracks in a async loop
+    for (let i = 1; i < release.tracks.length; i++) {
+      let track = release.tracks[i];
+      this.playlistAddTrack(
+        (await ServerTrackApi.show(serverId, track.id)).data.data,
+      );
+    }
 
     const messagesStore = MessagesStore();
-    messagesStore.addedTracks(album.tracks.length);
+    messagesStore.addedTracks(release.tracks.length);
   },
 
   async playlistSetIndex(int, relative) {

@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     addAlbum(albumId) {
-      this.playerStore.playlistAddAlbum(albumId);
+      this.playerStore.playlistAddRelease(albumId);
     },
   },
 };

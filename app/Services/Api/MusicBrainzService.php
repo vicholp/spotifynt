@@ -20,6 +20,35 @@ class MusicBrainzService
         return Http::withHeaders(['User-Agent' => 'Spotifynt/dev (hello@vicho.dev)']);
     }
 
+    public function getTrack(string $releaseId, string $trackId): array|false
+    {
+        // $cache = Cache::get('mb_track_' . $trackId);
+
+        // if ($cache) {
+        //     return $cache;
+        // }
+
+        $release = $this->getRelease($releaseId);
+
+        $medias = $release['media'];
+
+        foreach ($medias as $media) {
+            $tracks = $media['tracks'];
+
+            foreach ($tracks as $track) {
+                if ($track['id'] == $trackId) {
+                    // Cache::put('mb_track_' . $trackId, $track);
+
+                    return $track;
+                }
+            }
+        }
+
+
+
+        return false;
+    }
+
     public function getRecording(string $id): array
     {
         $cache = Cache::get('mb_recording_' . $id);

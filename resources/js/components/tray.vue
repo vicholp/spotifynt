@@ -1,6 +1,6 @@
 <template>
   <div
-    class="absolute w-full"
+    class="absolute w-full hidden"
   >
     <div
       :class="`fixed top-0 w-full bg-white dark:bg-black

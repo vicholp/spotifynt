@@ -77,7 +77,7 @@ class SynchronizationService
     {
         // Migration purposes, a server can not have the same track twice
         if ($server->tracks()->where('track_id', $track->id)->count() > 1) {
-            $server->tracks()->where('track_id', $track->id)->delete();
+            $server->tracks()->detach($track);
         }
 
         if ($server->tracks()->where('track_id', $track->id)->exists()) {

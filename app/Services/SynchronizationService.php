@@ -80,9 +80,7 @@ class SynchronizationService
             $server->tracks()->detach($track);
         }
 
-        if ($server->tracks()->where('track_id', $track->id)->exists()) {
-            return;
-        }
+        $server->tracks()->detach($track);
 
         $server->tracks()->attach($track, [
             'path' => $path,

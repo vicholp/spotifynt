@@ -22,7 +22,6 @@ import ServersCreate from './pages/servers/create.vue';
 // import ServersEdit from './pages/servers/edit.vue';
 import ServersShow from './pages/servers/show.vue';
 
-import Player from './pages/player.vue';
 import Artist from './pages/artist.vue';
 import Album from './pages/album.vue';
 import Track from './pages/track.vue';
@@ -44,7 +43,6 @@ const routes = [
   { path: '/servers/:id', component: ServersShow, props: true },
   // { path: '/server/:id/edit', component: ServersEdit, props: true },
 
-  { path: '/player', component: Player, props: true },
   { path: '/artist/:id', component: Artist, props: true },
   { path: '/album/:id', component: Album, props: true },
   { path: '/track/:id', component: Track, props: true },

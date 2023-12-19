@@ -1,7 +1,7 @@
 <template>
   <div class="absolute top-0 left-0 w-full h-full z-10 transition-all">
     <nav
-      class="h-20 flex items-center xl:sticky xl:top-0 bg-gray-100 justify-center"
+      class="h-20 flex items-center xl:sticky xl:top-0 bg-[#EFEFEF] dark:bg-[#100F10] justify-center"
     >
       <div
         class="text-opacity-90 text-3xl font-[Allura]"
@@ -10,10 +10,10 @@
         spotifynt
       </div>
     </nav>
-    <div class="bg-gray-100 bg-opacity-90 h-full">
+    <div class="bg-[#EFEFEF] dark:bg-[#100F10] dark:bg-opacity-90 bg-opacity-90 h-full">
       <div class="container mx-auto grid grid-cols-12 gap-3 px-2">
         <div
-          class="col-span-12 xl:col-span-4 xl:h-fit xl:sticky xl:top-20 grid grid-cols-12 gap-3 bg-white p-5 dark:bg-opacity-5 rounded"
+          class="col-span-12 xl:col-span-4 xl:h-fit xl:sticky xl:top-20 grid grid-cols-12 gap-3 bg-white dark:bg-black p-5  rounded"
           @click="$emit('toggle-overlay')"
         >
           <div class="col-span-3 xl:col-span-12">
@@ -32,10 +32,10 @@
               v-if="playerStore.currentTrack.title != null"
               class="text-medium flex-none text-center flex flex-col"
             >
-              <div class="text-black font-medium">
+              <div class="text-black dark:text-white font-medium">
                 {{ playerStore.currentTrack.title }}
               </div>
-              <div class="text-black text-opacity-50 text-sm">
+              <div class="text-black dark:text-white text-opacity-50 text-sm">
                 {{ playerStore.currentTrack.release.title }}
               </div>
             </div>
@@ -86,7 +86,7 @@
         </div>
         <div
           v-if="true"
-          class="col-span-12 xl:col-span-8 flex flex-col gap-3 bg-white dark:bg-opacity-5 rounded p-3"
+          class="col-span-12 xl:col-span-8 flex flex-col gap-3 bg-white dark:bg-black rounded p-3"
         >
           <div class="flex divide-x divide-white divide-opacity-20 py-3">
             <button

@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Storage;
 class ArtService
 {
     private array $minimizeSizes = [
+        1000 => [1000, 1000],
+        500 => [500, 500],
         250 => [250, 250],
         75 => [75, 75],
     ];

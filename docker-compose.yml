@@ -18,7 +18,7 @@ services:
     image: serversideup/php:8.1-cli
     volumes:
       - .:/var/www/html
-    command: ["su", "webuser", "-c", "php artisan queue:listen --queue=high,default,low"]
+    command: ["su", "webuser", "-c", "php artisan queue:listen --queue=high,default,low --timeout=300"]
     network_mode: host
     environment:
       PHP_MEMORY_LIMIT: "1G"

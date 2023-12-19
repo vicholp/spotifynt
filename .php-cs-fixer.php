@@ -14,5 +14,8 @@ $config = new PhpCsFixer\Config();
 return $config->setRules([
     '@Symfony' => true,
     'no_empty_comment' => false,
-    'yoda_style' => false,
+    'method_argument_space' => [
+        'keep_multiple_spaces_after_comma' => false,
+    ],
+    'array_indentation' => true,
 ])->setFinder($finder);

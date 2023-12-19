@@ -12,7 +12,6 @@ paths:
   comp: Compilations/$album%aunique{}/$track $title
 
 plugins:
-  - acousticbrainz
   - artistcountry
   - alternatives
   - chroma
@@ -24,7 +23,6 @@ plugins:
   - web
   - mbsync
   - replaygain
-  - lyrics
   - check
 
 replaygain:
@@ -49,6 +47,6 @@ lyrics:
 
 web:
   host: 0.0.0.0
-  port: 9001
+  port: 9003
   cors: "*"
   include_paths: yes

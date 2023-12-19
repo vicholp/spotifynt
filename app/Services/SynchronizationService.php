@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Jobs\Art\SyncArtJob;
+use App\Jobs\Synchronization\CheckServerTrackJob;
 use App\Jobs\Synchronization\CheckServerTracksJob;
 use App\Jobs\Synchronization\SyncAlbumFromBeetsJob;
 use App\Models\Artist;
@@ -27,29 +28,33 @@ class SynchronizationService
         //
     }
 
-    private function getMissingTracks(Server $server): Collection
+    /**
+     * Check if a track still exists on the server.
+     * If not, remove the relation.
+     */
+    public function checkServerTrack(ServerTrack $serverTrack): void
     {
-        $beets = new BeetsService($server);
-        $tracks = $server->tracks()->get();
+        $beets = new BeetsService($serverTrack->server);
 
-        $missingTracks = collect();
-
-        foreach ($tracks as $track) {
-            if (!$beets->checkTrack($track->pivot->beets_id)) {
-                $missingTracks->push($track->pivot->beets_id);
-            }
+        if (!$beets->checkTrack($serverTrack->beets_id)) {
+            ServerTrack::whereServerId($serverTrack->server_id)
+                ->whereBeetsId($serverTrack->beets_id)
+                ->delete();
         }
-
-        return $missingTracks;
     }
 
+    /**
+     * Check if all tracks still exists on the server.
+     */
     public function checkServerTracks(Server $server): void
     {
-        $missingTracks = $this->getMissingTracks($server);
+        $bus = collect();
 
-        foreach ($missingTracks->unique() as $trackId) {
-            ServerTrack::whereBeetsId($trackId)->delete();
+        foreach ($server->tracks as $track) {
+            $bus->push(new CheckServerTrackJob($track->pivot)); // @phpstan-ignore-line
         }
+
+        Bus::batch($bus)->allowFailures()->dispatch();
     }
 
     public function recreateIndex(): void

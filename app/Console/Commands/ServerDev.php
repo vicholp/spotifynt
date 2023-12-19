@@ -6,34 +6,32 @@ use App\Models\Server;
 use App\Models\User;
 use Illuminate\Console\Command;
 
-class AttachDefaultServer extends Command
+class ServerDev extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:attach-default-server {--default}';
+    protected $signature = 'server:dev';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Create a default server for development and attach it to the admin user';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        if ($this->option('default')) {
-            $user = User::whereEmail('admin@example.com')->first();
-        }
+        $user = User::whereEmail('admin@example.com')->firstOrFail();
 
         Server::create([
             'name' => 'Default',
-            'path' => 'http://localhost:9001',
+            'path' => 'http://localhost:9003',
             'owner_id' => $user->id,
         ]);
     }

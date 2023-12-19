@@ -24,22 +24,29 @@ class SynchronizationService
         //
     }
 
-    public function syncServer(Server $server): void
+    private function getMissingTracks(Server $server): Collection
     {
         $beets = new BeetsService($server);
-        $beets_albums = $beets->getAlbums();
+        $tracks = $server->tracks()->get();
 
-        $batch = [];
+        $missingTracks = collect();
 
-        foreach ($beets_albums as $album) {
-            array_push($batch, new SyncAlbumFromBeetsJob($server, $album['mb_albumid'], $album['id']));
+        foreach ($tracks as $track) {
+            if (!$beets->checkTrack($track->pivot->beets_id)) {
+                $missingTracks->push($track->pivot->beets_id);
+            }
         }
 
-        Bus::batch($batch)->allowFailures()
-            ->finally(function () {
-                $this->recreateIndex();
-            })
-            ->dispatch();
+        return $missingTracks;
+    }
+
+    public function checkServerTracks(Server $server): void
+    {
+        $missingTracks = $this->getMissingTracks($server);
+
+        foreach ($missingTracks->unique() as $trackId) {
+            ServerTrack::whereBeetsId($trackId)->delete();
+        }
     }
 
     public function recreateIndex(): void
@@ -54,13 +61,33 @@ class SynchronizationService
         Track::makeAllSearchable();
     }
 
-    public function syncAlbumFromBeets(BeetsService $beets, Server $server, string $mbId, string $beetsAlbumId): void
+    public function syncServer(Server $server): void
     {
-        if (empty($mbId)) {
+        $beets = new BeetsService($server);
+        $beetsAlbums = $beets->getAlbums();
+
+        $batch = [];
+
+        foreach ($beetsAlbums as $album) {
+            array_push($batch, new SyncAlbumFromBeetsJob($server, $album['mb_albumid'], $album['id']));
+        }
+
+        array_push($batch, new CheckServerTracksJob($server));
+
+        Bus::batch($batch)->allowFailures()
+            ->finally(function () {
+                $this->recreateIndex();
+            })
+            ->dispatch();
+    }
+
+    public function syncAlbumFromBeets(BeetsService $beets, Server $server, string $mbReleaseId, string $beetsAlbumId): void
+    {
+        if (empty($mbReleaseId)) {
             return;
         }
 
-        $release = $this->syncRelease($mbId);
+        $release = $this->syncRelease($mbReleaseId);
 
         $beetsTracks = $beets->getTracksFromAlbum($beetsAlbumId);
 

@@ -42,4 +42,12 @@ class BeetsService
     {
         return Http::get($this->server->path.'/album/'.$id.'/art');
     }
+
+    /**
+     * Checks if the track exists on the server.
+     */
+    public function checkTrack(int $id): bool
+    {
+        return Http::get($this->server->path.'/item/'.str($id))->successful();
+    }
 }

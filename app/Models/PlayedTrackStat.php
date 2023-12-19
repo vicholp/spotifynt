@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int                             $user_id
  * @property int                             $server_id
  *
- * @method static \Database\Factories\PlayedTrackStatFactory            factory(...$parameters)
+ * @method static \Database\Factories\PlayedTrackStatFactory            factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|PlayedTrackStat newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PlayedTrackStat newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PlayedTrackStat query()

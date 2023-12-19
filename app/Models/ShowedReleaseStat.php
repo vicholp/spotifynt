@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
- * @method static \Database\Factories\ShowedReleaseStatFactory            factory(...$parameters)
+ * @method static \Database\Factories\ShowedReleaseStatFactory            factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|ShowedReleaseStat newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ShowedReleaseStat newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ShowedReleaseStat query()

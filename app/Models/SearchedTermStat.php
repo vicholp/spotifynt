@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
- * @method static \Database\Factories\SearchedTermStatFactory            factory(...$parameters)
+ * @method static \Database\Factories\SearchedTermStatFactory            factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|SearchedTermStat newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SearchedTermStat newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SearchedTermStat query()

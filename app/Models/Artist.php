@@ -10,18 +10,18 @@ use Laravel\Scout\Searchable;
 /**
  * App\Models\Artist.
  *
- * @property int                                                                 $id
- * @property string                                                              $name
- * @property string                                                              $type
- * @property string                                                              $country
- * @property string                                                              $mb_artist_id
- * @property mixed                                                               $mb_data
- * @property \Illuminate\Support\Carbon|null                                     $created_at
- * @property \Illuminate\Support\Carbon|null                                     $updated_at
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\ReleaseGroup[] $releaseGroups
- * @property int|null                                                            $release_groups_count
+ * @property int                                                                     $id
+ * @property string                                                                  $name
+ * @property string                                                                  $type
+ * @property string                                                                  $country
+ * @property string                                                                  $mb_artist_id
+ * @property mixed                                                                   $mb_data
+ * @property \Illuminate\Support\Carbon|null                                         $created_at
+ * @property \Illuminate\Support\Carbon|null                                         $updated_at
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\ReleaseGroup> $releaseGroups
+ * @property int|null                                                                $release_groups_count
  *
- * @method static \Database\Factories\ArtistFactory            factory(...$parameters)
+ * @method static \Database\Factories\ArtistFactory            factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Artist newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Artist newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Artist query()

@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int                             $user_id
  *
- * @method static \Database\Factories\AdminFactory            factory(...$parameters)
+ * @method static \Database\Factories\AdminFactory            factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Admin newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Admin newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Admin query()

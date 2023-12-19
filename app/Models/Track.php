@@ -11,34 +11,35 @@ use Laravel\Scout\Searchable;
 /**
  * App\Models\Track.
  *
- * @property int                                                           $id
- * @property string                                                        $title
- * @property int                                                           $release_id
- * @property int|null                                                      $track_position
- * @property int|null                                                      $length
- * @property float|null                                                    $average_loudness
- * @property int|null                                                      $bpm
- * @property float|null                                                    $danceable
- * @property string|null                                                   $genre_rosamerica
- * @property string|null                                                   $language
- * @property float|null                                                    $mood_acoustic
- * @property float|null                                                    $mood_aggressive
- * @property float|null                                                    $mood_electronic
- * @property float|null                                                    $mood_happy
- * @property float|null                                                    $mood_party
- * @property float|null                                                    $mood_relaxed
- * @property float|null                                                    $mood_sad
- * @property string|null                                                   $moods_mirex
- * @property string|null                                                   $voice_instrumental
- * @property string                                                        $mb_recording_id
- * @property mixed                                                         $mb_data
- * @property \Illuminate\Support\Carbon|null                               $created_at
- * @property \Illuminate\Support\Carbon|null                               $updated_at
- * @property \App\Models\Release                                           $release
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Server[] $servers
- * @property int|null                                                      $servers_count
+ * @property int                                                               $id
+ * @property string                                                            $title
+ * @property int                                                               $release_id
+ * @property int|null                                                          $track_position
+ * @property int|null                                                          $length
+ * @property float|null                                                        $average_loudness
+ * @property int|null                                                          $bpm
+ * @property float|null                                                        $danceable
+ * @property string|null                                                       $genre_rosamerica
+ * @property string|null                                                       $language
+ * @property float|null                                                        $mood_acoustic
+ * @property float|null                                                        $mood_aggressive
+ * @property float|null                                                        $mood_electronic
+ * @property float|null                                                        $mood_happy
+ * @property float|null                                                        $mood_party
+ * @property float|null                                                        $mood_relaxed
+ * @property float|null                                                        $mood_sad
+ * @property string|null                                                       $moods_mirex
+ * @property string|null                                                       $voice_instrumental
+ * @property string                                                            $mb_recording_id
+ * @property mixed                                                             $mb_data
+ * @property \Illuminate\Support\Carbon|null                                   $created_at
+ * @property \Illuminate\Support\Carbon|null                                   $updated_at
+ * @property string|null                                                       $mb_track_id
+ * @property \App\Models\Release                                               $release
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\Server> $servers
+ * @property int|null                                                          $servers_count
  *
- * @method static \Database\Factories\TrackFactory            factory(...$parameters)
+ * @method static \Database\Factories\TrackFactory            factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Track newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Track newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Track query()
@@ -52,6 +53,7 @@ use Laravel\Scout\Searchable;
  * @method static \Illuminate\Database\Eloquent\Builder|Track whereLength($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Track whereMbData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Track whereMbRecordingId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Track whereMbTrackId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Track whereMoodAcoustic($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Track whereMoodAggressive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Track whereMoodElectronic($value)
@@ -92,7 +94,11 @@ class Track extends Model
      */
     public function servers()
     {
-        return $this->belongsToMany(Server::class)->withPivot(['path', 'beets_id']);
+        return $this->belongsToMany(Server::class)->withPivot([
+            'id',
+            'path',
+            'beets_id',
+        ]);
     }
 
     /**

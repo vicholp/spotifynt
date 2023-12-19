@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
- * @method static \Database\Factories\ArtFactory            factory(...$parameters)
+ * @method static \Database\Factories\ArtFactory            factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Art newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Art newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Art query()

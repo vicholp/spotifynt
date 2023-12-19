@@ -12,24 +12,24 @@ use Laravel\Scout\Searchable;
 /**
  * App\Models\Release.
  *
- * @property int                                                                      $id
- * @property string                                                                   $title
- * @property string|null                                                              $date
- * @property string                                                                   $country
- * @property int                                                                      $release_group_id
- * @property string|null                                                              $main_color
- * @property string                                                                   $mb_release_id
- * @property mixed                                                                    $mb_data
- * @property \Illuminate\Support\Carbon|null                                          $created_at
- * @property \Illuminate\Support\Carbon|null                                          $updated_at
- * @property \App\Models\Artist|null                                                  $artist
- * @property \App\Models\ReleaseGroup                                                 $releaseGroup
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\ShowedReleaseStat[] $showedReleaseStats
- * @property int|null                                                                 $showed_release_stats_count
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Track[]             $tracks
- * @property int|null                                                                 $tracks_count
+ * @property int                                                                          $id
+ * @property string                                                                       $title
+ * @property string|null                                                                  $date
+ * @property string                                                                       $country
+ * @property int                                                                          $release_group_id
+ * @property string|null                                                                  $main_color
+ * @property string                                                                       $mb_release_id
+ * @property mixed                                                                        $mb_data
+ * @property \Illuminate\Support\Carbon|null                                              $created_at
+ * @property \Illuminate\Support\Carbon|null                                              $updated_at
+ * @property \App\Models\Artist|null                                                      $artist
+ * @property \App\Models\ReleaseGroup                                                     $releaseGroup
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\ShowedReleaseStat> $showedReleaseStats
+ * @property int|null                                                                     $showed_release_stats_count
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\Track>             $tracks
+ * @property int|null                                                                     $tracks_count
  *
- * @method static \Database\Factories\ReleaseFactory            factory(...$parameters)
+ * @method static \Database\Factories\ReleaseFactory            factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Release newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Release newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Release query()

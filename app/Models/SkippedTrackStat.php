@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int                             $server_id
  *
- * @method static \Database\Factories\SkippedTrackStatFactory            factory(...$parameters)
+ * @method static \Database\Factories\SkippedTrackStatFactory            factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|SkippedTrackStat newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SkippedTrackStat newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SkippedTrackStat query()

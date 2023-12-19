@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \App\Models\Artist              $artist
  *
- * @method static \Database\Factories\ReleaseGroupFactory            factory(...$parameters)
+ * @method static \Database\Factories\ReleaseGroupFactory            factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseGroup newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseGroup newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseGroup query()

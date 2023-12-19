@@ -59,6 +59,9 @@ class ArtService
             }
         }
 
+        $targetPath = Storage::disk('art')->path($release->mb_release_id.'.'.$format);
+        MinimizeArtJob::dispatch($path, $targetPath, 0, 0)->onQueue('low');
+
         imagetruecolortopalette($image, true, 1);
         $rgb = imagecolorat($image, 10, 10);
 

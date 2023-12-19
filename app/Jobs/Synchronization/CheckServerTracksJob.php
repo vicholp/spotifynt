@@ -18,6 +18,13 @@ class CheckServerTracksJob implements ShouldQueue
     use SerializesModels;
 
     /**
+     * The number of times the job may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 3;
+
+    /**
      * Create a new job instance.
      */
     public function __construct(

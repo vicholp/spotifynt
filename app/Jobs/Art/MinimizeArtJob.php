@@ -17,12 +17,23 @@ class MinimizeArtJob implements ShouldQueue
     use SerializesModels;
 
     /**
+     * The number of times the job may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 3;
+
+    /**
      * Create a new job instance.
      *
      * @return void
      */
     public function __construct(
-        private string $source_path, private string $target_path, private int $height, private int $width, private int $quality = 80
+        private string $sourcePath,
+        private string $targetPath,
+        private int $height,
+        private int $width,
+        private int $quality = 80
     ) {
         //
     }
@@ -34,6 +45,12 @@ class MinimizeArtJob implements ShouldQueue
      */
     public function handle()
     {
-        (new ArtService())->minimizeArt($this->source_path, $this->target_path, $this->height, $this->width, $this->quality);
+        (new ArtService())->minimizeArt(
+            $this->sourcePath,
+            $this->targetPath,
+            $this->height,
+            $this->width,
+            $this->quality
+        );
     }
 }

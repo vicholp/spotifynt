@@ -21,14 +21,21 @@ class SyncAlbumFromBeetsJob implements ShouldQueue
     use SerializesModels;
 
     /**
+     * The number of times the job may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 3;
+
+    /**
      * Create a new job instance.
      *
      * @return void
      */
     public function __construct(
         private Server $server,
-        private string $mb_id,
-        private string $beets_album_id,
+        private string $mbId,
+        private string $beetsAlbumId,
     ) {
         //
     }
@@ -46,6 +53,11 @@ class SyncAlbumFromBeetsJob implements ShouldQueue
 
         $beetsService = new BeetsService($this->server);
 
-        (new SynchronizationService())->syncAlbumFromBeets($beetsService, $this->server, $this->mb_id, $this->beets_album_id);
+        (new SynchronizationService())->syncAlbumFromBeets(
+            $beetsService,
+            $this->server,
+            $this->mbId,
+            $this->beetsAlbumId
+        );
     }
 }

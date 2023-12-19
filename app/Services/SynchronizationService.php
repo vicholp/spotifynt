@@ -77,7 +77,7 @@ class SynchronizationService
 
         Bus::batch($batch)->allowFailures()
             ->finally(function () use ($server) {
-                new CheckServerTracksJob($server);
+                CheckServerTracksJob::dispatch($server);
 
                 $this->recreateIndex();
             })

@@ -69,7 +69,16 @@ export default {
     let j = 0;
 
     for (let i = tracks.length - 1; i > 0; i--) {
+      if (i === this.playlist.index) {
+        continue;
+      }
+
       j = Math.floor(Math.random() * (i + 1));
+
+      if (j === this.playlist.index) {
+        continue;
+      }
+
       temp = tracks[i];
       tracks[i] = tracks[j];
       tracks[j] = temp;

@@ -20,9 +20,9 @@
         <div
           class="flex gap-3 items-center"
         >
-          <router-link
+          <div
             class="flex gap-3 items-center grow py-3"
-            to="/player"
+            @click="$emit('toggle-overlay')"
           >
             <div class="">
               <div
@@ -49,7 +49,7 @@
                 The playlist is empty
               </div>
             </div>
-          </router-link>
+          </div>
           <div :class="`flex items-end ${loaded ? 'opacity-100' : 'opacity-30'}`">
             <button
               class="text-4xl"
@@ -124,6 +124,7 @@ export default {
     'player-next',
     'player-prev',
     'player-play',
+    'toggle-overlay',
   ],
   setup() {
     return {

@@ -8,7 +8,7 @@
         class="grid grid-cols-12 gap-3"
       >
         <div
-          class="rounded aspect-square w-full col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2 shadow dark:shadow-none"
+          class="rounded aspect-1 w-full col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2 shadow dark:shadow-none"
         >
           <div
             class="h-full w-full bg-white bg-opacity-10 rounded dark:text-white text-black text-opacity-60 flex items-center justify-evenly font-medium flex-col"

@@ -11,6 +11,8 @@ import * as Sentry from '@sentry/vue';
 import i18n from './locales';
 import pinia from './store';
 
+import PlayerOverlay from './components/player/index.vue';
+
 import AudioPlayer from './components/player.vue';
 import PlayerTray from './components/tray.vue';
 import Index from './pages/index.vue';
@@ -77,6 +79,7 @@ app.config.globalProperties.$filters = {
   camelizeKeys,
 };
 
+app.component('PlayerOverlay', PlayerOverlay);
 app.component('AudioPlayer', AudioPlayer);
 app.component('PlayerTray', PlayerTray);
 

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="absolute w-full"
+    class="w-full"
     @keyup.enter="playPause()"
   >
     <audio
@@ -17,16 +17,30 @@
       ref="playerPreloader"
       preload="auto"
     />
-    <player-bar
-      :progress="progressPercent"
-      :actual="playerStore.currentTrack"
-      :playing="playerStore.status.playing"
-      :loaded="playerStore.playlist.tracks.length > 0"
-      :loading="loading"
-      @player-play="playPause"
-      @player-next="nextTrack"
-      @player-prev="previousTrack"
-    />
+    <transition name="slide-fade-down">
+      <player-overlay
+        v-if="playerOverlay"
+        :auth-user="authUser"
+        @player-play="playPause"
+        @player-next="nextTrack"
+        @player-prev="previousTrack"
+        @toggle-overlay="playerOverlay = !playerOverlay"
+      />
+    </transition>
+    <transition name="slide-fade-up">
+      <player-bar
+        v-if="!playerOverlay"
+        :progress="progressPercent"
+        :actual="playerStore.currentTrack"
+        :playing="playerStore.status.playing"
+        :loaded="playerStore.playlist.tracks.length > 0"
+        :loading="loading"
+        @player-play="playPause"
+        @player-next="nextTrack"
+        @player-prev="previousTrack"
+        @toggle-overlay="playerOverlay = !playerOverlay"
+      />
+    </transition>
   </div>
 </template>
 <script>
@@ -65,6 +79,7 @@ export default {
       progressPercent: 0,
       listened: false,
       loading: false,
+      playerOverlay: true,
     };
   },
   watch: {
@@ -166,3 +181,34 @@ export default {
   },
 };
 </script>
+
+<style>
+.slide-fade-down-enter-active {
+  transition: all 0.1s ease-out;
+}
+
+.slide-fade-down-leave-active {
+  transition: all 0.1s ease-in;
+}
+
+.slide-fade-down-enter-from,
+.slide-fade-down-leave-to {
+  transform: translateY(50%);
+  opacity: 0;
+}
+
+
+.slide-fade-up-enter-active {
+  transition: all 0.1s ease-out;
+}
+
+.slide-fade-up-leave-active {
+  transition: all 0.1s ease-in;
+}
+
+.slide-fade-up-enter-from,
+.slide-fade-up-leave-to {
+  transform: translateY(-50%);
+  opacity: 0;
+}</style>
+

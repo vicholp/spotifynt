@@ -79,7 +79,7 @@ export default {
       progressPercent: 0,
       listened: false,
       loading: false,
-      playerOverlay: true,
+      playerOverlay: false,
     };
   },
   watch: {

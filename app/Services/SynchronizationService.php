@@ -75,10 +75,10 @@ class SynchronizationService
             array_push($batch, new SyncAlbumFromBeetsJob($server, $album['mb_albumid'], $album['id']));
         }
 
-        array_push($batch, new CheckServerTracksJob($server));
-
         Bus::batch($batch)->allowFailures()
-            ->finally(function () {
+            ->finally(function () use ($server) {
+                new CheckServerTracksJob($server);
+
                 $this->recreateIndex();
             })
             ->dispatch();
@@ -133,7 +133,6 @@ class SynchronizationService
                 'mb_track_id' => $mbTrack['id'],
                 'mb_data' => json_encode($mbTrack),
             ]);
-
 
             return $track;
         }

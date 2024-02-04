@@ -3,6 +3,7 @@ services:
   php:
     container_name: ${APP_NAME}-${APP_ACTUAL_ENV}-php
     image: serversideup/php:8.1-fpm-apache
+    restart: unless-stopped
     ports:
       - 80
     volumes:
@@ -11,6 +12,8 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik"
       - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}.rule=Host(`${TRAEFIK_HOST}`)"
+      - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}.tls=true"
+      - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}.tls.certresolver=myresolver"
     networks:
       - traefik
       - default
@@ -23,12 +26,12 @@ services:
       SSL_MODE: "off"
       PUID: 1000
       PGID: 1000
-    restart: unless-stopped
 
   queue:
     image: serversideup/php:8.1-cli
     volumes:
       - .:/var/www/html
+    restart: unless-stopped
     command: ["su", "webuser", "-c", "php artisan queue:listen --queue=high,default,low --timeout=300"]
     networks:
       - default

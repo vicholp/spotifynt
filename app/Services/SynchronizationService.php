@@ -6,15 +6,18 @@ use App\Jobs\Art\SyncArtJob;
 use App\Jobs\Synchronization\CheckServerTrackJob;
 use App\Jobs\Synchronization\CheckServerTracksJob;
 use App\Jobs\Synchronization\SyncAlbumFromBeetsJob;
+use App\Jobs\Synchronization\SyncServerTracksJob;
 use App\Models\Artist;
+use App\Models\ArtistServer;
 use App\Models\Release;
 use App\Models\ReleaseGroup;
+use App\Models\ReleaseGroupServer;
+use App\Models\ReleaseServer;
 use App\Models\Server;
 use App\Models\ServerTrack;
 use App\Models\Track;
 use App\Services\Api\BeetsService;
 use App\Services\Api\MusicBrainzService;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 
 /**
@@ -40,6 +43,21 @@ class SynchronizationService
             ServerTrack::whereServerId($serverTrack->server_id)
                 ->whereBeetsId($serverTrack->beets_id)
                 ->delete();
+        }
+    }
+
+    public function syncServerTracks(Server $server): void
+    {
+        ReleaseServer::whereServerId($server->id)->delete();
+        ReleaseGroupServer::whereServerId($server->id)->delete();
+        ArtistServer::whereServerId($server->id)->delete();
+
+        $tracks = $server->tracks;
+
+        foreach ($tracks as $track) {
+            $server->releases()->syncWithoutDetaching($track->release);
+            $server->releaseGroups()->syncWithoutDetaching($track->release->releaseGroup);
+            $server->artists()->syncWithoutDetaching($track->release->releaseGroup->artist);
         }
     }
 
@@ -82,9 +100,13 @@ class SynchronizationService
 
         Bus::batch($batch)->allowFailures()
             ->finally(function () use ($server) {
-                CheckServerTracksJob::dispatch($server);
-
-                $this->recreateIndex();
+                Bus::chain([
+                    new CheckServerTracksJob($server),
+                    new SyncServerTracksJob($server),
+                    function () {
+                        (new SynchronizationService())->recreateIndex();
+                    },
+                ])->dispatch();
             })
             ->dispatch();
     }

@@ -22,11 +22,11 @@ class MusicBrainzService
 
     public function getTrack(string $releaseId, string $trackId): array|false
     {
-        // $cache = Cache::get('mb_track_' . $trackId);
+        $cache = Cache::get('mb_track_'.$trackId);
 
-        // if ($cache) {
-        //     return $cache;
-        // }
+        if ($cache) {
+            return $cache;
+        }
 
         $release = $this->getRelease($releaseId);
 
@@ -37,99 +37,97 @@ class MusicBrainzService
 
             foreach ($tracks as $track) {
                 if ($track['id'] == $trackId) {
-                    // Cache::put('mb_track_' . $trackId, $track);
+                    Cache::put('mb_track_'.$trackId, $track);
 
                     return $track;
                 }
             }
         }
 
-
-
         return false;
     }
 
     public function getRecording(string $id): array
     {
-        $cache = Cache::get('mb_recording_' . $id);
+        $cache = Cache::get('mb_recording_'.$id);
 
         if ($cache) {
             return $cache;
         }
 
-        $response = $this->getHttp()->get($this->api_url . '/recording/' . $id . '?inc=artist-credits+isrcs+annotation+tags+genres&fmt=json');
+        $response = $this->getHttp()->get($this->api_url.'/recording/'.$id.'?inc=artist-credits+isrcs+annotation+tags+genres&fmt=json');
 
         if (!$response->ok()) {
-            throw new \Exception('Error Processing Request' . $response->status());
+            throw new \Exception('Error Processing Request'.$response->status());
         }
 
         $json = $response->json();
 
-        Cache::put('mb_recording_' . $id, $json);
+        Cache::put('mb_recording_'.$id, $json);
 
         return $json;
     }
 
     public function getRelease(string $id): array
     {
-        $cache = Cache::get('mb_release_' . $id);
+        $cache = Cache::get('mb_release_'.$id);
 
         if ($cache) {
             return $cache;
         }
 
-        $response = $this->getHttp()->get($this->api_url . '/release/' . $id . '?inc=artist-credits+labels+recordings+release-groups+media+discids+isrcs+annotation+tags+genres&fmt=json');
+        $response = $this->getHttp()->get($this->api_url.'/release/'.$id.'?inc=artist-credits+labels+recordings+release-groups+media+discids+isrcs+annotation+tags+genres&fmt=json');
 
         if (!$response->ok()) {
-            throw new \Exception('Error Processing Request' . $response->status());
+            throw new \Exception('Error Processing Request'.$response->status());
         }
 
         $json = $response->json();
 
-        Cache::put('mb_release_' . $id, $json);
+        Cache::put('mb_release_'.$id, $json);
 
         return $json;
     }
 
     public function getReleaseGroup(string $id): array
     {
-        $cache = Cache::get('mb_releasegroup_' . $id);
+        $cache = Cache::get('mb_releasegroup_'.$id);
 
         if ($cache) {
             return $cache;
         }
 
-        $response = $this->getHttp()->get($this->api_url . '/release-group/' . $id . '?inc=artist-credits+annotation+tags+genres&fmt=json');
+        $response = $this->getHttp()->get($this->api_url.'/release-group/'.$id.'?inc=artist-credits+annotation+tags+genres&fmt=json');
 
-        if ($response->ok()) {
-            $json = $response->json();
-
-            Cache::put('mb_releasegroup_' . $id, $json);
-
-            return $json;
+        if (!$response->ok()) {
+            throw new \Exception('Error Processing Request'.$response->status());
         }
 
-        throw new \Exception('Error Processing Request' . $response->status());
+        $json = $response->json();
+
+        Cache::put('mb_releasegroup_'.$id, $json);
+
+        return $json;
     }
 
     public function getArtist(string $id): array
     {
-        $cache = Cache::get('mb_artist_' . $id);
+        $cache = Cache::get('mb_artist_'.$id);
 
         if ($cache) {
             return $cache;
         }
 
-        $response = $this->getHttp()->get($this->api_url . '/artist/' . $id . '?inc=aliases+annotation+tags+genres&fmt=json');
+        $response = $this->getHttp()->get($this->api_url.'/artist/'.$id.'?inc=aliases+annotation+tags+genres&fmt=json');
 
-        if ($response->ok()) {
-            $json = $response->json();
-
-            Cache::put('mb_artist_' . $id, $json);
-
-            return $json;
+        if (!$response->ok()) {
+            throw new \Exception('Error Processing Request'.$response->status());
         }
 
-        throw new \Exception('Error Processing Request' . $response->status());
+        $json = $response->json();
+
+        Cache::put('mb_artist_'.$id, $json);
+
+        return $json;
     }
 }

@@ -19,7 +19,7 @@ class ServerFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'path' => $this->faker->filePath(),
+            'path' => $this->faker->url(),
             'owner_id' => User::factory(),
         ];
     }

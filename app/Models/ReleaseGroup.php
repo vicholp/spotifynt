@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property mixed                           $mb_data
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \App\Models\Artist              $artist
+ * @property Artist                          $artist
  *
  * @method static \Database\Factories\ReleaseGroupFactory            factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseGroup newModelQuery()

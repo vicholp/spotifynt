@@ -10,21 +10,27 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * App\Models\Server.
  *
- * @property int                                                              $id
- * @property string                                                           $name
- * @property string                                                           $path
- * @property int                                                              $owner_id
- * @property string                                                           $visibility
- * @property string                                                           $access
- * @property string|null                                                      $last_sync
- * @property string|null                                                      $last_full_sync
- * @property \Illuminate\Support\Carbon|null                                  $created_at
- * @property \Illuminate\Support\Carbon|null                                  $updated_at
- * @property \App\Models\User                                                 $owner
- * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\Track> $tracks
- * @property int|null                                                         $tracks_count
- * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\User>  $users
- * @property int|null                                                         $users_count
+ * @property int                                                                     $id
+ * @property string                                                                  $name
+ * @property string                                                                  $path
+ * @property int                                                                     $owner_id
+ * @property string                                                                  $visibility
+ * @property string                                                                  $access
+ * @property string|null                                                             $last_sync
+ * @property string|null                                                             $last_full_sync
+ * @property \Illuminate\Support\Carbon|null                                         $created_at
+ * @property \Illuminate\Support\Carbon|null                                         $updated_at
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\Artist>       $artists
+ * @property int|null                                                                $artists_count
+ * @property User                                                                    $owner
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\ReleaseGroup> $releaseGroups
+ * @property int|null                                                                $release_groups_count
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\Release>      $releases
+ * @property int|null                                                                $releases_count
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\Track>        $tracks
+ * @property int|null                                                                $tracks_count
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\User>         $users
+ * @property int|null                                                                $users_count
  *
  * @method static \Database\Factories\ServerFactory            factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Server newModelQuery()
@@ -63,7 +69,40 @@ class Server extends Model
      */
     public function tracks()
     {
-        return $this->belongsToMany(Track::class)->withPivot(['path', 'beets_id']);
+        return $this->belongsToMany(Track::class)
+            ->withPivot([
+                'id',
+                'path',
+                'beets_id',
+            ])
+            ->using(ServerTrack::class);
+    }
+
+    /**
+     * @return BelongsToMany<Release>
+     */
+    public function releases()
+    {
+        return $this->belongsToMany(Release::class)
+            ->using(ReleaseServer::class);
+    }
+
+    /**
+     * @return BelongsToMany<ReleaseGroup>
+     */
+    public function releaseGroups()
+    {
+        return $this->belongsToMany(ReleaseGroup::class)
+            ->using(ReleaseGroupServer::class);
+    }
+
+    /**
+     * @return BelongsToMany<Artist>
+     */
+    public function artists()
+    {
+        return $this->belongsToMany(Artist::class)
+            ->using(ArtistServer::class);
     }
 
     /**

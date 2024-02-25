@@ -22,8 +22,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int                             $beets_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \App\Models\Server              $server
- * @property \App\Models\Track               $track
+ * @property Server                          $server
+ * @property Track                           $track
  *
  * @method static \Illuminate\Database\Eloquent\Builder|ServerTrack newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ServerTrack newQuery()
@@ -47,6 +47,13 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class ServerTrack extends Pivot
 {
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = true;
+
     /**
      * @return BelongsTo<Track, ServerTrack>
      */

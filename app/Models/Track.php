@@ -35,7 +35,7 @@ use Laravel\Scout\Searchable;
  * @property \Illuminate\Support\Carbon|null                                   $created_at
  * @property \Illuminate\Support\Carbon|null                                   $updated_at
  * @property string|null                                                       $mb_track_id
- * @property \App\Models\Release                                               $release
+ * @property Release                                                           $release
  * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\Server> $servers
  * @property int|null                                                          $servers_count
  *
@@ -94,11 +94,13 @@ class Track extends Model
      */
     public function servers()
     {
-        return $this->belongsToMany(Server::class)->withPivot([
-            'id',
-            'path',
-            'beets_id',
-        ]);
+        return $this->belongsToMany(Server::class)
+            ->withPivot([
+                'id',
+                'path',
+                'beets_id',
+            ])
+            ->using(ServerTrack::class);
     }
 
     /**

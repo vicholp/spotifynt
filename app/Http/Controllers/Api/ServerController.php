@@ -28,16 +28,22 @@ class ServerController extends Controller
 
     public function searchContent(Request $request, Server $server): array
     {
-        $artist_constrain = Artist::with([]);
-        $album_constrain = Release::with([]);
-        $track_constrain = Track::with([]);
+        $artistConstrain = Artist::whereRelation('servers', 'servers.id', $server->id);
+        $releaseConstrain = Release::whereRelation('servers', 'servers.id', $server->id);
+        $trackConstrain = Track::whereRelation('servers', 'servers.id', $server->id);
 
         StatsService::newSearchedTerm(Auth::user(), $request->q); // @phpstan-ignore-line
 
         return [
-            'artists' => new ArtistSimpleCollection(Artist::search($request->q)->constrain($artist_constrain)->get()),
-            'albums' => new ReleaseSimpleCollection(Release::search($request->q)->constrain($album_constrain)->get()),
-            'tracks' => new TrackSimpleCollection(Track::search($request->q)->constrain($track_constrain)->get()),
+            'artists' => new ArtistSimpleCollection(
+                Artist::search($request->q)->constrain($artistConstrain)->get()
+            ),
+            'albums' => new ReleaseSimpleCollection(
+                Release::search($request->q)->constrain($releaseConstrain)->get()
+            ),
+            'tracks' => new TrackSimpleCollection(
+                Track::search($request->q)->constrain($trackConstrain)->get()
+            ),
         ];
     }
 

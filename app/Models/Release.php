@@ -6,6 +6,7 @@ use App\Services\ArtService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Searchable;
 
@@ -103,6 +104,14 @@ class Release extends Model
     public function releaseGroup()
     {
         return $this->belongsTo(ReleaseGroup::class);
+    }
+
+    /**
+     * @return BelongsToMany<Server>
+     */
+    public function servers()
+    {
+        return $this->belongsToMany(Server::class);
     }
 
     /**

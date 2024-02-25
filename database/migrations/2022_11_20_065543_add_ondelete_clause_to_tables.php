@@ -12,6 +12,7 @@ return new class() extends Migration {
      */
     public function up()
     {
+        return;
         Schema::table('release_groups', function (Blueprint $table) {
             $table->unsignedBigInteger('artist_id')->references('id')->on('artist')->onDelete('cascade')->onUpdate('cascade')->change();
         });
@@ -63,6 +64,7 @@ return new class() extends Migration {
      */
     public function down()
     {
+        return;
         Schema::table('release_groups', function (Blueprint $table) {
             $table->unsignedBigInteger('artist_id')->references('id')->on('artist')->change();
         });

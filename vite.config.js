@@ -43,7 +43,8 @@ export default defineConfig(({ mode }) => {
         ],
         refresh: [
           'app/**',
-          'resources/**',
+          'lang/**',
+          'resources/views/**',
           'routes/**',
         ],
       }),

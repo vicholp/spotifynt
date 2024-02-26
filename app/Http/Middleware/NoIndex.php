@@ -9,7 +9,7 @@ class NoIndex extends RobotsMiddleware
 {
     protected function shouldIndex(Request $request): bool
     {
-        if (config('app.actual_env') != 'production') {
+        if ('production' != config('app.actual_env')) {
             return false;
         }
 

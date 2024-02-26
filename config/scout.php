@@ -149,7 +149,7 @@ return [
             'prefix_length' => 2,
             'max_expansions' => 50,
             'distance' => 2,
-            'no_limit' => true
+            'no_limit' => true,
         ],
         'asYouType' => true,
         'searchBoolean' => env('TNTSEARCH_BOOLEAN', false),

@@ -1,0 +1,20 @@
+#! /bin/bash
+
+APP="$(./bin/dotenv get APP_NAME)"
+
+FILE="$1"
+APP_ACTUAL_ENV="$(./bin/dotenv get APP_ACTUAL_ENV)"
+DB_USER="$(./bin/dotenv get DB_USERNAME)"
+DB_PASS="$(./bin/dotenv get DB_PASSWORD)"
+DB_NAME="$(./bin/dotenv get DB_DATABASE)"
+DB_HOST="$(./bin/dotenv get DB_HOST)"
+DB_PORT="$(./bin/dotenv get DB_PORT)"
+
+if [ -z "$1" ]
+then
+    echo "FILE is not set"
+    exit 1
+fi
+
+
+tar -xvf "$FILE"

@@ -1,16 +1,23 @@
 #! /bin/bash
 
-FILE="$1"
+if [ -z "$1" ]
+then
+    echo "FILE is not set"
+    exit 1
+else
+    FILE="$1"
+fi
+
 DB_USER="$(./bin/dotenv get DB_USERNAME)"
 DB_PASS="$(./bin/dotenv get DB_PASSWORD)"
 DB_NAME="$(./bin/dotenv get DB_DATABASE)"
 DB_HOST="$(./bin/dotenv get DB_HOST)"
 DB_PORT="$(./bin/dotenv get DB_PORT)"
 
-if [ -z "$1" ]
-then
-    echo "FILE is not set"
-    exit 1
-fi
+docker compose cp "$FILE" db:/backup.sql.gz
 
-gzip -c -d "$FILE" | mysql -u "$DB_USER" -p"$DB_PASS" -h "$DB_HOST" -P "$DB_PORT" "$DB_NAME"
+docker compose exec db \
+sh -c "
+    gzip -c -d /backup.sql.gz |
+    mysql -u "$DB_USER" -p"$DB_PASS" -h "$DB_HOST" -P "$DB_PORT" "$DB_NAME"
+"

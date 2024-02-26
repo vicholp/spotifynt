@@ -1,31 +1,32 @@
 #! /bin/bash
 
-APP="$(./bin/dotenv get APP_NAME)"
+if [ -z "$1" ]
+then
+    BACKUP_PATH="./backups"
+else
+    BACKUP_PATH="$1"
+fi
+
+APP_NAME="$(./bin/dotenv get APP_NAME)"
 DB_USER="$(./bin/dotenv get DB_USERNAME)"
 DB_PASS="$(./bin/dotenv get DB_PASSWORD)"
 DB_NAME="$(./bin/dotenv get DB_DATABASE)"
 DB_HOST="$(./bin/dotenv get DB_HOST)"
 DB_PORT="$(./bin/dotenv get DB_PORT)"
 
-if [ -z "$APP" ]
-then
-    echo "APP_NAME is not set"
-    exit 1
-fi
-
-if [ -z "$1" ]
-then
-    BACKUP_PATH="backups"
-else
-    BACKUP_PATH="$1"
-fi
-
 echo "Backing up database to $BACKUP_PATH"
 
 DATE=$(date +%Y-%m-%d_%H-%M-%S)
 
-FILE="$BACKUP_PATH/$APP/db_$DB_NAME-$DATE.sql.gz"
+FILE_NAME="$APP_NAME-db-$DATE.sql.gz"
 
-mkdir -p "$BACKUP_PATH/$APP"
+mkdir -p "$BACKUP_PATH"
 
-mysqldump -u "$DB_USER" -p"$DB_PASS" -h "$DB_HOST" -P "$DB_PORT" "$DB_NAME" | gzip > "$FILE"
+docker compose exec db \
+sh -c "
+    mkdir -p /backups ;
+    mysqldump -u "$DB_USER" -p"$DB_PASS" -h "$DB_HOST" -P "$DB_PORT" "$DB_NAME" |
+    gzip > "/backups/$FILE_NAME"
+"
+
+docker compose cp "db:/backups/$FILE_NAME" "$BACKUP_PATH/$FILE_NAME"

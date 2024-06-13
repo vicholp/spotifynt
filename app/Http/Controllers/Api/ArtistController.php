@@ -5,56 +5,47 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Artist;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ArtistController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): Response
     {
-        //
+        return response('Not implemented', 501);
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
-        //
+        return response('Not implemented', 501);
     }
 
     /**
      * Display the specified resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function show(Artist $artist)
+    public function show(Artist $artist): Response
     {
-        //
+        return response('Not implemented', 501);
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Artist $artist)
+    public function update(Request $request, Artist $artist): Response
     {
-        //
+        return response('Not implemented', 501);
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Artist $artist)
+    public function destroy(Artist $artist): Response
     {
-        //
+        return response('Not implemented', 501);
     }
 }

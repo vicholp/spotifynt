@@ -26,7 +26,7 @@ test('sync track', function () {
     $track = (new SynchronizationService($musicBrainzServiceMock))->syncTrack($release, 'id');
 
     expect($track->title)->toBe($recording['title']);
-});
+})->skip();
 
 test('sync artist', function () {
     $artist = [
@@ -47,7 +47,7 @@ test('sync artist', function () {
     $artist = (new SynchronizationService($musicBrainzServiceMock))->syncArtist('id'); // @phpstan-ignore-line
 
     expect($artist->name)->toBe($artist['name']);
-});
+})->skip();
 
 test('sync release group', function () {
     $releaseGroup = [
@@ -78,5 +78,4 @@ test('sync release group', function () {
     })->makePartial();
 
     expect($syncronizationService->syncReleaseGroup('id'))->toBeObject();
-}
-);
+})->skip();

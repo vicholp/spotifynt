@@ -5,56 +5,55 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): Response
     {
-        //
+        return response('Not implemented', 501);
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
-        //
+        return response('Not implemented', 501);
     }
 
     /**
      * Display the specified resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(User $user): Response
     {
-        //
+        return response('Not implemented', 501);
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $user): Response
     {
-        //
+        return response('Not implemented', 501);
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(User $user): Response
     {
-        //
+        return response('Not implemented', 501);
+    }
+
+    /**
+     * Get the authenticated User.
+     */
+    public function me(Request $request)
+    {
+        return $request->user();
     }
 }

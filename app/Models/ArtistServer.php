@@ -5,16 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * App\Models\ArtistServer.
+ * App\Models\ArtistServer
  *
- * @property int                             $id
- * @property int                             $server_id
- * @property int                             $artist_id
+ * @property int $id
+ * @property int $server_id
+ * @property int $artist_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property Artist                          $artist
- * @property Server                          $server
- *
+ * @property-read \App\Models\Artist $artist
+ * @property-read \App\Models\Server $server
  * @method static \Illuminate\Database\Eloquent\Builder|ArtistServer newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ArtistServer newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ArtistServer query()
@@ -23,7 +22,6 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @method static \Illuminate\Database\Eloquent\Builder|ArtistServer whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ArtistServer whereServerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ArtistServer whereUpdatedAt($value)
- *
  * @mixin \Eloquent
  */
 class ArtistServer extends Pivot

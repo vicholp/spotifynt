@@ -7,6 +7,7 @@ use App\Http\Resources\TrackCollection;
 use App\Http\Resources\TrackResource;
 use App\Models\Track;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class TrackController extends Controller
 {
@@ -20,12 +21,10 @@ class TrackController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
-        //
+        return response('Not implemented', 501);
     }
 
     /**
@@ -38,21 +37,17 @@ class TrackController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Track $track)
+    public function update(Request $request, Track $track): Response
     {
-        //
+        return response('Not implemented', 501);
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Track $track)
+    public function destroy(Track $track): Response
     {
-        //
+        return response('Not implemented', 501);
     }
 }

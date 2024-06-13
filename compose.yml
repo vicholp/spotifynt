@@ -1,0 +1,105 @@
+services:
+  backend-php:
+    build:
+      context: ./
+      dockerfile: ./deploy/local/php.Dockerfile
+    restart: on-failure
+    command: sh -c "composer i && php-fpm"
+    networks:
+      - app
+      - default
+    volumes:
+      - .:/var/www/html
+
+  backend:
+    image: nginxinc/nginx-unprivileged:1.26
+    restart: on-failure
+    user: "1000:1000"
+    networks:
+      - app
+      - default
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/var/www/html
+      - ./deploy/local/site.conf:/etc/nginx/conf.d/default.conf
+
+  queue:
+    depends_on:
+      - backend-php
+    build:
+      context: ./
+      dockerfile: ./deploy/local/php.Dockerfile
+    restart: unless-stopped
+    command: sh -c "php artisan queue:listen --queue=high,default,low --timeout=300"
+    volumes:
+      - .:/var/www/html
+    network_mode: host
+
+  backend-db:
+    image: mariadb:11.3.2
+    environment:
+      MARIADB_DATABASE: ${DB_DATABASE}
+      MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db:/var/lib/mysql
+    restart: on-failure
+
+  beets:
+    build: https://github.com/vicholp/docker-beets.git#master
+    restart: on-failure
+    environment:
+      - PUID=1000
+      - PGID=1000
+    ports:
+      - "9003:9003"
+    volumes:
+      - ./deploy/local/beets/config.yaml:/config/config.yaml
+      - beet_music:/music
+      - ./deploy/local/beets/music:/music_temp
+
+  backend-typesense:
+    image: typesense/typesense:26.0
+    restart: on-failure
+    ports:
+      - "8108:8108"
+    volumes:
+      - typesense-data:/data
+    command: '--data-dir /data --api-key=xyz --enable-cors'
+
+  backend-minio:
+    image: minio/minio
+    ports:
+      - '9090:9000'
+      - '9001:9001'
+    volumes:
+      - 'minio_data:/data'
+    environment:
+      - MINIO_ROOT_USER=AKIAIOSFODNN7EXAMPLE
+      - MINIO_ROOT_PASSWORD=wJalrXUtnFEMIK7MDENGbPxRfiCYEXAMPLEKEY
+    command: server /data --console-address ":9001"
+
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - backend-minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set myminio http://backend-minio:9000 AKIAIOSFODNN7EXAMPLE wJalrXUtnFEMIK7MDENGbPxRfiCYEXAMPLEKEY;
+      /usr/bin/mc mb myminio/public-bucket;
+      /usr/bin/mc anonymous set public myminio/public-bucket;
+      exit 0;
+      "
+
+networks:
+  app:
+    external: true
+    name: ${APP_NAME}
+
+volumes:
+  db:
+  beet_music:
+  typesense-data:
+  minio_data:

@@ -3,6 +3,7 @@
 namespace App\Services\Api;
 
 use App\Models\Release;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
@@ -43,7 +44,13 @@ class CoverArtService
             return false;
         }
 
-        $image = Http::get($url)->body();
+        $image = false;
+
+        try {
+            $image = Http::get($url)->body();
+        } catch (ConnectionException $e) {
+            Cache::forget('ca_'.$release->mb_release_id.'_urlaa');
+        }
 
         if (!$image) {
             return false;
@@ -71,7 +78,7 @@ class CoverArtService
             return false;
         }
 
-        return $response->json()['results'][0]['artworkUrl100'];
+        return $response->json()['results'][0]['artworkUrl100']; // @phpstan-ignore-line
     }
 
     private function getArtFromBeets(BeetsService $beetsService, string $id): string|false

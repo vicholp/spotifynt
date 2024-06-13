@@ -16,6 +16,8 @@ return new class() extends Migration {
             $table->id();
 
             $table->foreignId('track_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('server_id')->constrained();
 
             $table->timestamps();
         });

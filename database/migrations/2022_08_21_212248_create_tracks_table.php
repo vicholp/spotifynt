@@ -35,6 +35,7 @@ return new class() extends Migration {
             $table->string('moods_mirex', 100)->nullable();
             $table->string('voice_instrumental', 100)->nullable();
 
+            $table->string('mb_track_id', 500)->nullable();
             $table->string('mb_recording_id', 500);
             $table->json('mb_data');
 

@@ -50,30 +50,22 @@ return [
             'throw' => false,
         ],
 
-        'art' => [
+        'temp' => [
             'driver' => 'local',
-            'root' => storage_path('app/art'),
-            'url' => env('APP_URL').'/art',
-            'visibility' => 'public',
+            'root' => storage_path('app/temp'),
             'throw' => false,
         ],
 
         's3' => [
             'driver' => 's3',
+            'endpoint' => env('AWS_ENDPOINT'),
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
-            'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'throw' => false,
-        ],
-
-        'database_data' => [
-            'driver' => 'local',
-            'root' => 'database/data',
-            'throw' => false,
+            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', true),
+            'throw' => true,
         ],
     ],
 

@@ -1,19 +1,38 @@
 <?php
 
 use App\Models\Server;
-use App\Models\User;
 use App\Services\Api\BeetsService;
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Http;
 
-test('get albums', function () {
-    $user = User::factory()->create();
+describe('check single track', function () {
+    test('when track exists returns true', function () {
+        Http::fake(function () {
+            return Http::response('OK', 200);
+        });
 
-    $server = Server::create([
-        'name' => 'sakdjf',
-        'path' => 'http://beets.vicholp.duckdns.org:80',
-        'owner_id' => $user->id,
-    ]);
+        $server = Server::factory()->create();
+        $beets = new BeetsService($server);
 
-    $beets = new BeetsService($server);
+        expect($beets->checkTrack(1))->toBeTrue();
 
-    dd($beets->getAlbums());
+        Http::assertSent(function (Request $request) use ($server) {
+            return $request->url() == $server->path.'/item/'.str(1);
+        });
+    });
+
+    test('when track does not exist returns false', function () {
+        Http::fake(function () {
+            return Http::response('Not Found', 404);
+        });
+
+        $server = Server::factory()->create();
+        $beets = new BeetsService($server);
+
+        expect($beets->checkTrack(1))->toBeFalse();
+
+        Http::assertSent(function (Request $request) use ($server) {
+            return $request->url() == $server->path.'/item/'.str(1);
+        });
+    });
 });

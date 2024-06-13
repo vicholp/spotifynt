@@ -3,17 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ArtistSimpleCollection;
-use App\Http\Resources\ReleaseSimpleCollection;
 use App\Http\Resources\ServerCollection;
 use App\Http\Resources\ServerResource;
-use App\Http\Resources\TrackSimpleCollection;
-use App\Models\Artist;
-use App\Models\Release;
 use App\Models\Server;
-use App\Models\Track;
-use App\Services\StatsService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class ServerController extends Controller
@@ -26,31 +20,10 @@ class ServerController extends Controller
         return new ServerCollection(Server::get()->keyBy->id);
     }
 
-    public function searchContent(Request $request, Server $server): array
-    {
-        $artistConstrain = Artist::whereRelation('servers', 'servers.id', $server->id);
-        $releaseConstrain = Release::whereRelation('servers', 'servers.id', $server->id);
-        $trackConstrain = Track::whereRelation('servers', 'servers.id', $server->id);
-
-        StatsService::newSearchedTerm(Auth::user(), $request->q); // @phpstan-ignore-line
-
-        return [
-            'artists' => new ArtistSimpleCollection(
-                Artist::search($request->q)->constrain($artistConstrain)->get()
-            ),
-            'albums' => new ReleaseSimpleCollection(
-                Release::search($request->q)->constrain($releaseConstrain)->get()
-            ),
-            'tracks' => new TrackSimpleCollection(
-                Track::search($request->q)->constrain($trackConstrain)->get()
-            ),
-        ];
-    }
-
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -72,21 +45,17 @@ class ServerController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Server $server)
+    public function update(Request $request, Server $server): Response
     {
-        //
+        return response('Not implemented', 501);
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Server $server)
+    public function destroy(Server $server): Response
     {
-        //
+        return response('Not implemented', 501);
     }
 }

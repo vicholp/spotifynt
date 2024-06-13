@@ -15,6 +15,7 @@ return new class() extends Migration {
         Schema::create('skipped_track_stats', function (Blueprint $table) {
             $table->id();
 
+            $table->foreignId('server_id')->constrained();
             $table->foreignId('track_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->integer('time');

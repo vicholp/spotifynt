@@ -1,0 +1,49 @@
+# name: "${APP_NAME}-${APP_ACTUAL_ENV}"
+
+services:
+  php:
+    image: cd-php:ultima
+    restart: unless-stopped
+    ports:
+      - 80:80
+    networks:
+      # - traefik
+      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      # - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}.rule=Host(`${TRAEFIK_HOST}`)"
+      # - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}.tls=true"
+      # - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}.tls.certresolver=${TRAEFIK_CERT_RESOLVER}"
+    healthcheck:
+      test: curl --fail http://localhost/ || exit 1
+      start_period: 15s
+      start_interval: 3s
+
+  db:
+    image: mariadb:11.3.2
+    environment:
+      MARIADB_DATABASE: ${DB_DATABASE}
+      MARIADB_USER: ${DB_USERNAME}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_RANDOM_ROOT_PASSWORD: true
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - default
+    ports:
+      - 3306
+    restart: unless-stopped
+    healthcheck:
+      test: healthcheck.sh --su-mysql --connect --innodb_initialized
+      start_period: 15s
+      start_interval: 3s
+
+volumes:
+  db:
+
+
+networks:
+  # traefik:
+  #   external: true
+  default:

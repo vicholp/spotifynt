@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,10 +14,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 |
 */
 
-uses(Tests\TestCase::class)->in('Feature');
-uses(DatabaseMigrations::class)->in('Browser/Shop');
-uses(DatabaseMigrations::class)->in('Feature');
-// uses(RefreshDatabase::class)->in('Feature');
+uses(Tests\TestCase::class, RefreshDatabase::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
@@ -30,8 +27,13 @@ uses(DatabaseMigrations::class)->in('Feature');
 |
 */
 
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
+expect()->extend('toBeEqualCollection', function (Collection $b) {
+    $a = $this->value->toArray();
+    $b = $b->toArray();
+
+    expect($a)->toBe($b);
+
+    return $this;
 });
 
 /*
@@ -44,8 +46,3 @@ expect()->extend('toBeOne', function () {
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
-
-function something()
-{
-    // ..
-}

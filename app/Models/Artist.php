@@ -9,20 +9,21 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Searchable;
 
 /**
- * App\Models\Artist.
+ * App\Models\Artist
  *
- * @property int                                                                     $id
- * @property string                                                                  $name
- * @property string                                                                  $type
- * @property string                                                                  $country
- * @property string                                                                  $mb_artist_id
- * @property mixed                                                                   $mb_data
- * @property \Illuminate\Support\Carbon|null                                         $created_at
- * @property \Illuminate\Support\Carbon|null                                         $updated_at
- * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\ReleaseGroup> $releaseGroups
- * @property int|null                                                                $release_groups_count
- *
- * @method static \Database\Factories\ArtistFactory            factory($count = null, $state = [])
+ * @property int $id
+ * @property string $name
+ * @property string $type
+ * @property string $country
+ * @property string $mb_artist_id
+ * @property mixed $mb_data
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ReleaseGroup> $releaseGroups
+ * @property-read int|null $release_groups_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Server> $servers
+ * @property-read int|null $servers_count
+ * @method static \Database\Factories\ArtistFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Artist newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Artist newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Artist query()
@@ -34,7 +35,6 @@ use Laravel\Scout\Searchable;
  * @method static \Illuminate\Database\Eloquent\Builder|Artist whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Artist whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Artist whereUpdatedAt($value)
- *
  * @mixin \Eloquent
  */
 class Artist extends Model
@@ -79,7 +79,8 @@ class Artist extends Model
     public function toSearchableArray()
     {
         return [
-            'id' => $this->id,
+            'id' => (string) $this->id,
+            'created_at' => $this->created_at->timestamp,
             'name' => $this->name,
         ];
     }

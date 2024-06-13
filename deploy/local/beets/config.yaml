@@ -1,0 +1,52 @@
+directory: /music
+library: /music/musiclibrary.md
+
+import:
+  from_scratch: yes
+  group_albums: yes
+  languages: en
+
+paths:
+  default: "%asciify{$albumartist}/%asciify{$album%aunique{}}/%asciify{$track} - %asciify{$title}"
+  singleton: "%asciify{$artist}/%asciify{$title}"
+  comp: Compilations/$album%aunique{}/$track $title
+
+plugins:
+  - artistcountry
+  - alternatives
+  - chroma
+  - convert
+  - embedart
+  - fetchart
+  - info
+  - missing
+  - web
+  - mbsync
+  - replaygain
+  - check
+
+replaygain:
+  backend: ffmpeg
+  auto: no
+
+alternatives:
+  music_lite:
+    directory: /music_lite
+    formats: mp3
+    query: ""
+    removable: false
+
+fetchart:
+  sources: coverart itunes amazon albumart filesystem
+
+acoustid:
+  apikey: AbCd1234
+
+lyrics:
+  auto: no
+
+web:
+  host: 0.0.0.0
+  port: 9003
+  cors: "*"
+  include_paths: yes

@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Jobs\Synchronization\SyncServerJob;
 use App\Models\Server;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class SyncAllServersCommand extends Command
 {
@@ -25,7 +26,10 @@ class SyncAllServersCommand extends Command
     {
         $servers = Server::get();
 
+        Log::debug("Found {$servers->count()} servers to synchronize");
+
         foreach ($servers as $server) {
+            Log::debug("Dispatching SyncServerJob for server {$server->id}");
             SyncServerJob::dispatch($server);
         }
 

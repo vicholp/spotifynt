@@ -6,54 +6,51 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ReleaseResource;
 use App\Models\Release;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ReleaseController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): Response
     {
-        //
+        return response('Not implemented', 501);
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
-        //
+        return response('Not implemented', 501);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Release $release): ReleaseResource
+    public function show(Release $release, Request $request): ReleaseResource
     {
-        return new ReleaseResource($release->load('tracks'));
+        if ($request->has('with_tracks')) {
+            $release->load('tracks');
+        }
+
+        return new ReleaseResource($release);
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Release $release)
+    public function update(Request $request, Release $release): Response
     {
-        //
+        return response('Not implemented', 501);
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Release $release)
+    public function destroy(Release $release): Response
     {
-        //
+        return response('Not implemented', 501);
     }
 }

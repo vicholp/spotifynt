@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Server;
-use App\Models\Track;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,8 +14,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Server::factory(3)->create();
+        Artisan::call('make:user', [
+            '--admin' => true,
+            '--default' => true,
+        ]);
 
-        Track::factory(20)->create();
+        Artisan::call('server:dev');
     }
 }

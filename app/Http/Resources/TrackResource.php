@@ -18,7 +18,9 @@ class TrackResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'release' => new ReleaseSimpleResource($this->release),
+            'release' => $this->whenLoaded('release', function () {
+                return new ReleaseResource($this->release);
+            }),
             'server_track' => $this->whenPivotLoaded('server_track', function () {
                 return $this->pivot; // @phpstan-ignore-line
             }),

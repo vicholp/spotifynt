@@ -1,5 +1,9 @@
 <?php
 
+use App\Models\Artist;
+use App\Models\Release;
+use App\Models\Track;
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -135,24 +139,77 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Tntsearch Configuration
+    | Typesense Configuration
     |--------------------------------------------------------------------------
     |
-    | Here you may configure your Tntsearch settings.
+    | Here you may configure your Typesense settings. Typesense is an open
+    | source search engine using minimal configuration. Below, you will
+    | state the host, key, and schema configuration for the instance.
     |
     */
 
-    'tntsearch' => [
-        'storage' => storage_path('app/tntsearch'),
-        'fuzziness' => env('TNTSEARCH_FUZZINESS', true),
-        'fuzzy' => [
-            'prefix_length' => 2,
-            'max_expansions' => 50,
-            'distance' => 2,
-            'no_limit' => true,
+    'typesense' => [
+        'client-settings' => [
+            'api_key' => env('TYPESENSE_API_KEY', 'xyz'),
+            'nodes' => [
+                [
+                    'host' => env('TYPESENSE_HOST', 'localhost'),
+                    'port' => env('TYPESENSE_PORT', '8108'),
+                    'path' => env('TYPESENSE_PATH', ''),
+                    'protocol' => env('TYPESENSE_PROTOCOL', 'http'),
+                ],
+            ],
+            'nearest_node' => [
+                'host' => env('TYPESENSE_HOST', 'localhost'),
+                'port' => env('TYPESENSE_PORT', '8108'),
+                'path' => env('TYPESENSE_PATH', ''),
+                'protocol' => env('TYPESENSE_PROTOCOL', 'http'),
+            ],
+            'connection_timeout_seconds' => env('TYPESENSE_CONNECTION_TIMEOUT_SECONDS', 2),
+            'healthcheck_interval_seconds' => env('TYPESENSE_HEALTHCHECK_INTERVAL_SECONDS', 30),
+            'num_retries' => env('TYPESENSE_NUM_RETRIES', 3),
+            'retry_interval_seconds' => env('TYPESENSE_RETRY_INTERVAL_SECONDS', 1),
         ],
-        'asYouType' => true,
-        'searchBoolean' => env('TNTSEARCH_BOOLEAN', false),
-        'maxDocs' => env('TNTSEARCH_MAX_DOCS', 500),
+        'model-settings' => [
+            Track::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => 'title',
+                            'type' => 'string',
+                        ],
+                    ],
+                ],
+                'search-parameters' => [
+                    'query_by' => 'title',
+                ],
+            ],
+            Release::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => 'title',
+                            'type' => 'string',
+                        ],
+                    ],
+                ],
+                'search-parameters' => [
+                    'query_by' => 'title',
+                ],
+            ],
+            Artist::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => 'name',
+                            'type' => 'string',
+                        ],
+                    ],
+                ],
+                'search-parameters' => [
+                    'query_by' => 'name',
+                ],
+            ],
+        ],
     ],
 ];

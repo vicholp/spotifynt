@@ -1,7 +1,0 @@
-#! /bin/bash
-
-# Run this command just after cloning the repo
-
-set -e
-
-./bin/exec php artisan queue:listen --queue=high,default,low

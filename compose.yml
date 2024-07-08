@@ -1,0 +1,102 @@
+services:
+  backend-php:
+    build:
+      context: ./
+      dockerfile: ./deploy/local/php.Dockerfile
+    command: sh -c "composer i && php-fpm"
+    networks:
+      - project
+      - default
+    volumes:
+      - .:/var/www/html
+
+  backend:
+    image: nginxinc/nginx-unprivileged:1.27.0
+    user: "1000:1000"
+    networks:
+      - project
+      - default
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/var/www/html
+      - ./deploy/local/site.conf:/etc/nginx/conf.d/default.conf
+
+  backend-db:
+    image: mariadb:11.3.2
+    environment:
+      MARIADB_DATABASE: ${DB_DATABASE}
+      MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - default
+    ports:
+      - 3306:3306
+    volumes:
+      - db_data:/var/lib/mysql
+
+  backend-queue:
+    build:
+      context: ./
+      dockerfile: ./deploy/local/php.Dockerfile
+    command: sh -c "composer i && php artisan queue:work --queue=high,default --tries=3 --timeout=60 "
+    networks:
+      - project
+      - default
+    volumes:
+      - .:/var/www/html
+
+  backend-mailpit:
+    image: axllent/mailpit:v1.19.0
+    ports:
+      - 8025:8025 # Web UI
+      - 1025:1025 # SMTP
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+  backend-minio:
+    image: minio/minio:RELEASE.2024-06-29T01-20-47Z
+    ports:
+      - 9000:9000 # Minio
+      - 9001:9001 # Web UI
+    volumes:
+      - 'minio_data:/data'
+    environment:
+      - MINIO_ROOT_USER=AKIAIOSFODNN7EXAMPLE
+      - MINIO_ROOT_PASSWORD=wJalrXUtnFEMIK7MDENGbPxRfiCYEXAMPLEKEY
+    command: server /data --console-address ":9001"
+
+  backend-createbuckets:
+    image: minio/mc
+    depends_on:
+      - backend-minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set myminio http://backend-minio:9000 AKIAIOSFODNN7EXAMPLE wJalrXUtnFEMIK7MDENGbPxRfiCYEXAMPLEKEY;
+      /usr/bin/mc mb myminio/public-bucket;
+      /usr/bin/mc anonymous set public myminio/public-bucket;
+      exit 0;
+      "
+
+  beets:
+    build: https://github.com/vicholp/docker-beets.git#master
+    container_name: beets
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    network_mode: host
+    volumes:
+      - ./deploy/local/config.yaml:/config/config.yaml
+      - beets_data:/music
+      - ./deploy/local/beets/music:/music_temp
+
+volumes:
+  db_data:
+  minio_data:
+  beets_data:
+
+networks:
+  project:
+    name: spotifynt
+    external: true

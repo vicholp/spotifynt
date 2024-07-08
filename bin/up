@@ -1,9 +1,0 @@
-#! /bin/bash
-
-# Run this command before start development
-
-set -e
-
-docker compose up -d
-
-npm run watch "$@"

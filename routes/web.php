@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ServerTrackController;
 use App\Http\Controllers\Api\StatsController;
 use App\Http\Controllers\Api\TrackController;
 use App\Http\Controllers\Api\UserServerController;
+use App\Http\Controllers\HealthzController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,9 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('main.main');
-});
+Route::get('/', HealthzController::class);
 
 Route::middleware('auth')->group(function () {
     Route::view('player', 'main.player');

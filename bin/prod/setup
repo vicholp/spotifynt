@@ -1,6 +1,0 @@
-#! /bin/bash
-
-cp .env.example .env
-cp public/.htaccess.example public/.htaccess
-
-./bin/prod/php php artisan key:generate

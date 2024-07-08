@@ -1,3 +1,0 @@
-#! /bin/bash
-
-./bin/prod/php artisan down --render="errors::503" --secret="force-up"

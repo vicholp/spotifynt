@@ -1,29 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\RecommendationController;
-use App\Http\Controllers\Api\ReleaseController;
-use App\Http\Controllers\Api\SearchController;
-use App\Http\Controllers\Api\Server\ServerTrackController;
-use App\Http\Controllers\Api\ServerController;
-use App\Http\Controllers\Api\TrackController;
-use App\Http\Controllers\Api\User\UserServerController;
-use App\Http\Controllers\Api\UserController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/users/me', [UserController::class, 'me']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {

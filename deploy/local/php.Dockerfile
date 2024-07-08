@@ -1,5 +1,7 @@
 FROM php:8.3.3-fpm AS php
 
+RUN apt update; apt install -y unzip 7zip git fswatch
+
 ENV PHP_EXTENSIONS "redis xdebug pdo_mysql pdo_pgsql gd zip exif"
 
 COPY deploy/local/php.ini-development "$PHP_INI_DIR/php.ini"
@@ -9,8 +11,6 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 RUN install-php-extensions $PHP_EXTENSIONS
 
 WORKDIR /var/www/html
-
-RUN adduser default --uid 1000
 
 USER 1000:1000
 

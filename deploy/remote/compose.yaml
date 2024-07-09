@@ -1,0 +1,74 @@
+# name: ${APP_NAME}-${APP_ACTUAL_ENV}
+
+services:
+  backend-php:
+    image: me/test:latest
+    ports:
+      - 8080
+
+  backend:
+    image: registry.home.vicho.dev/${GITHUB_REPO}-nginx:latest
+    networks:
+      - project
+      # - traefik
+    ports:
+      - 8080
+
+  backend-db:
+    image: mariadb:11.3.2
+    environment:
+      MARIADB_DATABASE: ${DB_DATABASE}
+      MARIADB_USER: ${DB_USERNAME}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_RANDOM_ROOT_PASSWORD: true
+    volumes:
+      - db_data:/var/lib/mysql
+
+  backend-queue:
+    depends_on:
+      - backend-php
+    image: registry.home.vicho.dev/${GITHUB_REPO}-php:latest
+    command: sh -c "php artisan queue:work --queue=high,default --tries=3 --timeout=60"
+
+  backend-minio:
+    image: minio/minio:RELEASE.2024-06-29T01-20-47Z
+    ports:
+      - 9000:9000 # Minio
+      - 9001:9001 # Web UI
+    volumes:
+      - 'minio_data:/data'
+    environment:
+      - MINIO_ROOT_USER=${AWS_ACCESS_KEY_ID}
+      - MINIO_ROOT_PASSWORD=${AWS_SECRET_ACCESS_KEY}
+    command: server /data --console-address ":9001"
+
+  backend-createbuckets:
+    image: minio/mc
+    depends_on:
+      - backend-minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set myminio ${AWS_ENDPOINT} ${AWS_ACCESS_KEY_ID} ${AWS_SECRET_ACCESS_KEY};
+      /usr/bin/mc mb myminio/${AWS_BUCKET};
+      /usr/bin/mc anonymous set public myminio/${AWS_BUCKET};
+      exit 0;
+      "
+  backend-typesense:
+    image: typesense/typesense:26.0
+    volumes:
+      - typesense-data:/data
+    command: '--data-dir /data --api-key=${TYPESENSE_API_KEY} --enable-cors'
+
+volumes:
+  db_data:
+  minio_data:
+  beets_data:
+  typesense-data:
+
+networks:
+  project:
+    name: spotifynt
+    external: true
+  # traefik:
+  #   external: true
+  #   name: traefik

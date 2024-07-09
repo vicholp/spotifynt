@@ -35,10 +35,12 @@ services:
       - db_data:/var/lib/mysql
 
   backend-queue:
+    depends_on:
+      - backend-db
     build:
       context: ./
       dockerfile: ./deploy/local/php.Dockerfile
-    command: sh -c "composer i && php artisan queue:work --queue=high,default --tries=3 --timeout=60 "
+    command: sh -c "composer i && php artisan queue:listen --queue=high,default --tries=3 --timeout=60"
     networks:
       - project
       - default
@@ -62,8 +64,8 @@ services:
     volumes:
       - 'minio_data:/data'
     environment:
-      - MINIO_ROOT_USER=AKIAIOSFODNN7EXAMPLE
-      - MINIO_ROOT_PASSWORD=wJalrXUtnFEMIK7MDENGbPxRfiCYEXAMPLEKEY
+      - MINIO_ROOT_USER=${AWS_ACCESS_KEY_ID}
+      - MINIO_ROOT_PASSWORD=${AWS_SECRET_ACCESS_KEY}
     command: server /data --console-address ":9001"
 
   backend-createbuckets:
@@ -72,29 +74,39 @@ services:
       - backend-minio
     entrypoint: >
       /bin/sh -c "
-      /usr/bin/mc alias set myminio http://backend-minio:9000 AKIAIOSFODNN7EXAMPLE wJalrXUtnFEMIK7MDENGbPxRfiCYEXAMPLEKEY;
-      /usr/bin/mc mb myminio/public-bucket;
-      /usr/bin/mc anonymous set public myminio/public-bucket;
+      /usr/bin/mc alias set myminio ${AWS_ENDPOINT} ${AWS_ACCESS_KEY_ID} ${AWS_SECRET_ACCESS_KEY};
+      /usr/bin/mc mb myminio/${AWS_BUCKET};
+      /usr/bin/mc anonymous set public myminio/${AWS_BUCKET};
       exit 0;
       "
 
   beets:
     build: https://github.com/vicholp/docker-beets.git#master
-    container_name: beets
+    ports:
+      - 9090:9090
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
-    network_mode: host
     volumes:
-      - ./deploy/local/config.yaml:/config/config.yaml
+      - ./deploy/local/beets/config.yaml:/config/config.yaml
       - beets_data:/music
       - ./deploy/local/beets/music:/music_temp
+
+  backend-typesense:
+    image: typesense/typesense:26.0
+    restart: on-failure
+    ports:
+      - "8108:8108"
+    volumes:
+      - typesense-data:/data
+    command: '--data-dir /data --api-key=${TYPESENSE_API_KEY} --enable-cors'
 
 volumes:
   db_data:
   minio_data:
   beets_data:
+  typesense-data:
 
 networks:
   project:

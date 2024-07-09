@@ -13,7 +13,7 @@ return new class() extends Migration {
     public function up()
     {
         Schema::table('skipped_track_stats', function (Blueprint $table) {
-            $table->foreignId('server_id')->constrained();
+            $table->foreignId('server_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

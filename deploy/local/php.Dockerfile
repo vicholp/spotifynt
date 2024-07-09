@@ -10,6 +10,9 @@ COPY deploy/local/99-xdebug.ini /usr/local/etc/php/conf.d/99-xdebug.ini
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions $PHP_EXTENSIONS
 
+RUN groupadd -g 1000 default
+RUN useradd -rm -d /home/default -s /bin/bash -g 1000 -u 1000 default
+
 WORKDIR /var/www/html
 
 USER 1000:1000

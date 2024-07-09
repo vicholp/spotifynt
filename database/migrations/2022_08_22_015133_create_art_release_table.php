@@ -15,8 +15,8 @@ return new class() extends Migration {
         Schema::create('art_release', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('art_id')->constrained();
-            $table->foreignId('release_id')->constrained();
+            $table->foreignId('art_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('release_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->timestamps();
         });

@@ -17,7 +17,7 @@ return new class() extends Migration {
 
             $table->string('title', 500);
             $table->string('type', 500);
-            $table->foreignId('artist_id')->constrained();
+            $table->foreignId('artist_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->string('mb_releasegroup_id', 50);
             $table->json('mb_data');

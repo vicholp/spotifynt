@@ -1,32 +1,31 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\Release;
+use App\Http\Resources\ServerCollection;
 use App\Models\Server;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class ServerReleaseController extends Controller
+class ServerController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index(Server $server)
+    public function index(User $user): ServerCollection
     {
-        //
+        return new ServerCollection($user->servers()->get());
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Server $server)
+    public function store(Request $request, User $user): string
     {
-        //
+        $user->servers()->attach($request->server_id);
+
+        return 'OK';
     }
 
     /**
@@ -34,7 +33,7 @@ class ServerReleaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(Server $server, Release $release)
+    public function show(User $user, Server $server)
     {
         //
     }
@@ -44,7 +43,7 @@ class ServerReleaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Server $server, Release $release)
+    public function update(Request $request, User $user, Server $server)
     {
         //
     }
@@ -54,7 +53,7 @@ class ServerReleaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Server $server, Release $release)
+    public function destroy(User $user, Server $server)
     {
         //
     }

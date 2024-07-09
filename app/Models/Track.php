@@ -34,7 +34,7 @@ use Laravel\Scout\Searchable;
  * @property mixed                                                         $mb_data
  * @property \Illuminate\Support\Carbon|null                               $created_at
  * @property \Illuminate\Support\Carbon|null                               $updated_at
- * @property \App\Models\Release                                           $release
+ * @property Release                                                       $release
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Server[] $servers
  * @property int|null                                                      $servers_count
  *
@@ -104,12 +104,13 @@ class Track extends Model
     /**
      * Get the indexable data array for the model.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function toSearchableArray()
     {
         return [
-            'id' => $this->id,
+            'id' => (string) $this->id,
+            'created_at' => $this->created_at->timestamp,
             'title' => $this->title,
         ];
     }

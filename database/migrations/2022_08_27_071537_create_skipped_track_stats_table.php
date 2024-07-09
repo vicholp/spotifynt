@@ -15,8 +15,8 @@ return new class() extends Migration {
         Schema::create('skipped_track_stats', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('track_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('track_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('time');
 
             $table->timestamps();

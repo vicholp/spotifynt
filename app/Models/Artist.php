@@ -70,7 +70,8 @@ class Artist extends Model
     public function toSearchableArray()
     {
         return [
-            'id' => $this->id,
+            'id' => (string) $this->id,
+            'created_at' => $this->created_at->timestamp,
             'name' => $this->name,
         ];
     }

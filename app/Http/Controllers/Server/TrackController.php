@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Server;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TrackResource;
@@ -9,7 +9,7 @@ use App\Models\ServerTrack;
 use App\Models\Track;
 use Illuminate\Http\Request;
 
-class ServerTrackController extends Controller
+class TrackController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -40,7 +40,7 @@ class ServerTrackController extends Controller
 
         $track->pivot = $serverTrack; // @phpstan-ignore-line - i;m not sure if there is another way to do this.
 
-        return new TrackResource($track);
+        return new TrackResource($track->load('release'));
     }
 
     /**

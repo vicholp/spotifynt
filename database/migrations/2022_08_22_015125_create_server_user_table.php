@@ -15,8 +15,8 @@ return new class() extends Migration {
         Schema::create('server_user', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('server_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('server_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->enum('permissions', ['admin', 'listener'])->default('listener');
 

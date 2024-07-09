@@ -33,7 +33,7 @@ class AttachDefaultServer extends Command
 
         Server::create([
             'name' => 'Default',
-            'path' => 'http://localhost:9001',
+            'path' => 'http://beets:9090',
             'owner_id' => $user->id,
         ]);
     }

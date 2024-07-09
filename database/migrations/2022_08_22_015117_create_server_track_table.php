@@ -15,8 +15,8 @@ return new class() extends Migration {
         Schema::create('server_track', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('server_id')->constrained();
-            $table->foreignId('track_id')->constrained();
+            $table->foreignId('server_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('track_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->string('format', 100)->nullable();
             $table->unsignedInteger('bitrate')->nullable();

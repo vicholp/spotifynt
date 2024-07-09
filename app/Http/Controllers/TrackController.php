@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Resources\TrackCollection;
 use App\Http\Resources\TrackResource;
 use App\Models\Track;
@@ -25,7 +24,7 @@ class TrackController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return response('Not implemented', 501);
     }
 
     /**
@@ -43,7 +42,7 @@ class TrackController extends Controller
      */
     public function update(Request $request, Track $track)
     {
-        //
+        return response('Not implemented', 501);
     }
 
     /**
@@ -53,6 +52,6 @@ class TrackController extends Controller
      */
     public function destroy(Track $track)
     {
-        //
+        return response('Not implemented', 501);
     }
 }

@@ -13,8 +13,12 @@
         "laravel/fortify": "^1.21",
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
+        "laravel/scout": "^10.10",
         "laravel/telescope": "^5.1",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "league/flysystem-aws-s3-v3": "^3.0",
+        "stefangabos/zebra_image": "^2.8",
+        "typesense/typesense-php": "^4.9"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.0",

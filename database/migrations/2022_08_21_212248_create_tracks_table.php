@@ -16,7 +16,7 @@ return new class() extends Migration {
             $table->id();
 
             $table->string('title', 1000);
-            $table->foreignId('release_id')->constrained();
+            $table->foreignId('release_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('track_position')->nullable();
 
             $table->integer('length')->nullable();

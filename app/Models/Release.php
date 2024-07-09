@@ -22,8 +22,8 @@ use Laravel\Scout\Searchable;
  * @property mixed                                                                    $mb_data
  * @property \Illuminate\Support\Carbon|null                                          $created_at
  * @property \Illuminate\Support\Carbon|null                                          $updated_at
- * @property \App\Models\Artist|null                                                  $artist
- * @property \App\Models\ReleaseGroup                                                 $releaseGroup
+ * @property Artist|null                                                              $artist
+ * @property ReleaseGroup                                                             $releaseGroup
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\ShowedReleaseStat[] $showedReleaseStats
  * @property int|null                                                                 $showed_release_stats_count
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Track[]             $tracks
@@ -83,7 +83,8 @@ class Release extends Model
     public function toSearchableArray(): array
     {
         return [
-            'id' => $this->id,
+            'id' => (string) $this->id,
+            'created_at' => $this->created_at->timestamp,
             'title' => $this->title,
             'artist_name' => $this->artist?->name,
         ];

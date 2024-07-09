@@ -57,14 +57,14 @@ class SynchronizationService
 
     public function recreateIndex(): void
     {
-        Artist::removeAllFromSearch();
-        Artist::makeAllSearchable();
+        // Artist::removeAllFromSearch();
+        // Artist::makeAllSearchable();
 
-        Release::removeAllFromSearch();
-        Release::makeAllSearchable();
+        // Release::removeAllFromSearch();
+        // Release::makeAllSearchable();
 
-        Track::removeAllFromSearch();
-        Track::makeAllSearchable();
+        // Track::removeAllFromSearch();
+        // Track::makeAllSearchable();
     }
 
     public function syncAlbumFromBeets(BeetsService $beets, Server $server, string $mb_id, string $beets_album_id): void

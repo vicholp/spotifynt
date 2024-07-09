@@ -13,8 +13,8 @@ return new class() extends Migration {
     public function up()
     {
         Schema::table('played_track_stats', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('server_id')->constrained();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('server_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

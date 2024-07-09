@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Http\Resources\ReleaseResource;
+use App\Models\Release;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class ReleaseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return response('Not implemented', 501);
     }
 
     /**
@@ -25,17 +25,15 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return response('Not implemented', 501);
     }
 
     /**
      * Display the specified resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Release $release): ReleaseResource
     {
-        //
+        return new ReleaseResource($release->load('tracks'));
     }
 
     /**
@@ -43,9 +41,9 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, Release $release)
     {
-        //
+        return response('Not implemented', 501);
     }
 
     /**
@@ -53,8 +51,8 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Release $release)
     {
-        //
+        return response('Not implemented', 501);
     }
 }

@@ -11,29 +11,30 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Searchable;
 
 /**
- * App\Models\Release
+ * App\Models\Release.
  *
- * @property int $id
- * @property string $title
- * @property string|null $date
- * @property string $country
- * @property int $release_group_id
- * @property string|null $main_color
- * @property string $mb_release_id
- * @property mixed $mb_data
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Artist|null $artist
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ReleaseArt> $releaseArts
- * @property-read int|null $release_arts_count
- * @property-read \App\Models\ReleaseGroup $releaseGroup
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Server> $servers
- * @property-read int|null $servers_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ShowedReleaseStat> $showedReleaseStats
- * @property-read int|null $showed_release_stats_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Track> $tracks
- * @property-read int|null $tracks_count
- * @method static \Database\Factories\ReleaseFactory factory($count = null, $state = [])
+ * @property int                                                                          $id
+ * @property string                                                                       $title
+ * @property string|null                                                                  $date
+ * @property string                                                                       $country
+ * @property int                                                                          $release_group_id
+ * @property string|null                                                                  $main_color
+ * @property string                                                                       $mb_release_id
+ * @property mixed                                                                        $mb_data
+ * @property \Illuminate\Support\Carbon|null                                              $created_at
+ * @property \Illuminate\Support\Carbon|null                                              $updated_at
+ * @property Artist|null                                                                  $artist
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\ReleaseArt>        $releaseArts
+ * @property int|null                                                                     $release_arts_count
+ * @property ReleaseGroup                                                                 $releaseGroup
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\Server>            $servers
+ * @property int|null                                                                     $servers_count
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\ShowedReleaseStat> $showedReleaseStats
+ * @property int|null                                                                     $showed_release_stats_count
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\Track>             $tracks
+ * @property int|null                                                                     $tracks_count
+ *
+ * @method static \Database\Factories\ReleaseFactory            factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Release newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Release newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Release query()
@@ -47,6 +48,7 @@ use Laravel\Scout\Searchable;
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereReleaseGroupId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Release extends Model

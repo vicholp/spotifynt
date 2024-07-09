@@ -31,7 +31,7 @@ class ServerDev extends Command
 
         Server::create([
             'name' => 'Default',
-            'path' => 'http://beets:9003',
+            'path' => 'http://beets:9090',
             'owner_id' => $user->id,
         ]);
     }

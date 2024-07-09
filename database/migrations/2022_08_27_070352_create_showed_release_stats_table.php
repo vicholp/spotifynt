@@ -15,9 +15,9 @@ return new class() extends Migration {
         Schema::create('showed_release_stats', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('release_id')->constrained();
+            $table->foreignId('release_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('where', 1024);
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->timestamps();
         });

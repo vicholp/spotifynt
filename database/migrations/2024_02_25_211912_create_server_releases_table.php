@@ -13,8 +13,13 @@ return new class() extends Migration {
         Schema::create('release_server', function (Blueprint $table) {
             $table->id();
 
+<<<<<<< HEAD:database/migrations/2024_02_25_211912_create_server_releases_table.php
             $table->foreignId('server_id')->constrained();
             $table->foreignId('release_id')->constrained();
+=======
+            $table->foreignId('art_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('release_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+>>>>>>> 6c190f9 (wip):database/migrations/2022_08_22_015133_create_art_release_table.php
 
             $table->timestamps();
         });

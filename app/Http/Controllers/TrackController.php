@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\ReleaseResource;
-use App\Models\Release;
+use App\Http\Resources\TrackCollection;
+use App\Http\Resources\TrackResource;
+use App\Models\Track;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class ReleaseController extends Controller
+class TrackController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(): TrackCollection
     {
-        return response('Not implemented', 501);
+        return new TrackCollection(Track::get());
     }
 
     /**
@@ -29,19 +29,15 @@ class ReleaseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Release $release, Request $request): ReleaseResource
+    public function show(Track $track): TrackResource
     {
-        if ($request->has('with_tracks')) {
-            $release->load('tracks');
-        }
-
-        return new ReleaseResource($release);
+        return new TrackResource($track);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Release $release): Response
+    public function update(Request $request, Track $track): Response
     {
         return response('Not implemented', 501);
     }
@@ -49,7 +45,7 @@ class ReleaseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Release $release): Response
+    public function destroy(Track $track): Response
     {
         return response('Not implemented', 501);
     }

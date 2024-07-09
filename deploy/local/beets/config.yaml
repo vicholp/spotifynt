@@ -47,6 +47,14 @@ lyrics:
 
 web:
   host: 0.0.0.0
+<<<<<<< HEAD
   port: 9003
+=======
+<<<<<<<< HEAD:deploy/local/config.yaml
+  port: 9003
+========
+  port: 9090
+>>>>>>>> 6c190f9 (wip):deploy/local/beets/config.yaml
+>>>>>>> 6c190f9 (wip)
   cors: "*"
   include_paths: yes

@@ -1,6 +1,10 @@
 <?php
 
+<<<<<<<< HEAD:app/Http/Controllers/User/UserServerController.php
 namespace App\Http\Controllers\Api\User;
+========
+namespace App\Http\Controllers\User;
+>>>>>>>> 6c190f9 (wip):app/Http/Controllers/User/ServerController.php
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ServerCollection;
@@ -9,14 +13,14 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class UserServerController extends Controller
+class ServerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(User $user): ServerCollection
     {
-        return new ServerCollection($user->servers()->get()->keyBy->id);
+        return new ServerCollection($user->servers()->get());
     }
 
     /**

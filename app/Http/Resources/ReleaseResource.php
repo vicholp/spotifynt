@@ -22,9 +22,9 @@ class ReleaseResource extends JsonResource
                 return new TrackCollection($this->tracks->load('release')->sortBy('track_position'));
             }),
             'art' => [
-                'full' => $this->artUrl(),
-                '250' => $this->artUrl(250),
-                '75' => $this->artUrl(75),
+                'full' => $this->when($request->has('with_art_sizefull'), fn () => $this->artUrl()),
+                '250x250' => $this->when($request->has('with_art_size250x250'), fn () => $this->artUrl(250)),
+                '75x75' => $this->when($request->has('with_art_size75x75'), fn () => $this->artUrl(75)),
             ],
         ];
     }

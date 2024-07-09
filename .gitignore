@@ -22,3 +22,4 @@ _ide_helper.php
 stats.html
 .secrets
 .php-cs-fixer.cache
+.secrets

@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\ServerCollection;
+use App\Http\Resources\ServerResource;
 use App\Models\Server;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -14,15 +12,15 @@ class ServerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(User $user): ServerCollection
+    public function index(): Response
     {
-        return new ServerCollection($user->servers()->get());
+        return response('Not implemented', 501);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, User $user): Response
+    public function store(Request $request): Response
     {
         return response('Not implemented', 501);
     }
@@ -30,15 +28,15 @@ class ServerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user, Server $server): Response
+    public function show(Server $server): ServerResource
     {
-        return response('Not implemented', 501);
+        return ServerResource::make($server->load('owner'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user, Server $server): Response
+    public function update(Request $request, Server $server): Response
     {
         return response('Not implemented', 501);
     }
@@ -46,7 +44,7 @@ class ServerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user, Server $server): Response
+    public function destroy(Server $server): Response
     {
         return response('Not implemented', 501);
     }

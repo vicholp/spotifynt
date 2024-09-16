@@ -1,12 +1,9 @@
 <?php
 
-<<<<<<<< HEAD:app/Http/Controllers/Server/ServerTrackController.php
-namespace App\Http\Controllers\Api\Server;
-========
 namespace App\Http\Controllers\Server;
->>>>>>>> 6c190f9 (wip):app/Http/Controllers/Server/TrackController.php
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TrackCollection;
 use App\Http\Resources\TrackResource;
 use App\Models\Server;
 use App\Models\ServerTrack;
@@ -19,9 +16,9 @@ class TrackController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Server $server): Response
+    public function index(Server $server): TrackCollection
     {
-        return response('Not implemented', 501);
+        return TrackCollection::make($server->tracks);
     }
 
     /**
@@ -45,13 +42,7 @@ class TrackController extends Controller
 
         $track->pivot = $serverTrack; // @phpstan-ignore-line - i;m not sure if there is another way to do this.
 
-<<<<<<<< HEAD:app/Http/Controllers/Server/ServerTrackController.php
-        $track = $track->load('release');
-
-        return new TrackResource($track);
-========
         return new TrackResource($track->load('release'));
->>>>>>>> 6c190f9 (wip):app/Http/Controllers/Server/TrackController.php
     }
 
     /**

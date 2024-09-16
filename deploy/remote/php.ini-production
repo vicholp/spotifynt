@@ -83,15 +83,7 @@
 ; development version only in development environments, as errors shown to
 ; application users can inadvertently leak otherwise secure information.
 
-<<<<<<< HEAD
-<<<<<<<< HEAD:deploy/remote/php.ini-production
 ; This is the php.ini-production INI file.
-========
-; This is the php.ini-development INI file.
->>>>>>>> 8d70c45 (first version):deploy/local/php.ini-development
-=======
-; This is the php.ini-production INI file.
->>>>>>> d271e34 (wip)
 
 ;;;;;;;;;;;;;;;;;;;
 ; Quick Reference ;
@@ -394,15 +386,7 @@ zend.enable_gc = On
 ; Default Value: Off
 ; Development Value: Off
 ; Production Value: On
-<<<<<<< HEAD
-<<<<<<<< HEAD:deploy/remote/php.ini-production
 zend.exception_ignore_args = On
-========
-zend.exception_ignore_args = Off
->>>>>>>> 8d70c45 (first version):deploy/local/php.ini-development
-=======
-zend.exception_ignore_args = On
->>>>>>> d271e34 (wip)
 
 ; Allows setting the maximum string length in an argument of a stringified stack trace
 ; to a value between 0 and 1000000.
@@ -410,19 +394,9 @@ zend.exception_ignore_args = On
 ; Default Value: 15
 ; Development Value: 15
 ; Production Value: 0
-<<<<<<< HEAD
-<<<<<<<< HEAD:deploy/remote/php.ini-production
 ; In production, it is recommended to set this to 0 to reduce the output
 ; of sensitive information in stack traces.
 zend.exception_string_param_max_len = 0
-========
-zend.exception_string_param_max_len = 15
->>>>>>>> 8d70c45 (first version):deploy/local/php.ini-development
-=======
-; In production, it is recommended to set this to 0 to reduce the output
-; of sensitive information in stack traces.
-zend.exception_string_param_max_len = 0
->>>>>>> d271e34 (wip)
 
 ;;;;;;;;;;;;;;;;;
 ; Miscellaneous ;
@@ -468,15 +442,7 @@ max_input_time = 60
 
 ; Maximum amount of memory a script may consume
 ; https://php.net/memory-limit
-<<<<<<< HEAD
-<<<<<<<< HEAD:deploy/remote/php.ini-production
 memory_limit = 1G
-========
-memory_limit = 128M
->>>>>>>> 8d70c45 (first version):deploy/local/php.ini-development
-=======
-memory_limit = 1G
->>>>>>> d271e34 (wip)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Error handling and logging ;
@@ -532,15 +498,7 @@ memory_limit = 1G
 ; Development Value: E_ALL
 ; Production Value: E_ALL & ~E_DEPRECATED & ~E_STRICT
 ; https://php.net/error-reporting
-<<<<<<< HEAD
-<<<<<<<< HEAD:deploy/remote/php.ini-production
 error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
-========
-error_reporting = E_ALL
->>>>>>>> 8d70c45 (first version):deploy/local/php.ini-development
-=======
-error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
->>>>>>> d271e34 (wip)
 
 ; This directive controls whether or not and where PHP will output errors,
 ; notices and warnings too. Error output is very useful during development, but
@@ -557,15 +515,7 @@ error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
 ; Development Value: On
 ; Production Value: Off
 ; https://php.net/display-errors
-<<<<<<< HEAD
-<<<<<<<< HEAD:deploy/remote/php.ini-production
 display_errors = Off
-========
-display_errors = On
->>>>>>>> 8d70c45 (first version):deploy/local/php.ini-development
-=======
-display_errors = Off
->>>>>>> d271e34 (wip)
 
 ; The display of errors which occur during PHP's startup sequence are handled
 ; separately from display_errors. We strongly recommend you set this to 'off'
@@ -574,15 +524,7 @@ display_errors = Off
 ; Development Value: On
 ; Production Value: Off
 ; https://php.net/display-startup-errors
-<<<<<<< HEAD
-<<<<<<<< HEAD:deploy/remote/php.ini-production
 display_startup_errors = Off
-========
-display_startup_errors = On
->>>>>>>> 8d70c45 (first version):deploy/local/php.ini-development
-=======
-display_startup_errors = Off
->>>>>>> d271e34 (wip)
 
 ; Besides displaying errors, PHP can also log errors to locations such as a
 ; server-specific log, STDERR, or a location specified by the error_log
@@ -1272,26 +1214,7 @@ mysqlnd.collect_statistics = On
 
 ; Enable / Disable collection of memory usage statistics by mysqlnd which can be
 ; used to tune and monitor MySQL operations.
-<<<<<<< HEAD
-<<<<<<<< HEAD:deploy/remote/php.ini-production
 mysqlnd.collect_memory_statistics = Off
-========
-mysqlnd.collect_memory_statistics = On
-
-; Records communication from all extensions using mysqlnd to the specified log
-; file.
-; https://php.net/mysqlnd.debug
-;mysqlnd.debug =
-
-; Defines which queries will be logged.
-;mysqlnd.log_mask = 0
-
-; Default size of the mysqlnd memory pool, which is used by result sets.
-;mysqlnd.mempool_default_size = 16000
->>>>>>>> 8d70c45 (first version):deploy/local/php.ini-development
-=======
-mysqlnd.collect_memory_statistics = Off
->>>>>>> d271e34 (wip)
 
 ; Records communication from all extensions using mysqlnd to the specified log
 ; file.
@@ -1612,15 +1535,7 @@ session.sid_bits_per_character = 5
 ; Development Value: 1
 ; Production Value: -1
 ; https://php.net/zend.assertions
-<<<<<<< HEAD
-<<<<<<<< HEAD:deploy/remote/php.ini-production
 zend.assertions = -1
-========
-zend.assertions = 1
->>>>>>>> 8d70c45 (first version):deploy/local/php.ini-development
-=======
-zend.assertions = -1
->>>>>>> d271e34 (wip)
 
 [COM]
 ; path to a file containing GUIDs, IIDs or filenames of files with TypeLibs
@@ -1819,15 +1734,7 @@ opcache.interned_strings_buffer=8
 ; How often (in seconds) to check file timestamps for changes to the shared
 ; memory storage allocation. ("1" means validate once per second, but only
 ; once per request. "0" means always validate)
-<<<<<<< HEAD
-<<<<<<<< HEAD:deploy/remote/php.ini-production
 opcache.revalidate_freq=60
-========
-opcache.revalidate_freq=0
->>>>>>>> 8d70c45 (first version):deploy/local/php.ini-development
-=======
-opcache.revalidate_freq=60
->>>>>>> d271e34 (wip)
 
 ; Enables or disables file search in include_path optimization
 ;opcache.revalidate_path=0

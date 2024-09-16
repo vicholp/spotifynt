@@ -2,8 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Track;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
+/** @mixin Track */
 class TrackCollection extends ResourceCollection
 {
     /**
@@ -16,5 +18,14 @@ class TrackCollection extends ResourceCollection
     public function toArray($request)
     {
         return parent::toArray($request);
+    }
+
+    public function with($request)
+    {
+        return [
+            'meta' => [
+                'total' => $this->collection->count(),
+            ],
+        ];
     }
 }

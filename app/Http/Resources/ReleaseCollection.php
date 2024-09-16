@@ -16,4 +16,13 @@ class ReleaseCollection extends ResourceCollection
     {
         return parent::toArray($request);
     }
+
+    public function with($request)
+    {
+        return [
+            'meta' => [
+                'total' => $this->collection->count(),
+            ],
+        ];
+    }
 }

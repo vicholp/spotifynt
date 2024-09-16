@@ -1,18 +1,24 @@
-# name: ${APP_NAME}-${APP_ACTUAL_ENV}
+name: ${APP_NAME}-${APP_ACTUAL_ENV}
 
 services:
   backend-php:
-    image: me/test:latest
+    image: ${DOCKER_REGISTRY}/${GITHUB_REPO}-php:latest
     ports:
       - 8080
-
-  backend:
-    image: registry.home.vicho.dev/${GITHUB_REPO}-nginx:latest
+    healthcheck:
+      test: curl --fail http://localhost:8080 || exit 1
+      start_period: 15s
+      start_interval: 3s
+    env_file: .env
     networks:
-      - project
-      # - traefik
-    ports:
-      - 8080
+      - default
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}-backend.rule=Host(`backend-${TRAEFIK_HOST}`)"
+      - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}-backend.tls=true"
+      - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}-backend.tls.certresolver=${TRAEFIK_CERT_RESOLVER}"
 
   backend-db:
     image: mariadb:11.3.2
@@ -23,24 +29,35 @@ services:
       MARIADB_RANDOM_ROOT_PASSWORD: true
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: healthcheck.sh --su-mysql --connect --innodb_initialized
+      start_period: 15s
+      start_interval: 3s
 
   backend-queue:
+    env_file: .env
     depends_on:
       - backend-php
-    image: registry.home.vicho.dev/${GITHUB_REPO}-php:latest
+    image: ${DOCKER_REGISTRY}/${GITHUB_REPO}-php:latest
     command: sh -c "php artisan queue:work --queue=high,default --tries=3 --timeout=60"
 
   backend-minio:
     image: minio/minio:RELEASE.2024-06-29T01-20-47Z
     ports:
-      - 9000:9000 # Minio
-      - 9001:9001 # Web UI
+      - 9001
     volumes:
       - 'minio_data:/data'
     environment:
       - MINIO_ROOT_USER=${AWS_ACCESS_KEY_ID}
       - MINIO_ROOT_PASSWORD=${AWS_SECRET_ACCESS_KEY}
     command: server /data --console-address ":9001"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}-backend-minio.rule=Host(`minio-backend-${TRAEFIK_HOST}`)"
+      - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}-backend-minio.tls=true"
+      - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}-backend-minio.tls.certresolver=${TRAEFIK_CERT_RESOLVER}"
+
 
   backend-createbuckets:
     image: minio/mc
@@ -53,6 +70,7 @@ services:
       /usr/bin/mc anonymous set public myminio/${AWS_BUCKET};
       exit 0;
       "
+
   backend-typesense:
     image: typesense/typesense:26.0
     volumes:
@@ -69,6 +87,6 @@ networks:
   project:
     name: spotifynt
     external: true
-  # traefik:
-  #   external: true
-  #   name: traefik
+  traefik:
+    external: true
+    name: traefik

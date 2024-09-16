@@ -46,4 +46,4 @@ COPY deploy/remote/php-entrypoint.sh /etc/entrypoint.sh
 
 RUN chmod +x /etc/entrypoint.sh
 
-ENTRYPOINT ["/etc/entrypoint.sh"]
+CMD ["/etc/entrypoint.sh"]

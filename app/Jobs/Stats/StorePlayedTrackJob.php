@@ -2,7 +2,6 @@
 
 namespace App\Jobs\Stats;
 
-use App\Models\Release;
 use App\Models\Server;
 use App\Models\Track;
 use App\Models\User;
@@ -12,6 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Carbon;
 
 class StorePlayedTrackJob implements ShouldQueue
 {
@@ -26,11 +26,10 @@ class StorePlayedTrackJob implements ShouldQueue
      * @return void
      */
     public function __construct(
-        private int $user,
-        private int $server,
-        private int $track,
-        private int $release,
-        private int $time
+        public int $userId,
+        public int $serverId,
+        public int $trackId,
+        public Carbon $time
     ) {
         //
     }
@@ -40,13 +39,13 @@ class StorePlayedTrackJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
-    {
-        (new StatsService())->storePlayedTrack(
-            User::findOrFail($this->user),
-            Server::findOrFail($this->server),
-            Track::findOrFail($this->track),
-            Release::findOrFail($this->release),
+    public function handle(
+        StatsService $statsService
+    ) {
+        $statsService->storePlayedTrack(
+            User::findOrFail($this->userId),
+            Server::findOrFail($this->serverId),
+            Track::findOrFail($this->trackId),
             $this->time
         );
     }

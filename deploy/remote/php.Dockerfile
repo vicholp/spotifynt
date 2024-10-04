@@ -1,6 +1,6 @@
 ## PHP
 
-FROM php:8.3.3-fpm AS php
+FROM php:8.3.8-fpm AS php
 
 RUN apt update; apt install -y nginx
 

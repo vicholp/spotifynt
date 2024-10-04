@@ -36,11 +36,11 @@ services:
 
   backend-queue:
     depends_on:
-      - backend-db
+      - backend-php
     build:
       context: ./
       dockerfile: ./deploy/local/php.Dockerfile
-    command: sh -c "composer i && php artisan queue:listen --queue=high,default --tries=3 --timeout=60"
+    command: sh -c "composer i && php artisan queue:listen --queue=high,default,low --tries=3 --timeout=60"
     networks:
       - project
       - default

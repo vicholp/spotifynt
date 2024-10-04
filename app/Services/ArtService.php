@@ -40,11 +40,20 @@ class ArtService
 
     public function getUrl(Release $release, int $size = 0, string $format = 'jpeg'): string
     {
-        $name = "art/cover/{$release->id}/{$size}x{$size}.{$format}";
+        $releaseArt = ReleaseArt::whereReleaseId($release->id)
+            ->whereType('cover')
+            ->whereWidth($size)
+            ->whereHeight($size)
+            ->whereMimeType('image/'.$format)
+            ->firstOrFail();
 
-        return Storage::disk('s3')->url(
-            $name,
-        );
+        return Storage::disk('s3')->url($releaseArt->url);
+
+        // $name = "art/cover/{$release->id}/{$size}x{$size}.{$format}";
+
+        // return Storage::disk('s3')->url(
+        //     $name,
+        // );
 
         // if (0 == $size) {
         //     return config('APP_URL').'/art/'.$release->mb_release_id.'.'.$format;
@@ -92,7 +101,7 @@ class ArtService
 
         foreach ($this->minimizeSizes as $size) {
             foreach ($this->minimizeFormats as $format) {
-                $name = $size[0].'x'.$size[1].'.'.$format;
+                $name = Str::uuid().'.'.$format;
                 $targetPath = Storage::disk('temp')->path($name);
 
                 Bus::chain([
@@ -107,7 +116,7 @@ class ArtService
                             'mime_type' => 'image/'.$format,
                         ])
                     ),
-                    new RemoveTempFileJob($name),
+                    // new RemoveTempFileJob($name),
                 ])->onQueue('low')->dispatch();
             }
         }

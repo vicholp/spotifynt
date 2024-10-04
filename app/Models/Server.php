@@ -8,30 +8,31 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * App\Models\Server
+ * App\Models\Server.
  *
- * @property int $id
- * @property string $name
- * @property string $path
- * @property int $owner_id
- * @property string $visibility
- * @property string $access
- * @property string|null $last_sync
- * @property string|null $last_full_sync
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Artist> $artists
- * @property-read int|null $artists_count
- * @property-read \App\Models\User $owner
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ReleaseGroup> $releaseGroups
- * @property-read int|null $release_groups_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Release> $releases
- * @property-read int|null $releases_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Track> $tracks
- * @property-read int|null $tracks_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
- * @property-read int|null $users_count
- * @method static \Database\Factories\ServerFactory factory($count = null, $state = [])
+ * @property int                                                                     $id
+ * @property string                                                                  $name
+ * @property string                                                                  $path
+ * @property int                                                                     $owner_id
+ * @property string                                                                  $visibility
+ * @property string                                                                  $access
+ * @property string|null                                                             $last_sync
+ * @property string|null                                                             $last_full_sync
+ * @property \Illuminate\Support\Carbon|null                                         $created_at
+ * @property \Illuminate\Support\Carbon|null                                         $updated_at
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\Artist>       $artists
+ * @property int|null                                                                $artists_count
+ * @property User                                                                    $owner
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\ReleaseGroup> $releaseGroups
+ * @property int|null                                                                $release_groups_count
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\Release>      $releases
+ * @property int|null                                                                $releases_count
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\Track>        $tracks
+ * @property int|null                                                                $tracks_count
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\User>         $users
+ * @property int|null                                                                $users_count
+ *
+ * @method static \Database\Factories\ServerFactory            factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Server newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Server newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Server query()
@@ -45,6 +46,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Server wherePath($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Server whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Server whereVisibility($value)
+ *
  * @mixin \Eloquent
  */
 class Server extends Model

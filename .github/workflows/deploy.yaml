@@ -1,9 +1,11 @@
-name: Deploy main
+name: Deploy
 
 on:
   push:
     branches:
+      - next
       - main
+      - prod
 
   workflow_dispatch:
 
@@ -28,7 +30,7 @@ jobs:
     # Build and push every Dockerfile found in the previous step
     needs: prepare
     environment:
-      name: main
+      name: ${{ github.ref_name }}
     runs-on: ubuntu-22.04
     strategy:
       matrix:
@@ -36,7 +38,7 @@ jobs:
     steps:
       - name: Create image name
         # Format the Dockerfile name to use it as the image name
-        # Example: ./source/remote/main/php.Dockerfile -> php
+        # Example: ./source/remote/prod/php.Dockerfile -> php
         id: dockerfile-data
         run: |
           echo "image-name=$(basename ${{ matrix.dockerfile }} | sed 's/\.[^.]*$//')" >> "$GITHUB_OUTPUT"
@@ -50,8 +52,8 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ${{ secrets.DOCKER_REGISTRY }}
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -67,7 +69,7 @@ jobs:
     needs: build
     runs-on: ubuntu-22.04
     environment:
-      name: main
+      name: ${{ github.ref_name }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -77,7 +79,7 @@ jobs:
       - name: Copy remote/compose.yaml to remote server
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.REMOTE_IP }}
+          host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.REMOTE_KEY }}
           port: ${{ secrets.REMOTE_PORT }}
@@ -88,7 +90,7 @@ jobs:
       - name: Pull and start the Docker container
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.REMOTE_IP }}
+          host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.REMOTE_KEY }}
           port: ${{ secrets.REMOTE_PORT }}

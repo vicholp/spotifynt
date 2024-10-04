@@ -33,7 +33,7 @@ class ArtService
     ];
 
     public function __construct(
-        private CoverArtService $coverArtService = new CoverArtService()
+        private CoverArtService $coverArtService = new CoverArtService(),
     ) {
         //
     }
@@ -48,18 +48,6 @@ class ArtService
             ->firstOrFail();
 
         return Storage::disk('s3')->url($releaseArt->url);
-
-        // $name = "art/cover/{$release->id}/{$size}x{$size}.{$format}";
-
-        // return Storage::disk('s3')->url(
-        //     $name,
-        // );
-
-        // if (0 == $size) {
-        //     return config('APP_URL').'/art/'.$release->mb_release_id.'.'.$format;
-        // }
-
-        // return config('APP_URL').'/art/'.$release->mb_release_id.'-'.$size.'x'.$size.'.'.$format;
     }
 
     public function uploadArt(string $fileName, ReleaseArt $releaseArt): void
@@ -116,7 +104,7 @@ class ArtService
                             'mime_type' => 'image/'.$format,
                         ])
                     ),
-                    // new RemoveTempFileJob($name),
+                    new RemoveTempFileJob($name),
                 ])->onQueue('low')->dispatch();
             }
         }
@@ -143,7 +131,7 @@ class ArtService
         string $targetPath,
         int $height,
         int $width,
-        int $quality = 80
+        int $quality = 80,
     ): bool {
         $image = new \Zebra_Image();
 

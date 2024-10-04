@@ -30,7 +30,7 @@ class ServerController extends Controller
      */
     public function show(Server $server): ServerResource
     {
-        return ServerResource::make($server->load('owner'));
+        return ServerResource::make($server->load('owner')->loadCount(['artists', 'releases', 'tracks']));
     }
 
     /**

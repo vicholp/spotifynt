@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Log;
 class SynchronizationService
 {
     public function __construct(
-        private MusicBrainzService $musicBrainzService = new MusicBrainzService()
+        private MusicBrainzService $musicBrainzService = new MusicBrainzService(),
     ) {
         //
     }
@@ -93,16 +93,17 @@ class SynchronizationService
         Bus::batch($bus)->allowFailures()->dispatch();
     }
 
-    public function recreateIndex(): void
+    public function recreateIndex(Release $release): void
     {
-        // Artist::removeAllFromSearch();
-        // Artist::makeAllSearchable();
+        Log::debug("🔍 Recreating index of release {$release->title}");
 
-        // Release::removeAllFromSearch();
-        // Release::makeAllSearchable();
+        $release->searchable();
 
-        // Track::removeAllFromSearch();
-        // Track::makeAllSearchable();
+        $release->tracks()->searchable();
+
+        $release->artist?->searchable();
+
+        Log::debug("🔍 Done index of release {$release->title}");
     }
 
     public function syncServer(Server $server): void
@@ -136,7 +137,7 @@ class SynchronizationService
         BeetsService $beets,
         Server $server,
         string $mbReleaseId,
-        string $beetsAlbumId
+        string $beetsAlbumId,
     ): void {
         if (empty($mbReleaseId)) {
             return;
@@ -161,6 +162,8 @@ class SynchronizationService
 
             $this->attachTrackToServer($server, $track, $beetsTrack['path'], $beetsTrack['id']);
         }
+
+        $this->recreateIndex($release);
 
         Log::debug("🔍 Synced {$release->title} with {$release->tracks->count()} tracks");
     }

@@ -58,4 +58,12 @@ class ReleaseGroup extends Model
     {
         return $this->belongsTo(Artist::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Release>
+     */
+    public function releases()
+    {
+        return $this->hasMany(Release::class);
+    }
 }

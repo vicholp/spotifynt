@@ -29,6 +29,9 @@ class ServerResource extends JsonResource
             'name' => $this->name,
             'path' => $this->path,
             'owner' => $this->owner,
+            'artists_count' => $this->whenCounted('artists'),
+            'releases_count' => $this->whenCounted('releases'),
+            'tracks_count' => $this->whenCounted('tracks'),
         ];
     }
 }

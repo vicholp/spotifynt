@@ -1,41 +1,37 @@
 <?php
 
-use App\Http\Controllers\Api\RecommendationController;
-use App\Http\Controllers\Api\ReleaseController;
-use App\Http\Controllers\Api\SearchController;
-use App\Http\Controllers\Api\Server\ServerTrackController;
-use App\Http\Controllers\Api\ServerController;
-use App\Http\Controllers\Api\TrackController;
-use App\Http\Controllers\Api\User\UserServerController;
-use App\Http\Controllers\Api\UserController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\RecommendationController;
+use App\Http\Controllers\ReleaseController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\Server\ArtistController as ServerArtistController;
+use App\Http\Controllers\Server\ReleaseController as ServerReleaseController;
+use App\Http\Controllers\Server\ReleaseGroupController as ServerReleaseGroupController;
+use App\Http\Controllers\Server\TrackController as ServerTrackController;
+use App\Http\Controllers\ServerController;
+use App\Http\Controllers\StatsController;
+use App\Http\Controllers\TrackController;
+use App\Http\Controllers\User\ServerController as UserServerController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+Route::middleware('auth:sanctum')->name('api.')->group(function () {
+    Route::get('/users/me', [UserController::class, 'me']);
+    Route::apiResource('users', UserController::class);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+    Route::get('recommendations/index', [RecommendationController::class, 'getIndexRecommendations'])
+        ->name('recommendations.index');
+    Route::apiResource('users.servers', UserServerController::class);
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('recommendations/index', [RecommendationController::class, 'getIndexRecommendations']);
-    Route::get('search', SearchController::class);
-
-    Route::get('users/me', [UserController::class, 'me']);
+    Route::get('search', SearchController::class)->name('search');
 
     Route::apiResource('tracks', TrackController::class);
-    Route::get('server/{server}/searchContent', [ServerController::class, 'searchContent']);
-    Route::apiResource('server', ServerController::class);
-    Route::apiResource('users.servers', UserServerController::class);
-    Route::apiResource('servers.tracks', ServerTrackController::class);
     Route::apiResource('releases', ReleaseController::class);
+
+    Route::apiResource('servers.artists', ServerArtistController::class);
+    Route::apiResource('servers.releases', ServerReleaseController::class);
+    Route::apiResource('servers.release-groups', ServerReleaseGroupController::class);
+    Route::apiResource('servers.tracks', ServerTrackController::class);
+    Route::apiResource('servers', ServerController::class);
+
+    Route::post('stats/played-track', [StatsController::class, 'storePlayedTrack'])->name('stats.played-track');
 });

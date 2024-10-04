@@ -1,4 +1,6 @@
-FROM php:8.3.3-fpm AS php
+FROM php:8.3.8-fpm AS php
+
+RUN apt update; apt install -y unzip 7zip git fswatch
 
 ENV PHP_EXTENSIONS "redis xdebug pdo_mysql pdo_pgsql gd zip exif"
 
@@ -8,9 +10,10 @@ COPY deploy/local/99-xdebug.ini /usr/local/etc/php/conf.d/99-xdebug.ini
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions $PHP_EXTENSIONS
 
-WORKDIR /var/www/html
+RUN groupadd -g 1000 default
+RUN useradd -rm -d /home/default -s /bin/bash -g 1000 -u 1000 default
 
-RUN adduser default --uid 1000
+WORKDIR /var/www/html
 
 USER 1000:1000
 

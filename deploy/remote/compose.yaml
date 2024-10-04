@@ -1,49 +1,133 @@
-# name: "${APP_NAME}-${APP_ACTUAL_ENV}"
+name: ${APP_NAME}-${APP_ACTUAL_ENV}
 
 services:
-  php:
-    image: cd-php:ultima
+  backend-php:
+    image: ${DOCKER_REGISTRY}/${GITHUB_REPO}-php:${APP_ACTUAL_ENV}-latest
     restart: unless-stopped
     ports:
-      - 80:80
+      - 8080
+    healthcheck:
+      test: curl --fail http://localhost:8080 || exit 1
+      start_period: 15s
+      start_interval: 3s
+    env_file: .env
     networks:
-      # - traefik
       - default
+      - project
+      - traefik
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik"
-      # - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}.rule=Host(`${TRAEFIK_HOST}`)"
-      # - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}.tls=true"
-      # - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}.tls.certresolver=${TRAEFIK_CERT_RESOLVER}"
-    healthcheck:
-      test: curl --fail http://localhost/ || exit 1
-      start_period: 15s
-      start_interval: 3s
 
-  db:
+      - "traefik.http.routers.insecure-${APP_NAME}-${APP_ACTUAL_ENV}-backend.entrypoints=webinsecure"
+      - "traefik.http.routers.insecure-${APP_NAME}-${APP_ACTUAL_ENV}-backend.rule=Host(`backend-${TRAEFIK_HOST}`)"
+      - "traefik.http.routers.insecure-${APP_NAME}-${APP_ACTUAL_ENV}-backend.middlewares=redirectToHttps@file"
+
+      - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}-backend.rule=Host(`backend-${TRAEFIK_HOST}`)"
+      - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}-backend.tls=true"
+      - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}-backend.tls.certresolver=${TRAEFIK_CERT_RESOLVER}"
+
+
+  backend-db:
     image: mariadb:11.3.2
+    restart: unless-stopped
     environment:
       MARIADB_DATABASE: ${DB_DATABASE}
       MARIADB_USER: ${DB_USERNAME}
       MARIADB_PASSWORD: ${DB_PASSWORD}
       MARIADB_RANDOM_ROOT_PASSWORD: true
     volumes:
-      - db:/var/lib/mysql
-    networks:
-      - default
-    ports:
-      - 3306
-    restart: unless-stopped
+      - ${VOLUMES_PATH}/${APP_PROJECT}/${APP_ACTUAL_ENV}/db_data:/var/lib/mysql
     healthcheck:
       test: healthcheck.sh --su-mysql --connect --innodb_initialized
       start_period: 15s
       start_interval: 3s
 
-volumes:
-  db:
+  backend-queue-high:
+    env_file: .env
+    restart: unless-stopped
+    depends_on:
+      - backend-php
+    image: ${DOCKER_REGISTRY}/${GITHUB_REPO}-php:${APP_ACTUAL_ENV}-latest
+    command: sh -c "php artisan queue:work --queue=high --tries=3 --timeout=60"
+    deploy:
+      mode: replicated
+      replicas: 0
+      endpoint_mode: vip
 
+  backend-queue-default:
+    env_file: .env
+    restart: unless-stopped
+    depends_on:
+      - backend-php
+    image: ${DOCKER_REGISTRY}/${GITHUB_REPO}-php:${APP_ACTUAL_ENV}-latest
+    command: sh -c "php artisan queue:work --queue=default --tries=3 --timeout=60"
+    deploy:
+      mode: replicated
+      replicas: 0
+      endpoint_mode: vip
+
+  backend-queue-low:
+    env_file: .env
+    restart: unless-stopped
+    depends_on:
+      - backend-php
+    image: ${DOCKER_REGISTRY}/${GITHUB_REPO}-php:${APP_ACTUAL_ENV}-latest
+    command: sh -c "php artisan queue:work --queue=low --tries=3 --timeout=60"
+    deploy:
+      mode: replicated
+      replicas: 0
+      endpoint_mode: vip
+
+  backend-minio:
+    image: minio/minio:RELEASE.2024-06-29T01-20-47Z
+    restart: unless-stopped
+    networks:
+      - default
+      - traefik
+    ports:
+      - 9001
+    volumes:
+      - 'minio_data:/data'
+    environment:
+      - MINIO_ROOT_USER=${AWS_ACCESS_KEY_ID}
+      - MINIO_ROOT_PASSWORD=${AWS_SECRET_ACCESS_KEY}
+    command: server /data --console-address ":9001"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}-backend-minio.rule=Host(`minio-backend-${TRAEFIK_HOST}`)"
+      - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}-backend-minio.tls=true"
+      - "traefik.http.routers.${APP_NAME}-${APP_ACTUAL_ENV}-backend-minio.tls.certresolver=${TRAEFIK_CERT_RESOLVER}"
+
+  backend-createbuckets:
+    image: minio/mc
+    depends_on:
+      - backend-minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set myminio ${AWS_ENDPOINT} ${AWS_ACCESS_KEY_ID} ${AWS_SECRET_ACCESS_KEY};
+      /usr/bin/mc mb myminio/${AWS_BUCKET};
+      /usr/bin/mc anonymous set public myminio/${AWS_BUCKET};
+      exit 0;
+      "
+
+  backend-typesense:
+    image: typesense/typesense:26.0
+    restart: unless-stopped
+    volumes:
+      - typesense-data:/data
+    command: '--data-dir /data --api-key=${TYPESENSE_API_KEY} --enable-cors'
+
+volumes:
+  db_data:
+  minio_data:
+  typesense-data:
 
 networks:
-  # traefik:
-  #   external: true
-  default:
+  project:
+    name: ${APP_PROJECT}-${APP_ACTUAL_ENV}
+    external: true
+  traefik:
+    external: true
+    name: traefik

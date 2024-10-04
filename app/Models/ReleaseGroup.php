@@ -7,18 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * App\Models\ReleaseGroup
+ * App\Models\ReleaseGroup.
  *
- * @property int $id
- * @property string $title
- * @property string $type
- * @property int $artist_id
- * @property string $mb_releasegroup_id
- * @property mixed $mb_data
+ * @property int                             $id
+ * @property string                          $title
+ * @property string                          $type
+ * @property int                             $artist_id
+ * @property string                          $mb_releasegroup_id
+ * @property mixed                           $mb_data
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Artist $artist
- * @method static \Database\Factories\ReleaseGroupFactory factory($count = null, $state = [])
+ * @property Artist                          $artist
+ *
+ * @method static \Database\Factories\ReleaseGroupFactory            factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseGroup newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseGroup newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseGroup query()
@@ -30,6 +31,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseGroup whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseGroup whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseGroup whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class ReleaseGroup extends Model

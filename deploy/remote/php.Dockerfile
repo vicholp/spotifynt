@@ -1,6 +1,8 @@
 ## PHP
 
-FROM php:8.3.3-fpm AS php
+FROM php:8.3.8-fpm AS php
+
+RUN apt update; apt install -y nginx
 
 ENV PHP_EXTENSIONS="redis pdo_mysql pdo_pgsql gd zip exif"
 
@@ -34,3 +36,14 @@ COPY . .
 RUN composer dump-autoload -o
 RUN php artisan route:cache
 
+FROM php AS nginx
+
+USER root
+
+COPY deploy/remote/site.conf /etc/nginx/sites-enabled/default
+
+COPY deploy/remote/php-entrypoint.sh /etc/entrypoint.sh
+
+RUN chmod +x /etc/entrypoint.sh
+
+CMD ["/etc/entrypoint.sh"]

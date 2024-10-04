@@ -11,12 +11,33 @@ use App\Models\Track;
 use App\Models\User;
 use App\Services\Api\ListenBrainzService;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Carbon;
 
 /**
  * Class StatsService.
  */
 class StatsService
 {
+    public function storePlayedTrack(User $user, Server $server, Track $track, Carbon $time): void
+    {
+        PlayedTrackStat::create([
+            'created_at' => $time,
+            'user_id' => $user->id,
+            'track_id' => $track->id,
+            'server_id' => $server->id,
+        ]);
+
+        // (new ListenBrainzService($user))->submitListens($track, $release, $time);
+    }
+
+    public static function newSearchedTerm(User $user, string $term): void
+    {
+        SearchedTermStat::create([
+            'term' => $term,
+            'user_id' => $user->id,
+        ]);
+    }
+
     public static function newShowedRelease(User $user, Release $release, string $where): void
     {
         ShowedReleaseStat::create([
@@ -32,26 +53,7 @@ class StatsService
     public static function newShowedReleases(User $user, $releases, string $where): void
     {
         foreach ($releases as $release) {
-            self::newShowedRelease($user, $release, $where);
+            static::newShowedRelease($user, $release, $where);
         }
-    }
-
-    public function storePlayedTrack(User $user, Server $server, Track $track, Release $release, int $time): void
-    {
-        PlayedTrackStat::create([
-            'user_id' => $user->id,
-            'track_id' => $track->id,
-            'server_id' => $server->id,
-        ]);
-
-        (new ListenBrainzService($user))->submitListens($track, $release, $time);
-    }
-
-    public static function newSearchedTerm(User $user, string $term): void
-    {
-        SearchedTermStat::create([
-            'term' => $term,
-            'user_id' => $user->id,
-        ]);
     }
 }

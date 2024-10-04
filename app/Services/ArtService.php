@@ -40,11 +40,20 @@ class ArtService
 
     public function getUrl(Release $release, int $size = 0, string $format = 'jpeg'): string
     {
-        $name = "art/cover/{$release->id}/{$size}x{$size}.{$format}";
+        $releaseArt = ReleaseArt::whereReleaseId($release->id)
+            ->whereType('cover')
+            ->whereWidth($size)
+            ->whereHeight($size)
+            ->whereMimeType('image/'.$format)
+            ->firstOrFail();
 
-        return Storage::disk('s3')->url(
-            $name,
-        );
+        return Storage::disk('s3')->url($releaseArt->url);
+
+        // $name = "art/cover/{$release->id}/{$size}x{$size}.{$format}";
+
+        // return Storage::disk('s3')->url(
+        //     $name,
+        // );
 
         // if (0 == $size) {
         //     return config('APP_URL').'/art/'.$release->mb_release_id.'.'.$format;
@@ -53,13 +62,13 @@ class ArtService
         // return config('APP_URL').'/art/'.$release->mb_release_id.'-'.$size.'x'.$size.'.'.$format;
     }
 
-    public function uploadArt($fileName, ReleaseArt $releaseArt): void
+    public function uploadArt(string $fileName, ReleaseArt $releaseArt): void
     {
         $name = "art/{$releaseArt->type}/{$releaseArt->release->id}/{$fileName}";
 
         Storage::disk('s3')->put(
             $name,
-            Storage::disk('temp')->get($fileName),
+            Storage::disk('temp')->get($fileName), // @phpstan-ignore argument.type
             'public'
         );
 
@@ -68,11 +77,13 @@ class ArtService
         ]);
     }
 
-    public function syncArt(Release $release, ?BeetsService $beetsService): void
+    public function syncArt(Release $release, ?BeetsService $beetsService): void // @phpcs:ignore
     {
         $image = $this->coverArtService->getArt($release, $beetsService);
 
         if (!$image) {
+            Log::debug('❌ No image found for release '.$release->id);
+
             return;
         }
 
@@ -84,12 +95,14 @@ class ArtService
 
         imagejpeg($image, $path);
 
+        $this->setMainColorRelease($image, $release);
+
+        Log::debug('🔍 Minimizing images');
+
         foreach ($this->minimizeSizes as $size) {
             foreach ($this->minimizeFormats as $format) {
-                $name = $size[0].'x'.$size[1].'.'.$format;
+                $name = Str::uuid().'.'.$format;
                 $targetPath = Storage::disk('temp')->path($name);
-
-                Log::debug('Minimizing image to '.$targetPath);
 
                 Bus::chain([
                     new MinimizeArtJob($path, $targetPath, $size[0], $size[1]),
@@ -103,23 +116,19 @@ class ArtService
                             'mime_type' => 'image/'.$format,
                         ])
                     ),
-                    new RemoveTempFileJob($name),
+                    // new RemoveTempFileJob($name),
                 ])->onQueue('low')->dispatch();
             }
         }
-
-        $this->setMainColorRelease($image, $release);
-
-        RemoveTempFileJob::dispatch($originalName);
     }
 
-    public function setMainColorRelease($image, Release $release)
+    public function setMainColorRelease(\GdImage $image, Release $release): void
     {
         imagetruecolortopalette($image, true, 1);
         $rgb = imagecolorat($image, 10, 10);
 
         if (!$rgb) {
-            return null;
+            return;
         }
 
         $colors = imagecolorsforindex($image, $rgb);

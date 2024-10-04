@@ -5,15 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * App\Models\ReleaseServer
+ * App\Models\ReleaseServer.
  *
- * @property int $id
- * @property int $server_id
- * @property int $release_id
+ * @property int                             $id
+ * @property int                             $server_id
+ * @property int                             $release_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Release $release
- * @property-read \App\Models\Server $server
+ * @property Release                         $release
+ * @property Server                          $server
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseServer newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseServer newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseServer query()
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseServer whereReleaseId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseServer whereServerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReleaseServer whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class ReleaseServer extends Pivot

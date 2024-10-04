@@ -1886,4 +1886,3 @@ opcache.revalidate_freq=0
 
 ; List of headers files to preload, wildcard patterns allowed.
 ;ffi.preload=
-

@@ -9,36 +9,37 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Laravel\Scout\Searchable;
 
 /**
- * App\Models\Track
+ * App\Models\Track.
  *
- * @property int $id
- * @property string $title
- * @property int $release_id
- * @property int|null $track_position
- * @property int|null $length
- * @property float|null $average_loudness
- * @property int|null $bpm
- * @property float|null $danceable
- * @property string|null $genre_rosamerica
- * @property string|null $language
- * @property float|null $mood_acoustic
- * @property float|null $mood_aggressive
- * @property float|null $mood_electronic
- * @property float|null $mood_happy
- * @property float|null $mood_party
- * @property float|null $mood_relaxed
- * @property float|null $mood_sad
- * @property string|null $moods_mirex
- * @property string|null $voice_instrumental
- * @property string|null $mb_track_id
- * @property string $mb_recording_id
- * @property mixed $mb_data
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Release $release
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Server> $servers
- * @property-read int|null $servers_count
- * @method static \Database\Factories\TrackFactory factory($count = null, $state = [])
+ * @property int                                                               $id
+ * @property string                                                            $title
+ * @property int                                                               $release_id
+ * @property int|null                                                          $track_position
+ * @property int|null                                                          $length
+ * @property float|null                                                        $average_loudness
+ * @property int|null                                                          $bpm
+ * @property float|null                                                        $danceable
+ * @property string|null                                                       $genre_rosamerica
+ * @property string|null                                                       $language
+ * @property float|null                                                        $mood_acoustic
+ * @property float|null                                                        $mood_aggressive
+ * @property float|null                                                        $mood_electronic
+ * @property float|null                                                        $mood_happy
+ * @property float|null                                                        $mood_party
+ * @property float|null                                                        $mood_relaxed
+ * @property float|null                                                        $mood_sad
+ * @property string|null                                                       $moods_mirex
+ * @property string|null                                                       $voice_instrumental
+ * @property string|null                                                       $mb_track_id
+ * @property string                                                            $mb_recording_id
+ * @property mixed                                                             $mb_data
+ * @property \Illuminate\Support\Carbon|null                                   $created_at
+ * @property \Illuminate\Support\Carbon|null                                   $updated_at
+ * @property Release                                                           $release
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\Server> $servers
+ * @property int|null                                                          $servers_count
+ *
+ * @method static \Database\Factories\TrackFactory            factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Track newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Track newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Track query()
@@ -66,6 +67,7 @@ use Laravel\Scout\Searchable;
  * @method static \Illuminate\Database\Eloquent\Builder|Track whereTrackPosition($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Track whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Track whereVoiceInstrumental($value)
+ *
  * @mixin \Eloquent
  */
 class Track extends Model

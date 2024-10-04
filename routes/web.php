@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HealthzController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return 'OK';
-});
+Route::get('/', HealthzController::class);

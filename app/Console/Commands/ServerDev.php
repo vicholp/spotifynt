@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Server;
+use App\Models\ServerUser;
 use App\Models\User;
 use Illuminate\Console\Command;
 
@@ -31,8 +32,14 @@ class ServerDev extends Command
 
         Server::create([
             'name' => 'Default',
-            'path' => 'http://beets:9003',
+            'path' => 'http://beets:9090',
             'owner_id' => $user->id,
+        ]);
+
+        ServerUser::create([
+            'server_id' => 1,
+            'user_id' => $user->id,
+            'permissions' => 'admin',
         ]);
     }
 }

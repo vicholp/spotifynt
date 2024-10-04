@@ -77,22 +77,22 @@ jobs:
       - name: Copy remote/compose.yaml to remote server
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_KEY }}
-          port: ${{ secrets.SERVER_PORT }}
+          host: ${{ secrets.REMOTE_IP }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.REMOTE_KEY }}
+          port: ${{ secrets.REMOTE_PORT }}
           strip_components: 3
           source: "source/deploy/remote/compose.yaml"
-          target: "${{ secrets.SERVER_PATH }}/${{ github.ref_name }}/${{ github.event.repository.name }}"
+          target: "${{ secrets.REMOTE_PATH }}/${{ github.ref_name }}/${{ github.event.repository.name }}"
 
       - name: Pull and start the Docker container
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_KEY }}
-          port: ${{ secrets.SERVER_PORT }}
+          host: ${{ secrets.REMOTE_IP }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.REMOTE_KEY }}
+          port: ${{ secrets.REMOTE_PORT }}
           script: |
-            cd ${{ secrets.SERVER_PATH }}/${{ github.ref_name }}/${{ github.event.repository.name }}
+            cd ${{ secrets.REMOTE_PATH }}/${{ github.ref_name }}/${{ github.event.repository.name }}
             docker compose pull
             docker compose up -d

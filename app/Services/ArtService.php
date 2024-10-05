@@ -45,7 +45,11 @@ class ArtService
             ->whereWidth($size)
             ->whereHeight($size)
             ->whereMimeType('image/'.$format)
-            ->firstOrFail();
+            ->first();
+
+        if (!$releaseArt?->url) {
+            return '';
+        }
 
         return Storage::disk('s3')->url($releaseArt->url);
     }

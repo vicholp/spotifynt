@@ -18,6 +18,10 @@ class ReleaseResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'artist' => [
+                'id' => $this->artist?->id,
+                'name' => $this->artist?->name,
+            ],
             'tracks' => $this->whenLoaded('tracks', function () {
                 return new TrackCollection($this->tracks->load('release')->sortBy('track_position'));
             }),

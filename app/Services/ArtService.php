@@ -43,7 +43,9 @@ class ArtService
         $art = ReleaseArt::all();
 
         foreach ($art as $item) {
-            Storage::disk('s3')->delete($item->url); // @phpstan-ignore-lines
+            if ($item->url) {
+                Storage::disk('s3')->delete($item->url);
+            }
             $item->delete();
         }
     }

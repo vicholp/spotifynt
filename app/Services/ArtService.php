@@ -38,6 +38,16 @@ class ArtService
         //
     }
 
+    public function clearArt(): void
+    {
+        $art = ReleaseArt::all();
+
+        foreach ($art as $item) {
+            Storage::disk('s3')->delete($item->url); // @phpstan-ignore-lines
+            $item->delete();
+        }
+    }
+
     public function getUrl(Release $release, int $size = 0, string $format = 'jpeg'): string
     {
         $releaseArt = ReleaseArt::whereReleaseId($release->id)
@@ -100,13 +110,13 @@ class ArtService
                     new MinimizeArtJob($path, $targetPath, $size[0], $size[1]),
                     new UploadArtJob(
                         $name,
-                        ReleaseArt::create([
+                        ReleaseArt::updateOrCreate([
                             'release_id' => $release->id,
                             'type' => 'cover',
                             'width' => $size[0],
                             'height' => $size[1],
                             'mime_type' => 'image/'.$format,
-                        ])
+                        ], [])
                     ),
                     new RemoveTempFileJob($name),
                 ])->onQueue('low')->dispatch();

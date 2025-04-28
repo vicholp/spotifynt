@@ -76,7 +76,7 @@ services:
     command: sh -c "php artisan queue:work --queue=low --tries=3 --timeout=60"
     deploy:
       mode: replicated
-      replicas: 2
+      replicas: 1
       endpoint_mode: vip
 
   backend-minio:

@@ -1,6 +1,7 @@
 <?php
 
 return [
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -26,18 +27,6 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Actual Application Environment
-    |--------------------------------------------------------------------------
-    |
-    | Maybe you want to run your application as production, without be in
-    | actually production. This determine the real environment, like staging.
-    |
-    */
-
-    'actual_env' => env('APP_ACTUAL_ENV', 'production'),
 
     /*
     |--------------------------------------------------------------------------
@@ -76,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => env('APP_TIMEZONE', 'UTC'),
+    'timezone' => 'UTC',
 
     /*
     |--------------------------------------------------------------------------
@@ -133,4 +122,5 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
 ];

@@ -41,6 +41,6 @@ COPY deploy/remote/site.conf /etc/nginx/sites-enabled/default
 
 COPY deploy/remote/php-entrypoint.sh /etc/entrypoint.sh
 
-RUN chmod +x /etc/php-entrypoint.sh
+RUN chmod +x /etc/entrypoint.sh
 
-CMD ["/etc/php-entrypoint.sh"]
+CMD ["/etc/entrypoint.sh"]

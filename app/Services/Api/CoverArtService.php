@@ -4,46 +4,34 @@ namespace App\Services\Api;
 
 use App\Models\Release;
 use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class CoverArtService.
  */
 class CoverArtService
 {
-    private string $itunes_url = 'http://itunes.apple.com/';
-    private string $cover_art_archive_url = 'https://coverartarchive.org/';
+    private ?string $covers_service_url = null;
 
-    private int $cache_time = 60 * 60 * 24 * 28; // 28 [days]
+    public function __construct()
+    {
+        $this->covers_service_url = config('services.covers_service_url');
+    }
 
     public function getArt(Release $release): \GdImage|false
     {
-        $url = Cache::remember('ca_'.$release->mb_id.'_urlaa', $this->cache_time, function () use ($release) {
-            $url = $this->getArtFromCoverArtArchive($release->mb_id);
-            if ($url) {
-                return $url;
-            }
+        Log::info('Cover art service: getArt', [
+            'release_id' => $release->id,
+        ]);
 
-            $url = $this->getArtFromItunes($release->title, $release->artist?->name ?? '');
-            if ($url) {
-                return $url;
-            }
-
-            return false;
-        });
+        $url = $this->getArtFromCoverService($release);
 
         if (!$url) {
             return false;
         }
 
-        $image = false;
-
-        try {
-            $image = Http::get($url)->body();
-        } catch (ConnectionException $e) {
-            Cache::forget('ca_'.$release->mb_id.'_urlaa');
-        }
+        $image = Http::get($url)->body();
 
         if (!$image) {
             return false;
@@ -52,25 +40,38 @@ class CoverArtService
         return imagecreatefromstring($image);
     }
 
-    private function getArtFromCoverArtArchive(string $id): string|false
+    private function getArtFromCoverService(Release $release): string|false
     {
-        $response = Http::get($this->cover_art_archive_url.'release/'.$id);
+        Log::info('Cover art service: getArtFromCoverService', [
+            'release_id' => $release->id,
+        ]);
 
-        if (!$response->ok()) {
+        try {
+            $response = Http::post($this->covers_service_url.'covers/album',[
+                'artist_name' => $release->artist?->name ?? '',
+                'album_name' => $release->title,
+                'release_group_mbid' => $release->releaseGroup?->mb_id,
+                'alpha_id' => $release->alpha_id,
+            ]);
+
+            if (!$response->ok()) {
+                Log::error('Cover art service: getArtFromCoverService error', [
+                    'release_id' => $release->id,
+                    'status' => $response->status(),
+                    'body' => $response->body(),
+                ]);
+
+                return false;
+            }
+
+            return $response->json()['full_size'];
+        } catch (\Exception $e) {
+            Log::error('Cover art service: getArtFromCoverService error', [
+                'release_id' => $release->id,
+                'error' => $e->getMessage(),
+            ]);
+
             return false;
         }
-
-        return $response->json()['images'][0]['image'];
-    }
-
-    private function getArtFromItunes(string $release, string $artist): string|false
-    {
-        $response = Http::get($this->itunes_url.'search?term='.urlencode($release).'+'.urlencode($artist));
-
-        if (!$response->ok()) {
-            return false;
-        }
-
-        return $response->json()['results'][0]['artworkUrl100']; // @phpstan-ignore-line
     }
 }

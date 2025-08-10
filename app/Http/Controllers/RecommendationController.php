@@ -10,7 +10,7 @@ class RecommendationController extends Controller
 {
     public function __invoke(): JsonResponse
     {
-        $albums = Release::limit(6)->inRandomOrder()->get();
+        $albums = Release::limit(12)->inRandomOrder()->get();
 
         return response()->json([
             'albums' => new ReleaseCollection($albums),

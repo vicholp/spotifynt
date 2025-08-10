@@ -12,6 +12,8 @@ class ReleaseGroup extends Model
 
     protected $fillable = [
         'title',
+        'alpha_id',
+
         'mb_id',
         'artist_id',
     ];
@@ -19,6 +21,11 @@ class ReleaseGroup extends Model
     public function artist()
     {
         return $this->belongsTo(Artist::class, 'artist_id');
+    }
+
+    public function releases()
+    {
+        return $this->hasMany(Release::class);
     }
 
     public function arts()

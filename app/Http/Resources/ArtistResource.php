@@ -14,6 +14,17 @@ class ArtistResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [...parent::toArray($request),
+            'release_groups' => $this->when($request->has('with_release_groups'), fn () => new ReleaseGroupCollection($this->releaseGroups)),
+                        'release_group_count' => $this->when(
+                $request->has('with_release_group_count'),
+                fn () => $this->releaseGroups->count()
+            ),
+            'releases' => $this->when($request->has('with_releases'), fn () => new ReleaseCollection($this->releases)),
+            'release_count' => $this->when(
+                $request->has('with_release_count'),
+                fn () => $this->releases->count()
+            ),
+    ];
     }
 }

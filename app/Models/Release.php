@@ -13,6 +13,7 @@ class Release extends Model
 
     protected $fillable = [
         'title',
+        'alpha_id',
         'mb_id',
         'release_group_id',
     ];
@@ -25,6 +26,26 @@ class Release extends Model
     public function artUrl(int $size = 0, string $format = 'webp'): string
     {
         return (new ArtService())->getUrl($this, $size, $format);
+    }
+
+    public function releaseGroup()
+    {
+        return $this->belongsTo(ReleaseGroup::class);
+    }
+
+    public function getArtistAttribute()
+    {
+        return $this->releaseGroup->artist;
+    }
+
+    public function getSourceAttribute()
+    {
+        if ($this->mb_id) {
+            return 'musicbrainz';
+        }
+        if ($this->alpha_id) {
+            return 'alpha';
+        }
     }
 
     public function tracks()

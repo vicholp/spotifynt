@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'covers_service_url' => env('COVERS_SERVICE_URL', 'http://covers:8000/'),
+    'mb_service_url' => env('MB_SERVICE_URL', 'http://mb:8000/'),
+    'tagger_service_url' => env('TAGGER_SERVICE_URL', 'http://tagger:8000/'),
+    'alpha_plugin_url' => env('ALPHA_PLUGIN_URL', 'http://alpha-plugin8000/'),
 ];

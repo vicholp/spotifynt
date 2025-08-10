@@ -13,5 +13,16 @@ class Artist extends Model
     protected $fillable = [
         'name',
         'mb_id',
+        'alpha_id',
     ];
+
+    public function releaseGroups()
+    {
+        return $this->hasMany(ReleaseGroup::class);
+    }
+
+    public function releases()
+    {
+        return $this->hasManyThrough(Release::class, ReleaseGroup::class);
+    }
 }

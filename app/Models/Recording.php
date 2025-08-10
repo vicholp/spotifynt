@@ -12,6 +12,8 @@ class Recording extends Model
 
     protected $fillable = [
         'title',
+        'alpha_id',
+
         'mb_id',
     ];
 

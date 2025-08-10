@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->foreignId('recording_id')->constrained('recordings')->onDelete('cascade');
 
             $table->string('mb_id')->nullable();
+            $table->string('alpha_id')->nullable()->unique();
             $table->integer('position')->nullable();
             $table->string('title')->nullable();
 

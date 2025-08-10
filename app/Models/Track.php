@@ -14,6 +14,8 @@ class Track extends Model
         'recording_id',
         'release_id',
         'mb_id',
+        'alpha_id',
+
         'position',
         'title',
     ];

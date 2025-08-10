@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
 
             $table->string('title');
-            $table->string('mb_id')->unique();
+            $table->string('mb_id')->nullable()->unique();
+            $table->string('alpha_id')->nullable()->unique();
             $table->foreignId('artist_id')->constrained('artists')->onDelete('cascade');
 
             $table->timestamps();

@@ -21,10 +21,12 @@ class ReleaseResource extends JsonResource
 
             'art' => [
                 'full' => $this->when($request->has('with_art_sizefull'), fn () => $this->artUrl()),
+                '500x500' => $this->when($request->has('with_art_size500x500'), fn () => $this->artUrl(500)),
                 '250x250' => $this->when($request->has('with_art_size250x250'), fn () => $this->artUrl(250)),
                 '75x75' => $this->when($request->has('with_art_size75x75'), fn () => $this->artUrl(75)),
             ],
             'tracks' => $this->when($request->has('with_tracks'), fn () => new TrackCollection($this->tracks)),
+            'source' => $this->source,
         ];
     }
 }

@@ -18,9 +18,12 @@ services:
     volumes:
       - .:/var/www/html
 
-  nginx:
+  backend:
     image: nginxinc/nginx-unprivileged:1.27.0
     user: 1000:1000
+    networks:
+      - default
+      - spotifynt
     depends_on:
       - php
     ports:
@@ -29,7 +32,7 @@ services:
       - .:/var/www/html
       - ./deploy/local/site.conf:/etc/nginx/conf.d/default.conf
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/up"]
 
   worker:
     build:
@@ -51,7 +54,7 @@ services:
       - .:/var/www/html
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 5
 
 
   # utils
@@ -87,6 +90,9 @@ services:
     ports:
       - 9090:9000 # Minio
       - 9001:9001 # Web UI
+    networks:
+      - default
+      - spotifynt
     volumes:
       - 'minio_data:/data'
     environment:

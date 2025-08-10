@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
 
             $table->string('title')->nullable();
-            $table->string('mb_id')->unique();
+            $table->string('mb_id')->nullable()->unique();
+            $table->string('alpha_id')->nullable()->unique();
+
 
             $table->timestamps();
         });

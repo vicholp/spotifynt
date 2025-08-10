@@ -12,6 +12,7 @@ use App\Services\Api\MusicBrainzService;
 use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Log;
 
 class NewFileJob implements ShouldQueue
 {
@@ -24,7 +25,8 @@ class NewFileJob implements ShouldQueue
     public function __construct(
         protected File $file,
         protected string $recordingMbId,
-        protected string $releaseMbId,
+        protected ?string $releaseMbId,
+        protected ?string $trackId,
     ) {
         //
     }
@@ -43,10 +45,15 @@ class NewFileJob implements ShouldQueue
         $recordingMbId = $this->recordingMbId;
         $recording = $this->file->recording;
         $releaseMbId = $this->releaseMbId;
+        $trackId = $this->trackId;
 
         $mbRelease = $musicBrainzService->getRelease($releaseMbId);
 
-        $mbTrack = $musicBrainzService->getTrackFromRecording($releaseMbId, $recordingMbId);
+        if ($trackId){
+            $mbTrack = $musicBrainzService->getTrackFromRelease($releaseMbId, $trackId);
+        } else {
+            $mbTrack = $musicBrainzService->getTrackFromRecording($releaseMbId, $recordingMbId);
+        }
 
         $mbReleaseGroup = $musicBrainzService->getReleaseGroup($mbRelease['release-group']['id']);
 

@@ -114,20 +114,20 @@ class ArtService
                 $name = Str::uuid().'.'.$format;
                 $targetPath = Storage::disk('temp')->path($name);
 
-                Bus::chain([
-                    new MinimizeArtJob($path, $targetPath, $size[0], $size[1]),
-                    new UploadArtJob(
-                        $name,
-                        Art::updateOrCreate([
-                            'release_id' => $release->id,
-                            'type' => 'cover',
-                            'width' => $size[0],
-                            'height' => $size[1],
-                            'mime_type' => 'image/'.$format,
-                        ], [])
-                    ),
-                    new RemoveTempFileJob($name),
-                ])->onQueue('default')->dispatch();
+                self::minimizeArt( $path, $targetPath, $size[0], $size[1]);
+
+                self::uploadArt(
+                    $name,
+                    Art::updateOrCreate([
+                        'release_id' => $release->id,
+                        'type' => 'cover',
+                        'width' => $size[0],
+                        'height' => $size[1],
+                        'mime_type' => 'image/'.$format,
+                    ], [])
+                );
+
+                Storage::disk('temp')->delete($name);
             }
         }
     }

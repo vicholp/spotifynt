@@ -81,7 +81,7 @@ services:
     command: sh -c "php artisan queue:work --queue=default --tries=3 --timeout=300"
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: 10
       endpoint_mode: vip
 
   backend-tasks:
@@ -129,6 +129,11 @@ services:
 volumes:
   mariadb_data:
   minio_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /mnt/wd_wd10/spotifynt_next
   typesense_data:
   redis_data:
 

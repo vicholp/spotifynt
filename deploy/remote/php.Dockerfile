@@ -32,7 +32,6 @@ COPY . .
 
 RUN composer dump-autoload -o
 RUN php artisan route:cache
-RUN php artisan view:cache
 
 FROM php AS nginx
 

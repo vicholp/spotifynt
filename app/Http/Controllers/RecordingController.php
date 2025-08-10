@@ -7,15 +7,22 @@ use App\Http\Requests\UpdateRecordingRequest;
 use App\Http\Resources\RecordingCollection;
 use App\Http\Resources\RecordingResource;
 use App\Models\Recording;
+use Illuminate\Http\Request;
 
 class RecordingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new RecordingCollection(Recording::all());
+        $recordings = Recording::query();
+
+        if ($request->has('mb_id')) {
+            $recordings->where('mb_id', $request->input('mb_id'));
+        }
+
+        return new RecordingCollection($recordings->get());
     }
 
     /**

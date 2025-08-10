@@ -28,36 +28,9 @@ class UploadFileController extends Controller
             $path
         );
 
-
-
-
         $recordingMbId = $tags['musicbrainz track id'][0] ?? $tags['musicbrainz_trackid'][0] ?? null;
         $trackId = $tags['musicbrainz release track id'][0] ?? $tags['musicbrainz_releasetrackid'][0] ?? null;
         $releaseMbId = $tags['musicbrainz album id'][0] ?? $tags['musicbrainz_albumid'][0] ?? null;
-
-
-
-        // $audio = Audio::read($request->file('file')->getRealPath());
-
-        // $recordingMbId = $audio->getRawKey('musicbrainz_trackid', 'vorbiscomment');
-        // $releaseMbId = $audio->getRawKey('musicbrainz_albumid', 'vorbiscomment');
-
-        // if (empty($recordingMbId)) {
-        //     $recordingMbId = $audio->getRawKey('musicbrainz_trackid', 'id3v2');
-        //     $releaseMbId = $audio->getRawKey('musicbrainz_albumid', 'id3v2');
-        // }
-
-        // if (empty($recordingMbId)) {
-        //     $recordingMbId = $audio->getRawKey('musicbrainz_trackid', 'id3v1');
-        //     $releaseMbId = $audio->getRawKey('musicbrainz_albumid', 'id3v1');
-        // }
-
-        // if (empty($recordingMbId)) {
-        //     $flat = collect($audio->toArray())->flatten(1);
-
-        //     $recordingMbId = $flat->first(fn ($value, $key) => $key === 'musicbrainz_trackid');
-        //     $releaseMbId = $flat->first(fn ($value, $key) => $key === 'musicbrainz_albumid');
-        // }
 
         if (empty($recordingMbId) || empty($releaseMbId)) {
             return response()->json([

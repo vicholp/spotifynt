@@ -78,7 +78,7 @@ services:
     depends_on:
       - backend
     image: ${DOCKER_REGISTRY}/${GITHUB_REPO}-php:${ENVIRONMENT}-latest
-    command: sh -c "php artisan queue:work --queue=default --tries=3 --timeout=300"
+    command: sh -c "php artisan queue:work --queue=default --tries=3 --timeout=300 --memory=512"
     deploy:
       mode: replicated
       replicas: 10

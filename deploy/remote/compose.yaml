@@ -74,7 +74,7 @@ services:
       - default
       - project
     depends_on:
-      - backend-php
+      - backend
     image: ${DOCKER_REGISTRY}/${GITHUB_REPO}-php:${ENVIRONMENT}-latest
     command: sh -c "php artisan queue:work --queue=default --tries=3 --timeout=300"
     deploy:
@@ -89,7 +89,7 @@ services:
       - default
       - project
     depends_on:
-      - backend-php
+      - backend
     image: ${DOCKER_REGISTRY}/${GITHUB_REPO}-php:${ENVIRONMENT}-latest
     command: sh -c "php artisan schedule:work"
 
@@ -132,7 +132,7 @@ volumes:
 
 networks:
   project:
-    name: ${APP_PROJECT}-${ENVIRONMENT}
+    name: ${APP_NAME}-${ENVIRONMENT}
     external: true
   traefik:
     external: true

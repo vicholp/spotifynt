@@ -1,37 +1,105 @@
 name: ${APP_NAME}-${ENVIRONMENT}
 
 services:
-  laravel:
-    image: ${DOCKER_REGISTRY}/${GITHUB_REPO}-laravel:${ENVIRONMENT}-latest
+  backend-php:
+    image: ${DOCKER_REGISTRY}/${GITHUB_REPO}-php:${ENVIRONMENT}-latest
     restart: unless-stopped
     ports:
       - 8080
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
-      start_interval: 5s
-      start_period: 30s
-      timeout: 5s
-      interval: 5m
+      test: curl --fail http://localhost:8080/up || exit 1
+      start_period: 15s
+      start_interval: 3s
     env_file: .env
     networks:
       - default
+      - project
       - traefik
     labels:
       - "traefik.enable=true"
-
       - "traefik.docker.network=traefik"
-      - "traefik.http.services.${APP_NAME}-${ENVIRONMENT}-laravel.loadbalancer.server.port=8080"
 
-      - "traefik.http.routers.insecure-${APP_NAME}-${ENVIRONMENT}-laravel.entrypoints=webinsecure"
-      - "traefik.http.routers.insecure-${APP_NAME}-${ENVIRONMENT}-laravel.rule=Host(`${TRAEFIK_LARAVEL_HOST}`)"
-      - "traefik.http.routers.insecure-${APP_NAME}-${ENVIRONMENT}-laravel.middlewares=redirectToHttps@file"
+      - "traefik.http.routers.insecure-${APP_NAME}-${ENVIRONMENT}-backend.entrypoints=webinsecure"
+      - "traefik.http.routers.insecure-${APP_NAME}-${ENVIRONMENT}-backend.rule=Host(`backend-${TRAEFIK_HOST}`)"
+      - "traefik.http.routers.insecure-${APP_NAME}-${ENVIRONMENT}-backend.middlewares=redirectToHttps@file"
 
-      - "traefik.http.routers.${APP_NAME}-${ENVIRONMENT}-laravel.entrypoints=websecure"
-      - "traefik.http.routers.${APP_NAME}-${ENVIRONMENT}-laravel.rule=Host(`${TRAEFIK_LARAVEL_HOST}`)"
-      - "traefik.http.routers.${APP_NAME}-${ENVIRONMENT}-laravel.tls=true"
-      - "traefik.http.routers.${APP_NAME}-${ENVIRONMENT}-laravel.tls.certresolver=myresolver"
+      - "traefik.http.routers.${APP_NAME}-${ENVIRONMENT}-backend.rule=Host(`backend-${TRAEFIK_HOST}`)"
+      - "traefik.http.routers.${APP_NAME}-${ENVIRONMENT}-backend.tls=true"
+      - "traefik.http.routers.${APP_NAME}-${ENVIRONMENT}-backend.tls.certresolver=${TRAEFIK_CERT_RESOLVER}"
 
-  minio:
+
+  backend-db:
+    image: mariadb:11.3.2
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${DB_DATABASE}
+      MARIADB_USER: ${DB_USERNAME}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_RANDOM_ROOT_PASSWORD: true
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: healthcheck.sh --su-mysql --connect --innodb_initialized
+      start_period: 15s
+      start_interval: 3s
+
+  backend-tasks:
+    env_file: .env
+    restart: unless-stopped
+    networks:
+      - default
+      - project
+    depends_on:
+      - backend-php
+    image: ${DOCKER_REGISTRY}/${GITHUB_REPO}-php:${ENVIRONMENT}-latest
+    command: sh -c "php artisan schedule:work"
+
+  backend-queue-high:
+    env_file: .env
+    restart: unless-stopped
+    networks:
+      - default
+      - project
+    depends_on:
+      - backend-php
+    image: ${DOCKER_REGISTRY}/${GITHUB_REPO}-php:${ENVIRONMENT}-latest
+    command: sh -c "php artisan queue:work --queue=high --tries=3 --timeout=300"
+    deploy:
+      mode: replicated
+      replicas: 0
+      endpoint_mode: vip
+
+  backend-queue-default:
+    env_file: .env
+    restart: unless-stopped
+    networks:
+      - default
+      - project
+    depends_on:
+      - backend-php
+    image: ${DOCKER_REGISTRY}/${GITHUB_REPO}-php:${ENVIRONMENT}-latest
+    command: sh -c "php artisan queue:work --queue=default --tries=3 --timeout=300"
+    deploy:
+      mode: replicated
+      replicas: 1
+      endpoint_mode: vip
+
+  backend-queue-low:
+    env_file: .env
+    restart: unless-stopped
+    networks:
+      - default
+      - project
+    depends_on:
+      - backend-php
+    image: ${DOCKER_REGISTRY}/${GITHUB_REPO}-php:${ENVIRONMENT}-latest
+    command: sh -c "php artisan queue:work --queue=low --tries=3 --timeout=300"
+    deploy:
+      mode: replicated
+      replicas: 0
+      endpoint_mode: vip
+
+  backend-minio:
     image: minio/minio:RELEASE.2024-06-29T01-20-47Z
     restart: unless-stopped
     networks:
@@ -47,69 +115,39 @@ services:
     command: server /data --console-address ":9001"
     labels:
       - "traefik.enable=true"
-
       - "traefik.docker.network=traefik"
+      - "traefik.http.routers.${APP_NAME}-${ENVIRONMENT}-backend-minio.rule=Host(`minio-backend-${TRAEFIK_HOST}`)"
+      - "traefik.http.routers.${APP_NAME}-${ENVIRONMENT}-backend-minio.tls=true"
+      - "traefik.http.routers.${APP_NAME}-${ENVIRONMENT}-backend-minio.tls.certresolver=${TRAEFIK_CERT_RESOLVER}"
 
-      - "traefik.http.routers.insecure-${APP_NAME}-${ENVIRONMENT}-minio.entrypoints=webinsecure"
-      - "traefik.http.routers.insecure-${APP_NAME}-${ENVIRONMENT}-minio.rule=Host(`${TRAEFIK_MINIO_HOST}`)"
-      - "traefik.http.routers.insecure-${APP_NAME}-${ENVIRONMENT}-minio.middlewares=redirectToHttps@file"
-
-      - "traefik.http.routers.${APP_NAME}-${ENVIRONMENT}-minio.entrypoints=websecure"
-      - "traefik.http.routers.${APP_NAME}-${ENVIRONMENT}-minio.rule=Host(`${TRAEFIK_MINIO_HOST}`)"
-      - "traefik.http.routers.${APP_NAME}-${ENVIRONMENT}-minio.tls=true"
-      - "traefik.http.routers.${APP_NAME}-${ENVIRONMENT}-minio.tls.certresolver=myresolver"
-
-  minio-createbuckets:
+  backend-createbuckets:
     image: minio/mc
     depends_on:
-      - minio
+      - backend-minio
     entrypoint: >
       /bin/sh -c "
       /usr/bin/mc alias set myminio ${AWS_ENDPOINT} ${AWS_ACCESS_KEY_ID} ${AWS_SECRET_ACCESS_KEY};
-      /usr/bin/mc mb myminio/public-bucket;
-      /usr/bin/mc anonymous set public myminio/public-bucket;
+      /usr/bin/mc mb myminio/${AWS_BUCKET};
+      /usr/bin/mc anonymous set public myminio/${AWS_BUCKET};
       exit 0;
       "
 
-
-  mariadb:
-    image: mariadb:11.3.2
-    restart: unless-stopped
-    environment:
-      MARIADB_DATABASE: ${DB_DATABASE}
-      MARIADB_USER: ${DB_USERNAME}
-      MARIADB_PASSWORD: ${DB_PASSWORD}
-      MARIADB_RANDOM_ROOT_PASSWORD: true
-    volumes:
-      - mariadb_data:/var/lib/mysql
-    healthcheck:
-      test: healthcheck.sh --su-mysql --connect --innodb_initialized
-      interval: 10m
-
-  redis:
-    restart: unless-stopped
-    image: redis:8.0
-    volumes:
-      - redis_data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10m
-    command: ["redis-server", "--save 3600 10"]
-
-  typesense:
+  backend-typesense:
     image: typesense/typesense:26.0
     restart: unless-stopped
     volumes:
-      - typesense_data:/data
+      - typesense-data:/data
     command: '--data-dir /data --api-key=${TYPESENSE_API_KEY} --enable-cors'
 
 volumes:
-  mariadb_data:
+  db_data:
   minio_data:
-  typesense_data:
-  redis_data:
+  typesense-data:
 
 networks:
+  project:
+    name: ${APP_PROJECT}-${ENVIRONMENT}
+    external: true
   traefik:
     external: true
     name: traefik

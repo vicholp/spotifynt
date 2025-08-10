@@ -1,10 +1,8 @@
-## PHP
+FROM php:8.4.8-fpm AS php
 
-FROM php:8.3.8-fpm AS php
+RUN apt update; apt install -y nginx git
 
-RUN apt update; apt install -y nginx
-
-ENV PHP_EXTENSIONS="redis pdo_mysql pdo_pgsql gd zip exif"
+ENV PHP_EXTENSIONS="redis pdo_mysql gd zip exif opcache"
 
 COPY deploy/remote/php.ini-production "$PHP_INI_DIR/php.ini"
 
@@ -23,18 +21,18 @@ RUN mkdir -p \
     storage/app/public \
     storage/logs
 
-COPY --from=composer:2.7.2 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.8.9 /usr/bin/composer /usr/bin/composer
 
 COPY composer.json .
 COPY composer.lock .
 
-RUN composer install --no-dev --no-scripts --no-autoloader \
-    --no-interaction --no-progress
+RUN composer install --no-dev --no-scripts --no-autoloader --no-interaction --no-progress
 
 COPY . .
 
 RUN composer dump-autoload -o
 RUN php artisan route:cache
+RUN php artisan view:cache
 
 FROM php AS nginx
 
@@ -44,6 +42,6 @@ COPY deploy/remote/site.conf /etc/nginx/sites-enabled/default
 
 COPY deploy/remote/php-entrypoint.sh /etc/entrypoint.sh
 
-RUN chmod +x /etc/entrypoint.sh
+RUN chmod +x /etc/php-entrypoint.sh
 
-CMD ["/etc/entrypoint.sh"]
+CMD ["/etc/php-entrypoint.sh"]

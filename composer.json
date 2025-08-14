@@ -9,9 +9,11 @@
         "php": "^8.2",
         "kiwilan/php-audio": "^4.0",
         "laravel/framework": "^12.0",
+        "laravel/scout": "^10.17",
         "laravel/tinker": "^2.10.1",
         "league/flysystem-aws-s3-v3": "^3.0",
-        "stefangabos/zebra_image": "^3.0"
+        "stefangabos/zebra_image": "^3.0",
+        "typesense/typesense-php": "^5.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

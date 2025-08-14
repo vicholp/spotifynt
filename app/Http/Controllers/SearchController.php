@@ -20,20 +20,13 @@ class SearchController extends Controller
 
         $query = $request->input('q');
 
-        // this is needed to include artist's albums in results
-        // $albums = Release::search($query)->get();  // @phpstan-ignore argument.type
-        // $artists = Artist::search($query)->get();  // @phpstan-ignore argument.type
-
-        // $albums = $albums->merge($artists->flatMap->releaseGroups->flatMap->releases->unique('id'));
-
         return response()->json([
             'albums' => new ReleaseCollection(
-                // $albums,
-                Release::all()
+                Release::search($query)
+                    ->get()
             ),
             'tracks' => new TrackCollection(
-                // Track::search($query)->get()->load('release')  // @phpstan-ignore argument.type
-                Track::all(),
+                Track::search($query)->get()
             ),
         ]);
     }

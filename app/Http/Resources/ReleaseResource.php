@@ -26,6 +26,7 @@ class ReleaseResource extends JsonResource
                 '75x75' => $this->when($request->has('with_art_size75x75'), fn () => $this->artUrl(75)),
             ],
             'tracks' => $this->when($request->has('with_tracks'), fn () => new TrackCollection($this->tracks)),
+
             'source' => $this->source,
         ];
     }

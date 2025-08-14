@@ -4,11 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Track extends Model
 {
     /** @use HasFactory<\Database\Factories\TrackFactory> */
-    use HasFactory;
+    use HasFactory, Searchable;
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => (string) $this->id,
+            'created_at' => $this->created_at->timestamp,
+            'title' => $this->title ?? '',
+            'alpha_id' => $this->alpha_id ?? '',
+            'mb_id' => $this->mb_id ?? '',
+            'artist_name' => $this->release->releaseGroup->artist->name ?? '',
+            'release_title' => $this->release->title ?? '',
+            'release_group_name' => $this->release->releaseGroup?->name ?? '',
+        ];
+    }
 
     protected $fillable = [
         'recording_id',

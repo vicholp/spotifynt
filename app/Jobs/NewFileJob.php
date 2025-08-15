@@ -9,6 +9,7 @@ use App\Models\Release;
 use App\Models\ReleaseGroup;
 use App\Models\Track;
 use App\Services\Api\MusicBrainzService;
+use App\Services\Api\TaggerService;
 use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -34,7 +35,7 @@ class NewFileJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(MusicBrainzService $musicBrainzService): void
+    public function handle(MusicBrainzService $musicBrainzService, TaggerService $taggerService): void
     {
         if ($this->batch()?->cancelled()) {
             // The batch has been cancelled...

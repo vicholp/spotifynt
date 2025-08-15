@@ -24,15 +24,21 @@ class UploadFileController extends Controller
 
         $path = $request->file('file')->store('files');
 
-        $tags = $taggerService->getTags(
+        $info = $taggerService->getInfo(
             $path
         );
 
+        $tags = $info['tags'] ?? [];
+        $info = $info['info'] ?? [];
+
         $recordingMbId = $tags['musicbrainz track id'][0] ?? $tags['musicbrainz_trackid'][0] ?? null;
         $trackId = $tags['musicbrainz release track id'][0] ?? $tags['musicbrainz_releasetrackid'][0] ?? null;
+
         $releaseMbId = $tags['musicbrainz album id'][0] ?? $tags['musicbrainz_albumid'][0] ?? null;
 
-        if (empty($recordingMbId) || empty($releaseMbId)) {
+        if ((empty($recordingMbId) && empty($trackId)) || empty($releaseMbId)) {
+            Storage::delete($path);
+
             return response()->json([
                 'error' => 'No MusicBrainz recording ID found in the file.',
                 'tags' => $tags,

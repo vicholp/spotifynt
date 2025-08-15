@@ -7,15 +7,22 @@ use App\Http\Requests\UpdateTrackRequest;
 use App\Http\Resources\TrackCollection;
 use App\Http\Resources\TrackResource;
 use App\Models\Track;
+use Illuminate\Http\Request;
 
 class TrackController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new TrackCollection(Track::all());
+        $tracks = Track::query();
+
+        if ($request->filled('mb_id')) {
+            $tracks->where('mb_id', $request->input('mb_id'));
+        }
+
+        return new TrackCollection($tracks->get());
     }
 
     /**

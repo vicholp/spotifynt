@@ -1,4 +1,4 @@
-FROM php:8.4.8-fpm-alpine AS php
+FROM php:8.4.8-fpm AS php
 
 RUN apt update; apt install -y nginx git
 

@@ -25,8 +25,8 @@ class NewFileJob implements ShouldQueue
      */
     public function __construct(
         protected File $file,
-        protected string $recordingMbId,
-        protected ?string $releaseMbId,
+        protected ?string $recordingMbId,
+        protected string $releaseMbId,
         protected ?string $trackId,
     ) {
         //

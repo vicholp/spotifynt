@@ -54,7 +54,13 @@ class UploadFileController extends Controller
             'recording_id' => $recording->id,
         ]);
 
-        NewFileJob::dispatch($file, $recordingMbId, $releaseMbId, $trackId);
+        (new NewFileJob(
+            file: $file,
+            recordingMbId: $recordingMbId,
+            releaseMbId: $releaseMbId,
+            trackId: $trackId
+        ))->dispatch();
+
         return response()->json([
             'file' => $file,
             'recording' => $recording,

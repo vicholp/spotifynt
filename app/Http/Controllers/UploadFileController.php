@@ -57,7 +57,7 @@ class UploadFileController extends Controller
             trackId: $trackId
         );
 
-        LoadFileInfoJob::dispatch($this->file);
+        LoadFileInfoJob::dispatch($file);
 
 
         return response()->json([

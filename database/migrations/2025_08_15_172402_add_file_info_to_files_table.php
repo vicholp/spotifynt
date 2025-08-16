@@ -24,6 +24,7 @@ return new class extends Migration
 
             $table->string('source')->nullable();
 
+            $table->foreignId('recording_id')->nullable()->change();
         });
     }
 
@@ -43,6 +44,9 @@ return new class extends Migration
                 'length_s',
                 'source',
             ]);
+
+            $table->foreignId('recording_id')->nullable(false)->change();
         });
+
     }
 };

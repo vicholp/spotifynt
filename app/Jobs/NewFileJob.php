@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Jobs\Art\SyncArtJob;
 use App\Models\Artist;
 use App\Models\File;
+use App\Models\Recording;
 use App\Models\Release;
 use App\Models\ReleaseGroup;
 use App\Models\Track;
@@ -44,7 +45,6 @@ class NewFileJob implements ShouldQueue
         }
 
         $recordingMbId = $this->recordingMbId;
-        $recording = $this->file->recording;
         $releaseMbId = $this->releaseMbId;
         $trackId = $this->trackId;
 
@@ -52,13 +52,29 @@ class NewFileJob implements ShouldQueue
 
         if ($trackId){
             $mbTrack = $musicBrainzService->getTrackFromRelease($releaseMbId, $trackId);
+            $mbRecording = $musicBrainzService->getRecording($mbTrack['recording']['id']);
         } else {
             $mbTrack = $musicBrainzService->getTrackFromRecording($releaseMbId, $recordingMbId);
+            $mbRecording = $musicBrainzService->getRecording($recordingMbId);
+        }
+
+
+        if (empty($mbTrack) || empty($mbRecording)) {
+            Log::error('NewFileJob: No track or recording found for release ID: ' . $releaseMbId);
+            return;
         }
 
         $mbReleaseGroup = $musicBrainzService->getReleaseGroup($mbRelease['release-group']['id']);
 
         $mbArtist = $musicBrainzService->getArtist($mbReleaseGroup['artist-credit'][0]['artist']['id']);
+
+        $recording = Recording::updateOrCreate(
+            ['mb_id' => $mbRecording['id']], []
+        );
+
+        $this->file->update([
+            'recording_id' => $recording->id,
+        ]);
 
         $artist = Artist::updateOrCreate(
             ['mb_id' => $mbArtist['id']],

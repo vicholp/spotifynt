@@ -17,19 +17,21 @@ class UploadFileController extends Controller
      */
     public function __invoke(Request $request, TaggerService $taggerService)
     {
-        // Validate the request
         $request->validate([
             'file' => 'required|file',
         ]);
 
         $path = $request->file('file')->store('files');
 
+        $file = File::create([
+            'path' => $path,
+        ]);
+
         $info = $taggerService->getInfo(
             $path
         );
 
         $tags = $info['tags'] ?? [];
-        $info = $info['info'] ?? [];
 
         $recordingMbId = $tags['musicbrainz track id'][0] ?? $tags['musicbrainz_trackid'][0] ?? null;
         $trackId = $tags['musicbrainz release track id'][0] ?? $tags['musicbrainz_releasetrackid'][0] ?? null;
@@ -39,20 +41,13 @@ class UploadFileController extends Controller
         if ((empty($recordingMbId) && empty($trackId)) || empty($releaseMbId)) {
             Storage::delete($path);
 
+            $file->delete();
+
             return response()->json([
                 'error' => 'No MusicBrainz recording ID found in the file.',
                 'tags' => $tags,
             ], 422, [], JSON_UNESCAPED_SLASHES);
         }
-
-        $recording = Recording::firstOrCreate(
-            ['mb_id' => $recordingMbId],
-        );
-
-        $file = File::create([
-            'path' => $path,
-            'recording_id' => $recording->id,
-        ]);
 
         NewFileJob::dispatch(
             file: $file,
@@ -63,7 +58,6 @@ class UploadFileController extends Controller
 
         return response()->json([
             'file' => $file,
-            'recording' => $recording,
             'url' => Storage::url($path),
         ], 201, [], JSON_UNESCAPED_SLASHES);
     }

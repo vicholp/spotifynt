@@ -14,6 +14,15 @@ class File extends Model
     protected $fillable = [
         'path',
         'recording_id',
+
+        'size_bytes',
+        'checksum_md5',
+        'mime_type',
+        'extension',
+        'bitrate_bps',
+        'sample_rate_hz',
+        'length_s',
+        'source',
     ];
 
     public function recording()

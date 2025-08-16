@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\FileSourceEnum;
+use App\Jobs\LoadFileInfoJob;
 use App\Jobs\NewFileJob;
 use App\Models\File;
-use App\Models\Recording;
 use App\Services\Api\TaggerService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Kiwilan\Audio\Audio;
 
 class UploadFileController extends Controller
 {
@@ -25,6 +25,7 @@ class UploadFileController extends Controller
 
         $file = File::create([
             'path' => $path,
+            'source' => FileSourceEnum::USER_UPLOAD->value,
         ]);
 
         $info = $taggerService->getInfo(
@@ -55,6 +56,9 @@ class UploadFileController extends Controller
             releaseMbId: $releaseMbId,
             trackId: $trackId
         );
+
+        LoadFileInfoJob::dispatch($this->file);
+
 
         return response()->json([
             'file' => $file,

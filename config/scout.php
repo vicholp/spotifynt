@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Artist;
 use App\Models\Release;
 use App\Models\Track;
 
@@ -217,6 +218,32 @@ return [
                 ],
                 'search-parameters' => [
                     'query_by' => 'title,alpha_id,mb_id,release_group_name,artist_name',
+                ],
+            ],
+            Artist::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                             'name' => 'created_at',
+                             'type' => 'int64',
+                        ],
+                        [
+                            'name' => 'name',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'alpha_id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'mb_id',
+                            'type' => 'string',
+                        ],
+                    ],
+                    'default_sorting_field' => 'created_at',
+                ],
+                'search-parameters' => [
+                    'query_by' => 'name,alpha_id,mb_id',
                 ],
             ],
             Track::class => [

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ArtistCollection;
 use App\Http\Resources\ReleaseCollection;
 use App\Http\Resources\TrackCollection;
 use App\Models\Artist;
@@ -21,6 +22,10 @@ class SearchController extends Controller
         $query = $request->input('q');
 
         return response()->json([
+            'artists' => new ArtistCollection(
+                Artist::search($query)
+                    ->get()
+            ),
             'albums' => new ReleaseCollection(
                 Release::search($query)
                     ->get()

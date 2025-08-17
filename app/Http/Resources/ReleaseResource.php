@@ -28,6 +28,7 @@ class ReleaseResource extends JsonResource
             'tracks' => $this->when($request->has('with_tracks'), fn () => new TrackCollection($this->tracks)),
 
             'source' => $this->source,
+            'extensions' => $this->extensions,
         ];
     }
 }

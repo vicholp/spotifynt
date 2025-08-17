@@ -57,6 +57,12 @@ class Release extends Model
         return $this->releaseGroup->artist;
     }
 
+    public function getExtensionsAttribute(): array
+    {
+        $extensions = $this->tracks()->with('recording.files')->get()->flatMap(fn ($track) => $track->files->pluck('extension'))->unique()->values();
+        return $extensions->isNotEmpty() ? $extensions->toArray() : [];
+    }
+
     public function getSourceAttribute()
     {
         if ($this->mb_id) {

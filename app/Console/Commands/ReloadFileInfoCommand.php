@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\LoadFileInfoJob;
+use App\Models\File;
 use Illuminate\Console\Command;
 
 class ReloadFileInfoCommand extends Command
@@ -25,6 +27,10 @@ class ReloadFileInfoCommand extends Command
      */
     public function handle()
     {
-        //
+        $files = File::get();
+
+        foreach ($files as $file) {
+            LoadFileInfoJob::dispatch($file);
+        }
     }
 }

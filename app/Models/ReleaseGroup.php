@@ -13,9 +13,14 @@ class ReleaseGroup extends Model
     protected $fillable = [
         'title',
         'alpha_id',
-
+        'primary_type',
+        'secondary_types',
         'mb_id',
         'artist_id',
+    ];
+
+    protected $casts = [
+        'secondary_types' => 'array',
     ];
 
     public function artist()

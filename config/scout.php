@@ -239,11 +239,15 @@ return [
                             'name' => 'mb_id',
                             'type' => 'string',
                         ],
+                        [
+                            'name' => 'country',
+                            'type' => 'string',
+                        ],
                     ],
                     'default_sorting_field' => 'created_at',
                 ],
                 'search-parameters' => [
-                    'query_by' => 'name,alpha_id,mb_id',
+                    'query_by' => 'name,alpha_id,mb_id,country',
                 ],
             ],
             Track::class => [

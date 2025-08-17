@@ -24,6 +24,7 @@ class Artist extends Model
             'name' => $this->name ?? '',
             'alpha_id' => $this->alpha_id ?? '',
             'mb_id' => $this->mb_id ?? '',
+            'country' => $this->country ?? '',
         ];
     }
 
@@ -31,6 +32,7 @@ class Artist extends Model
         'name',
         'mb_id',
         'alpha_id',
+        'country',
     ];
 
     public function releaseGroups()

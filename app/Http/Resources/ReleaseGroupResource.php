@@ -16,6 +16,10 @@ class ReleaseGroupResource extends JsonResource
     {
         return [
             ...parent::toArray($request),
+            'release_count' => $this->when(
+                $request->has('with_release_count'),
+                fn () => $this->releases->count()
+            ),
         ];
     }
 }

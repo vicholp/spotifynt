@@ -16,7 +16,7 @@ class ArtistResource extends JsonResource
     {
         return [...parent::toArray($request),
             'release_groups' => $this->when($request->has('with_release_groups'), fn () => new ReleaseGroupCollection($this->releaseGroups)),
-                        'release_group_count' => $this->when(
+            'release_group_count' => $this->when(
                 $request->has('with_release_group_count'),
                 fn () => $this->releaseGroups->count()
             ),

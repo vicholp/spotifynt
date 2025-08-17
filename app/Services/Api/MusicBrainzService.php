@@ -113,11 +113,14 @@ class MusicBrainzService
         return $json; // @phpstan-ignore return.type
     }
 
-    public function getArtist(string $id): array
+    public function getArtist(string $id, array $includes = ['genres']): array
     {
         Log::debug("🔒 Querying to MusicBrainz artist {$id}");
 
-        $response = $this->getHttp()->get($this->apiUrl.'ws/2/artist/'.$id.'?inc=aliases+annotation+tags+genres&fmt=json');
+        $response = $this->getHttp()->get($this->apiUrl.'ws/2/artist/'.$id, [
+            'inc' => implode('+', $includes),
+            'fmt' => 'json'
+        ]);
 
         if (!$response->ok()) {
             throw new \Exception('Error Processing Request'.$response->status());

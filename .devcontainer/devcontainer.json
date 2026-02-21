@@ -1,0 +1,39 @@
+{
+    "name": "PHP Development",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "runArgs": [
+        "--add-host=host.docker.internal:host-gateway"
+    ],
+    "remoteEnv": {
+        "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+    },
+    // Useful VS Code extensions for PHP/JS projects
+    // "customizations": {
+    //     "vscode": {
+    //         "extensions": [
+    //             "bmewburn.vscode-intelephense-client", // PHP Intellisense
+    //             "xdebug.php-debug",                  // PHP Debugger
+    //             "dbaeumer.vscode-eslint",            // JS Linting
+    //             "esbenp.prettier-vscode"             // Code Formatter
+    //         ],
+    //         "settings": {
+    //             "php.validate.executablePath": "/usr/bin/php"
+    //         }
+    //     }
+    // },
+    // Use 'postCreateCommand' to run 'npm install' or 'composer install' automatically
+    // "postCreateCommand": "composer --version && node -v && npm -v",
+    // Forward any ports your app needs (e.g., 8000 for PHP, 3000 for React/Vite)
+    "forwardPorts": [
+        8000,
+        3000
+    ],
+    "remoteUser": "vscode",
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:2": {},
+        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
+        "ghcr.io/devcontainers/features/git:1": {}
+    }
+}

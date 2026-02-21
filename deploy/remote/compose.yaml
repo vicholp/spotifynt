@@ -7,7 +7,7 @@ services:
     ports:
       - 8080
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/up"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/up" ]
       start_interval: 5s
       start_period: 20s
     env_file: .env
@@ -62,12 +62,7 @@ services:
     depends_on:
       - minio
     entrypoint: >
-      /bin/sh -c "
-      /usr/bin/mc alias set myminio ${AWS_ENDPOINT} ${AWS_ACCESS_KEY_ID} ${AWS_SECRET_ACCESS_KEY};
-      /usr/bin/mc mb myminio/public-bucket;
-      /usr/bin/mc anonymous set public myminio/public-bucket;
-      exit 0;
-      "
+      /bin/sh -c " /usr/bin/mc alias set myminio ${AWS_ENDPOINT} ${AWS_ACCESS_KEY_ID} ${AWS_SECRET_ACCESS_KEY}; /usr/bin/mc mb myminio/public-bucket; /usr/bin/mc anonymous set public myminio/public-bucket; exit 0; "
 
   backend-worker:
     env_file: .env
@@ -81,8 +76,32 @@ services:
     command: sh -c "php artisan queue:work --queue=default --tries=3 --timeout=300 --memory=512"
     deploy:
       mode: replicated
-      replicas: 10
+      replicas: 3
       endpoint_mode: vip
+
+  backend-reverb:
+    env_file: .env
+    restart: unless-stopped
+    networks:
+      - default
+      - project
+    depends_on:
+      - backend
+    image: ${DOCKER_REGISTRY}/${GITHUB_REPO}-php:${ENVIRONMENT}-latest
+    command: sh -c "php artisan reverb:start"
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.docker.network=traefik"
+
+      - "traefik.http.routers.insecure-${APP_NAME}-${ENVIRONMENT}-reverb.entrypoints=webinsecure"
+      - "traefik.http.routers.insecure-${APP_NAME}-${ENVIRONMENT}-reverb.rule=Host(`${TRAEFIK_REVERB_HOST}`)"
+      - "traefik.http.routers.insecure-${APP_NAME}-${ENVIRONMENT}-reverb.middlewares=redirectToHttps@file"
+
+      - "traefik.http.routers.${APP_NAME}-${ENVIRONMENT}-reverb.entrypoints=websecure"
+      - "traefik.http.routers.${APP_NAME}-${ENVIRONMENT}-reverb.rule=Host(`${TRAEFIK_REVERB_HOST}`)"
+      - "traefik.http.routers.${APP_NAME}-${ENVIRONMENT}-reverb.tls=true"
+      - "traefik.http.routers.${APP_NAME}-${ENVIRONMENT}-reverb.tls.certresolver=myresolver"
 
   backend-tasks:
     env_file: .env
@@ -115,9 +134,9 @@ services:
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 10m
-    command: ["redis-server", "--save 3600 10"]
+    command: [ "redis-server", "--save 3600 10" ]
 
   typesense:
     image: typesense/typesense:26.0
@@ -136,6 +155,7 @@ volumes:
       device: /mnt/wd_wd10/spotifynt_next
   typesense_data:
   redis_data:
+
 
 networks:
   project:

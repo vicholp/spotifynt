@@ -133,4 +133,27 @@ class AlphaPlugin
             return false;
         }
     }
+
+    public function downloadTrack(string $albumId, string $trackId): bool
+    {
+        try {
+            $response = Http::post($this->alpha_plugin_url.'albums/'.$albumId.'/songs/'.$trackId.'/download', [
+                'webhook_url' =>  "http://backend:8080/api/alpha/downloads/finish",
+            ]);
+
+            if (!$response->ok()) {
+                throw new \Exception("Alpha plugin service: downloadTrack error - ".$response->body());
+            }
+
+            return true;
+        } catch (\Exception $e) {
+            Log::error('Alpha plugin service: downloadTrack error', [
+                'album_id' => $albumId,
+                'track_id' => $trackId,
+                'error' => $e->getMessage(),
+            ]);
+
+            return false;
+        }
+    }
 }

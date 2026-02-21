@@ -2,7 +2,7 @@ FROM php:8.4.8-fpm AS php
 
 RUN apt update; apt install -y unzip 7zip git fswatch
 
-ENV PHP_EXTENSIONS="redis xdebug pdo_mysql gd zip exif"
+ENV PHP_EXTENSIONS="redis xdebug pdo_mysql gd zip exif pcntl"
 
 COPY deploy/local/php.ini-development "$PHP_INI_DIR/php.ini"
 COPY deploy/local/99-xdebug.ini /usr/local/etc/php/conf.d/99-xdebug.ini

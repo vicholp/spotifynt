@@ -13,35 +13,33 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TrackController;
 use App\Http\Controllers\UploadFileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use App\Models\User;
 
-Route::prefix('api')->group(function () {
-    Route::post('upload', UploadFileController::class)->name('upload.file');
+Route::post('/login', function (Request $request) {
+        $fields = $request->validate([
+            'username' => 'required|string|email',
+            'password' => 'required|string'
+        ]);
 
-    Route::get('recommendations', RecommendationController::class);
+        // 1. Check email
+        $user = User::where('email', $fields['username'])->first();
 
-    Route::get('search', SearchController::class)->name('search');
+        // 2. Check password
+        if (!$user || !\Hash::check($fields['password'], $user->password)) {
+            return response([
+                'message' => 'Invalid credentials'
+            ], 401);
+        }
 
-    Route::get('discover', DiscoverController::class)
-        ->name('discover');
+        // 3. Generate the Passport JWT
+        $token = $user->createToken('FrontendApp')->accessToken;
 
-    Route::get('alpha/artist/{id}', [AlphaPluginController::class, 'artist'])
-        ->name('alpha.artist');
-    Route::get('alpha/album/{id}', [AlphaPluginController::class, 'album'])
-        ->name('alpha.album');
-    Route::post('alpha/album/{id}/download', [AlphaPluginController::class, 'downloadAlbum'])
-        ->name('alpha.album.download');
-
-    Route::post('alpha/downloads/finish', DownloadFinishController::class)
-        ->name('download.finish');
-
-    Route::apiResources(
-        [
-            'recordings' => RecordingController::class,
-            'files' => FileController::class,
-            'artists' => ArtistController::class,
-            'releases' => ReleaseController::class,
-            'release-groups' => ReleaseGroupController::class,
-            'tracks' => TrackController::class,
-        ]
-    );
+        return response([
+            'user' => $user,
+            'token' => $token
+        ], 200);
 });
+
+Route::post('api/alpha/downloads/finish', DownloadFinishController::class)
+    ->name('download.finish');

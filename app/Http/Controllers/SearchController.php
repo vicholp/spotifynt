@@ -28,7 +28,7 @@ class SearchController extends Controller
             ),
             'albums' => new ReleaseCollection(
                 Release::search($query)
-                    ->get()
+                ->get()
             ),
             'tracks' => new TrackCollection(
                 Track::search($query)->get()

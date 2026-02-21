@@ -2,7 +2,7 @@ FROM php:8.4.8-fpm AS php
 
 RUN apt update; apt install -y nginx git
 
-ENV PHP_EXTENSIONS="redis pdo_mysql gd zip exif opcache"
+ENV PHP_EXTENSIONS="redis pdo_mysql gd zip exif opcache pcntl"
 
 COPY deploy/remote/php.ini-production "$PHP_INI_DIR/php.ini"
 

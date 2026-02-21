@@ -20,7 +20,7 @@ class Track extends Model
     {
         return [
             'id' => (string) $this->id,
-            'created_at' => $this->created_at->timestamp,
+            'created_at' => $this->created_at?->timestamp,
             'title' => $this->title ?? '',
             'alpha_id' => $this->alpha_id ?? '',
             'mb_id' => $this->mb_id ?? '',

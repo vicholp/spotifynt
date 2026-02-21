@@ -31,6 +31,7 @@ class ArtistResource extends JsonResource
                 '250x250' => $this->when($request->has('with_art_size250x250'), fn () => $this->releases->map(fn ($release) => $release->artUrl(250))),
                 '75x75' => $this->when($request->has('with_art_size75x75'), fn () => $this->releases->map(fn ($release) => $release->artUrl(75))),
             ],
+            'source' => $this->source,
         ];
     }
 }

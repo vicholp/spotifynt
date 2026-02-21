@@ -20,7 +20,7 @@ class Artist extends Model
     {
         return [
             'id' => (string) $this->id,
-            'created_at' => $this->created_at->timestamp,
+            'created_at' => $this->created_at?->timestamp,
             'name' => $this->name ?? '',
             'alpha_id' => $this->alpha_id ?? '',
             'mb_id' => $this->mb_id ?? '',
@@ -38,6 +38,16 @@ class Artist extends Model
     public function releaseGroups()
     {
         return $this->hasMany(ReleaseGroup::class);
+    }
+
+    public function getSourceAttribute()
+    {
+        if ($this->mb_id) {
+            return 'musicbrainz';
+        }
+        if ($this->alpha_id) {
+            return 'alpha';
+        }
     }
 
     public function releases()

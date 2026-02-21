@@ -16,8 +16,8 @@ class TrackResource extends JsonResource
     {
         return [
             ...parent::toArray($request),
-            'files' => $this->when($request->has('with_files'), fn () => new FileCollection($this->files)),
-            'release' => $this->when($request->has('with_release'), fn () => new ReleaseResource($this->release)),
+            'files' => $this->when($request->has('with_files'), fn () => new FileCollection($this?->files ?? [])),
+            'release' => $this->when($request->has('with_release'), fn () => new ReleaseResource($this?->release)),
         ];
     }
 }

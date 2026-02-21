@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('BROADCAST_CONNECTION', 'reberv'),
+    'default' => env('BROADCAST_CONNECTION', 'reberb'),
 
     /*
     |--------------------------------------------------------------------------

@@ -16,6 +16,7 @@ use App\Http\Controllers\ReleaseGroupController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TrackController;
 use App\Http\Controllers\UploadFileController;
+use App\Events\UserPlayingStatusUpdatedEvent;
 use App\Http\Resources\PlayingStatusResource;
 
 Route::middleware('auth:api')->group(function () {
@@ -44,6 +45,8 @@ Route::middleware('auth:api')->group(function () {
             [],
             ['player_state' => $data['player_state']]
         );
+
+        broadcast(new UserPlayingStatusUpdatedEvent($status))->toOthers();
 
         return PlayingStatusResource::make($status);
     })->name('me.playing-status.update');

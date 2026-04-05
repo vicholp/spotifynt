@@ -2,10 +2,7 @@
 
 namespace App\Models;
 
-use App\Events\UserPlayingStatusUpdatedEvent;
-use Illuminate\Database\Eloquent\BroadcastableModelEventOccurred;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\BroadcastsEvents;
 
 class UserPlayingStatus extends Model
 {
@@ -28,12 +25,4 @@ class UserPlayingStatus extends Model
         'player_state' => 'array',
     ];
 
-    /**
-     * The event map for the model.
-     *
-     * @var array<string, string>
-     */
-    protected $dispatchesEvents = [
-        'saved' => UserPlayingStatusUpdatedEvent::class,
-    ];
 }

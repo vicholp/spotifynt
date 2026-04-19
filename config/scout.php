@@ -5,7 +5,6 @@ use App\Models\Release;
 use App\Models\Track;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Search Engine
@@ -189,8 +188,8 @@ return [
                 'collection-schema' => [
                     'fields' => [
                         [
-                             'name' => 'created_at',
-                             'type' => 'int64',
+                            'name' => 'created_at',
+                            'type' => 'int64',
                         ],
                         [
                             'name' => 'title',
@@ -212,7 +211,6 @@ return [
                             'name' => 'artist_name',
                             'type' => 'string',
                         ],
-
                     ],
                     'default_sorting_field' => 'created_at',
                 ],
@@ -224,8 +222,8 @@ return [
                 'collection-schema' => [
                     'fields' => [
                         [
-                             'name' => 'created_at',
-                             'type' => 'int64',
+                            'name' => 'created_at',
+                            'type' => 'int64',
                         ],
                         [
                             'name' => 'name',
@@ -254,8 +252,8 @@ return [
                 'collection-schema' => [
                     'fields' => [
                         [
-                             'name' => 'created_at',
-                             'type' => 'int64',
+                            'name' => 'created_at',
+                            'type' => 'int64',
                         ],
                         [
                             'name' => 'title',
@@ -281,7 +279,10 @@ return [
                             'name' => 'release_group_name',
                             'type' => 'string',
                         ],
-
+                        [
+                            'name' => 'lyrics',
+                            'type' => 'string',
+                        ],
                     ],
                     'default_sorting_field' => 'created_at',
                 ],
@@ -291,5 +292,4 @@ return [
             ],
         ],
     ],
-
 ];

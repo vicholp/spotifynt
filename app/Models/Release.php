@@ -10,7 +10,8 @@ use Laravel\Scout\Searchable;
 class Release extends Model
 {
     /** @use HasFactory<\Database\Factories\ReleaseFactory> */
-    use HasFactory, Searchable;
+    use HasFactory;
+    use Searchable;
 
     protected $fillable = [
         'title',
@@ -60,6 +61,7 @@ class Release extends Model
     public function getExtensionsAttribute(): array
     {
         $extensions = $this->tracks()->with('recording.files')->get()->flatMap(fn ($track) => $track->files->pluck('extension'))->unique()->values();
+
         return $extensions->isNotEmpty() ? $extensions->toArray() : [];
     }
 

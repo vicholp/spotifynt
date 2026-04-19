@@ -27,6 +27,7 @@ class Track extends Model
             'artist_name' => $this->release->releaseGroup->artist->name ?? '',
             'release_title' => $this->release->title ?? '',
             'release_group_name' => $this->release->releaseGroup?->name ?? '',
+            'lyrics' => $this->recording->lyrics ?? '',
         ];
     }
 

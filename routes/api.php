@@ -1,13 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-
+use App\Events\UserPlayingStatusUpdatedEvent;
 use App\Http\Controllers\AlphaPluginController;
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\DiscoverController;
-use App\Http\Controllers\DownloadFinishController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\RecommendationController;
 use App\Http\Controllers\RecordingController;
@@ -16,13 +13,15 @@ use App\Http\Controllers\ReleaseGroupController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TrackController;
 use App\Http\Controllers\UploadFileController;
-use App\Events\UserPlayingStatusUpdatedEvent;
 use App\Http\Resources\PlayingStatusResource;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:api')->group(function () {
     Route::post('upload', UploadFileController::class)->name('upload.file');
-    
-    Route::get('recommendations', RecommendationController::class);
+
+    Route::get('recommendations', [RecommendationController::class, 'random']);
+    Route::post('recommendations/playlist', [RecommendationController::class, 'playlist']);
 
     Route::get('search', SearchController::class)->name('search');
 
@@ -39,7 +38,6 @@ Route::middleware('auth:api')->group(function () {
         $data = $request->validate([
             'player_state' => 'required',
         ]);
-
 
         $status = $request->user()->userPlayingStatus()->updateOrCreate(
             [],
@@ -70,6 +68,6 @@ Route::middleware('auth:api')->group(function () {
             'tracks' => TrackController::class,
         ]
     );
-    
+
     Route::apiResource('devices', DeviceController::class)->except(['update']);
 });

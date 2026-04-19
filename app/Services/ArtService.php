@@ -2,13 +2,10 @@
 
 namespace App\Services;
 
-use App\Jobs\Art\MinimizeArtJob;
-use App\Jobs\Art\UploadArtJob;
-use App\Jobs\RemoveTempFileJob;
 use App\Models\Art;
 use App\Models\Release;
 use App\Services\Api\CoverArtService;
-use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -52,18 +49,26 @@ class ArtService
 
     public function getUrl(Release $release, int $size = 0, string $format = 'jpeg'): string
     {
-        $art = Art::whereReleaseId($release->id)
-            ->whereType('cover')
-            ->whereWidth($size)
-            ->whereHeight($size)
-            ->whereMimeType('image/'.$format)
-            ->first();
+        $cacheKey = "art_url_{$release->id}_{$size}_{$format}";
 
-        if (!$art?->url) {
+        $art_url = Cache::driver('redis')->remember($cacheKey, now()->addDays(30), function () use ($release, $size, $format) {
+            $art = $release->loadMissing(['arts'])->arts->firstWhere(function ($art) use ($size, $format) {
+                return 'cover' === $art->type
+                    && $art->width === $size
+                    && $art->height === $size
+                    && $art->mime_type === 'image/'.$format;
+            });
+
+            if ($art) {
+                return $art->url;
+            }
+        });
+
+        if (!$art_url) {
             return '';
         }
 
-        return Storage::url($art->url);
+        return Storage::url($art_url);
     }
 
     public function uploadArt(string $fileName, Art $art): void
@@ -114,7 +119,7 @@ class ArtService
                 $name = Str::uuid().'.'.$format;
                 $targetPath = Storage::disk('temp')->path($name);
 
-                self::minimizeArt( $path, $targetPath, $size[0], $size[1]);
+                self::minimizeArt($path, $targetPath, $size[0], $size[1]);
 
                 self::uploadArt(
                     $name,

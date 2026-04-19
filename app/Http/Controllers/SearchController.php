@@ -21,18 +21,18 @@ class SearchController extends Controller
 
         $query = $request->input('q');
 
+        $artistIds = Artist::search($query)->keys();
+        $releaseIds = Release::search($query)->keys();
+        $trackIds = Track::search($query)->keys();
+
+        $artists = Artist::with(['releases', 'releases.arts'])->whereIn('id', $artistIds)->limit(10)->get();
+        $releases = Release::with(['arts'])->whereIn('id', $releaseIds)->limit(10)->get();
+        $tracks = Track::with(['release', 'release.arts'])->whereIn('id', $trackIds)->limit(10)->get();
+
         return response()->json([
-            'artists' => new ArtistCollection(
-                Artist::search($query)
-                    ->get()
-            ),
-            'albums' => new ReleaseCollection(
-                Release::search($query)
-                ->get()
-            ),
-            'tracks' => new TrackCollection(
-                Track::search($query)->get()
-            ),
+            'artists' => new ArtistCollection($artists),
+            'albums' => new ReleaseCollection($releases),
+            'tracks' => new TrackCollection($tracks),
         ]);
     }
 }

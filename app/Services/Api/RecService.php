@@ -29,7 +29,7 @@ class RecService
             ]);
 
             $response = Http::post($this->rec_service_url.'recordings', [
-                'recording' => $recording->load('tracks', 'tracks.release', 'tracks.release.artist'),
+                'recording' => $recording->load('tracks', 'tracks.release'),
                 'file_url' => $file->path,
             ]);
 

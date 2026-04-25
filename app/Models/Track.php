@@ -9,7 +9,8 @@ use Laravel\Scout\Searchable;
 class Track extends Model
 {
     /** @use HasFactory<\Database\Factories\TrackFactory> */
-    use HasFactory, Searchable;
+    use HasFactory;
+    use Searchable;
 
     /**
      * Get the indexable data array for the model.

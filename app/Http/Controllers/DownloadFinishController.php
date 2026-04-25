@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\Art\SyncArtJob;
+use App\Jobs\LoadArtistInfoJob;
+use App\Jobs\LoadFileInfoJob;
+use App\Jobs\LoadRecordingLyricsJob;
+use App\Jobs\LoadRecordingRecJob;
+use App\Jobs\LoadReleaseInfoJob;
 use App\Models\Artist;
 use App\Models\File;
 use App\Models\Recording;
@@ -20,8 +25,6 @@ class DownloadFinishController extends Controller
      */
     public function __invoke(Request $request, AlphaPlugin $alphaPlugin)
     {
-
-
         $request->validate([
             'url' => 'required|string',
             'metadata' => 'required|array',
@@ -50,17 +53,17 @@ class DownloadFinishController extends Controller
                 [
                     'name' => $artist['name'],
                     'alpha_id' => $metadata['artist_id'],
-                    ]
-                );
+                ]
+            );
 
-                $artistModel = Artist::where('alpha_id', $metadata['artist_id'])->firstOrFail();
+            $artistModel = Artist::where('alpha_id', $metadata['artist_id'])->firstOrFail();
         } else {
             $artistModel = Artist::firstOrCreate(
                 [
                     'name' => 'Unknown Artist',
-                    'alpha_id' => $metadata['album_id']
+                    'alpha_id' => $metadata['album_id'],
                 ],
-                [ ]
+                []
             );
         }
 
@@ -103,27 +106,30 @@ class DownloadFinishController extends Controller
             ],
             [
                 'title' => $song['videoDetails']['title'],
-
             ]
         );
 
-        File::updateOrCreate(
+        $file = File::updateOrCreate(
             [
                 'recording_id' => $recordingModel->id,
                 'path' => $request->input('minio_path'),
             ],
             [
-
             ]
         );
 
+        SyncArtJob::dispatch($releaseModel);
 
-        SyncArtJob::dispatch($release);
+        LoadFileInfoJob::dispatch($file);
 
+        LoadArtistInfoJob::dispatch($artistModel);
 
+        LoadReleaseInfoJob::dispatch($releaseModel);
+
+        LoadRecordingLyricsJob::dispatch($recordingModel);
+
+        LoadRecordingRecJob::dispatch($recordingModel);
 
         return 'OK';
-
-
     }
 }

@@ -13,7 +13,7 @@ class LoadRecordingRecCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'app:load-recording-rec-command {recording_id?}';
+    protected $signature = 'app:load-recording-rec-command {recording_id?} {--force}';
 
     /**
      * The console command description.
@@ -28,11 +28,12 @@ class LoadRecordingRecCommand extends Command
     public function handle(): void
     {
         $recordingId = $this->argument('recording_id');
+        $force = $this->option('force') ?? false;
 
         if ($recordingId) {
             $recording = Recording::find($recordingId);
 
-            LoadRecordingRecJob::dispatch($recording);
+            LoadRecordingRecJob::dispatch($recording, $force);
 
             return;
         }
@@ -40,7 +41,7 @@ class LoadRecordingRecCommand extends Command
         $recordings = Recording::all();
 
         foreach ($recordings as $recording) {
-            LoadRecordingRecJob::dispatch($recording);
+            LoadRecordingRecJob::dispatch($recording, $force);
         }
 
         $this->info('Command executed successfully.');

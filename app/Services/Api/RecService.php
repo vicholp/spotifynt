@@ -48,6 +48,30 @@ class RecService
         }
     }
 
+    public function getRecording(int $recordingId): array|false
+    {
+        try {
+            Log::info('Rec service: getRecording called', [
+                'recording_id' => $recordingId,
+            ]);
+
+            $response = Http::get($this->rec_service_url.'recordings/'.$recordingId);
+
+            if (!$response->ok()) {
+                return false;
+            }
+
+            return $response->json();
+        } catch (\Exception $e) {
+            Log::error('Rec service: getRecording error', [
+                'recording_id' => $recordingId,
+                'error' => $e->getMessage(),
+            ]);
+
+            return false;
+        }
+    }
+
     public function recommendationForPlaylist(array $trackIds): array|false
     {
         try {

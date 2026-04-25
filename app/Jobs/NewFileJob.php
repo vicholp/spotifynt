@@ -50,7 +50,7 @@ class NewFileJob implements ShouldQueue
 
         $mbRelease = $musicBrainzService->getRelease($releaseMbId);
 
-        if ($trackId){
+        if ($trackId) {
             $mbTrack = $musicBrainzService->getTrackFromRelease($releaseMbId, $trackId);
             $mbRecording = $musicBrainzService->getRecording($mbTrack['recording']['id']);
         } else {
@@ -58,9 +58,9 @@ class NewFileJob implements ShouldQueue
             $mbRecording = $musicBrainzService->getRecording($recordingMbId);
         }
 
-
         if (empty($mbTrack) || empty($mbRecording)) {
-            Log::error('NewFileJob: No track or recording found for release ID: ' . $releaseMbId);
+            Log::error('NewFileJob: No track or recording found for release ID: '.$releaseMbId);
+
             return;
         }
 
@@ -69,7 +69,8 @@ class NewFileJob implements ShouldQueue
         $mbArtist = $musicBrainzService->getArtist($mbReleaseGroup['artist-credit'][0]['artist']['id']);
 
         $recording = Recording::updateOrCreate(
-            ['mb_id' => $mbRecording['id']], []
+            ['mb_id' => $mbRecording['id']],
+            ['title' => $mbRecording['title']]
         );
 
         $this->file->update([
@@ -112,5 +113,15 @@ class NewFileJob implements ShouldQueue
         );
 
         SyncArtJob::dispatch($release);
+
+        LoadFileInfoJob::dispatch($this->file);
+
+        LoadArtistInfoJob::dispatch($artist);
+
+        LoadReleaseInfoJob::dispatch($release);
+
+        LoadRecordingLyricsJob::dispatch($recording);
+
+        LoadRecordingRecJob::dispatch($recording);
     }
 }

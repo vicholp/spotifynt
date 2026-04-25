@@ -287,7 +287,7 @@ return [
                     'default_sorting_field' => 'created_at',
                 ],
                 'search-parameters' => [
-                    'query_by' => 'title,alpha_id,mb_id,artist_name,release_title,release_group_name',
+                    'query_by' => 'title,alpha_id,mb_id,artist_name,release_title,release_group_name,lyrics',
                 ],
             ],
         ],

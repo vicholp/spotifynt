@@ -3,9 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Artist;
-use App\Models\File;
 use App\Services\Api\MusicBrainzService;
-use App\Services\Api\TaggerService;
 use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -34,7 +32,7 @@ class LoadArtistInfoJob implements ShouldQueue
             return;
         }
 
-        if ($this->artist->mb_id === null) {
+        if (null === $this->artist->mb_id) {
             Log::warning("Artist {$this->artist->name} has no MB ID, skipping LoadArtistInfoJob.");
 
             return;

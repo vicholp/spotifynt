@@ -28,7 +28,7 @@ class RecService
                 'file_url' => $file->path,
             ]);
 
-            $response = Http::post($this->rec_service_url.'recordings', [
+            $response = Http::timeout(240)->post($this->rec_service_url.'recordings', [
                 'recording' => $recording->load('tracks', 'tracks.release'),
                 'file_url' => $file->path,
             ]);
@@ -55,7 +55,7 @@ class RecService
                 'recording_id' => $recordingId,
             ]);
 
-            $response = Http::get($this->rec_service_url.'recordings/'.$recordingId);
+            $response = Http::timeout(120)->get($this->rec_service_url.'recordings/'.$recordingId);
 
             if (!$response->ok()) {
                 return false;

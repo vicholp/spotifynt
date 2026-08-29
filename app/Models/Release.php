@@ -53,9 +53,9 @@ class Release extends Model
         return $this->belongsTo(ReleaseGroup::class);
     }
 
-    public function getArtistAttribute()
+    public function artist()
     {
-        return $this->releaseGroup->artist;
+        return $this->hasOneThrough(Artist::class, ReleaseGroup::class, 'id', 'id', 'release_group_id', 'artist_id');
     }
 
     public function getExtensionsAttribute(): array

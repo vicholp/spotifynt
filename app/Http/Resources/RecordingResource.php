@@ -14,6 +14,9 @@ class RecordingResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            ...parent::toArray($request),
+            'marks' => $this->when($request->has('with_marks'), fn () => $this->marks),
+        ];
     }
 }

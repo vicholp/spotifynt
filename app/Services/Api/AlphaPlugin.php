@@ -2,10 +2,6 @@
 
 namespace App\Services\Api;
 
-use App\Models\File;
-use App\Models\Release;
-use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -38,6 +34,31 @@ class AlphaPlugin
             return $results;
         } catch (\Exception $e) {
             Log::error('Alpha plugin service: query error', [
+                'query' => $query,
+                'error' => $e->getMessage(),
+            ]);
+
+            return false;
+        }
+    }
+
+    public function searchAlbums(string $query, bool $exact = false): array|false
+    {
+        try {
+            $response = Http::post($this->alpha_plugin_url.'albums/query', [
+                'query' => $query,
+                'exact' => $exact,
+            ]);
+
+            if (!$response->ok()) {
+                return false;
+            }
+
+            $results = $response->json()['results'] ?? [];
+
+            return $results;
+        } catch (\Exception $e) {
+            Log::error('Alpha plugin service: searchAlbums error', [
                 'query' => $query,
                 'error' => $e->getMessage(),
             ]);
@@ -116,7 +137,7 @@ class AlphaPlugin
     {
         try {
             $response = Http::post($this->alpha_plugin_url.'albums/'.$id.'/download', [
-                'webhook_url' =>  "http://backend:8080/api/alpha/downloads/finish",
+                'webhook_url' => 'http://backend:8080/api/alpha/downloads/finish',
             ]);
 
             if (!$response->ok()) {
@@ -138,11 +159,11 @@ class AlphaPlugin
     {
         try {
             $response = Http::post($this->alpha_plugin_url.'albums/'.$albumId.'/songs/'.$trackId.'/download', [
-                'webhook_url' =>  "http://backend:8080/api/alpha/downloads/finish",
+                'webhook_url' => 'http://backend:8080/api/alpha/downloads/finish',
             ]);
 
             if (!$response->ok()) {
-                throw new \Exception("Alpha plugin service: downloadTrack error - ".$response->body());
+                throw new \Exception('Alpha plugin service: downloadTrack error - '.$response->body());
             }
 
             return true;

@@ -6,6 +6,7 @@ services:
     environment:
       XDEBUG_CONFIG: "client_host=host.docker.internal"
       DB_HOST: mariadb
+      TYPESENSE_HOST: typesense
     networks:
       - default
       - spotifynt
@@ -47,6 +48,7 @@ services:
     environment:
       XDEBUG_CONFIG: "client_host=host.docker.internal"
       DB_HOST: mariadb
+      TYPESENSE_HOST: typesense
     extra_hosts:
       - "host.docker.internal:host-gateway"
     command: sh -c "php artisan reverb:start"
@@ -68,6 +70,7 @@ services:
     environment:
       XDEBUG_CONFIG: "client_host=host.docker.internal"
       DB_HOST: mariadb
+      TYPESENSE_HOST: typesense
     extra_hosts:
       - "host.docker.internal:host-gateway"
     command: sh -c "php artisan queue:listen --queue=default --tries=3 --timeout=300"
@@ -142,7 +145,7 @@ services:
       - "8108:8108"
     volumes:
       - typesense_data:/data
-    command: '--data-dir /data --api-key=${TYPESENSE_API_KEY} --enable-cors'
+    command: '--data-dir /data --api-key=${TYPESENSE_API_KEY} --enable-cors --log-slow-requests-time-ms=-1 --log-level=WARN'
 
 volumes:
   mariadb_data:

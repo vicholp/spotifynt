@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\FileSourceEnum;
 use App\Jobs\Art\SyncArtJob;
-use App\Jobs\LoadArtistInfoJob;
 use App\Jobs\LoadFileInfoJob;
 use App\Jobs\LoadRecordingLyricsJob;
-use App\Jobs\LoadRecordingRecJob;
-use App\Jobs\LoadReleaseInfoJob;
 use App\Models\Artist;
 use App\Models\File;
 use App\Models\Recording;
@@ -115,6 +113,7 @@ class DownloadFinishController extends Controller
                 'path' => $request->input('minio_path'),
             ],
             [
+                'source' => FileSourceEnum::ALPHA_PLUGIN->value,
             ]
         );
 
@@ -122,13 +121,7 @@ class DownloadFinishController extends Controller
 
         LoadFileInfoJob::dispatch($file);
 
-        LoadArtistInfoJob::dispatch($artistModel);
-
-        LoadReleaseInfoJob::dispatch($releaseModel);
-
         LoadRecordingLyricsJob::dispatch($recordingModel);
-
-        LoadRecordingRecJob::dispatch($recordingModel);
 
         return 'OK';
     }

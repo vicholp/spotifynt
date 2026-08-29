@@ -25,6 +25,10 @@ class LoadReleaseInfoJob implements ShouldQueue
      */
     public function handle(MusicBrainzService $musicBrainzService): void
     {
+        if (!$this->release->mb_id) {
+            return;
+        }
+
         $mbRelease = $musicBrainzService->getRelease($this->release->mb_id);
 
         $this->release->update([

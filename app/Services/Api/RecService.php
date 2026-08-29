@@ -18,6 +18,38 @@ class RecService
         $this->rec_service_url = config('services.rec_service_url');
     }
 
+    public function storeEvents(array $events): bool
+    {
+        try {
+            Log::info('Rec service: storeEvents called', [
+                'events' => $events,
+            ]);
+
+            $response = Http::timeout(1)->post($this->rec_service_url.'events/batch', [
+                'events' => array_map(fn($e) => [...$e, 'payload' => $e['payload'] ?: new \stdClass()], $events),
+            ]);
+
+            if (!$response->ok()) {
+                Log::error('Rec service: storeEvents failed response', [
+                    'events' => $events,
+                    'status' => $response->status(),
+                    'body' => $response->body(),
+                ]);
+
+                return false;
+            }
+
+            return true;
+        } catch (\Exception $e) {
+            Log::error('Rec service: storeEvents error', [
+                'events' => $events,
+                'error' => $e->getMessage(),
+            ]);
+
+            return false;
+        }
+    }
+
     public function createRecording(Recording $recording): array|false
     {
         try {

@@ -17,6 +17,15 @@ class AlphaPluginController extends Controller
 
     }
 
+    public function albumSearch(Request $request, AlphaPlugin $alphaPlugin)
+    {
+        $query = $request->query('q');
+
+        $albums = $alphaPlugin->searchAlbums($query);
+
+        return response()->json($albums);
+    }
+
     public function album(Request $request, AlphaPlugin $alphaPlugin, string $id)
     {
         $album = $alphaPlugin->getAlbum($id);

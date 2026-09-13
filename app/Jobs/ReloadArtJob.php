@@ -6,6 +6,7 @@ use App\Models\Release;
 use App\Services\ArtService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Cache;
 
 class ReloadArtJob implements ShouldQueue
 {
@@ -25,6 +26,8 @@ class ReloadArtJob implements ShouldQueue
     public function handle(ArtService $artService): void
     {
         $this->release->arts()->delete();
+
+        Cache::store('redis')->flush();
 
         $artService->syncArt($this->release);
     }
